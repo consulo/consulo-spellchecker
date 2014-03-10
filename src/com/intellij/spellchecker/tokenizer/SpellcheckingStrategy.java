@@ -29,53 +29,67 @@ import com.intellij.spellchecker.quickfixes.ChangeTo;
 import com.intellij.spellchecker.quickfixes.RenameTo;
 import com.intellij.spellchecker.quickfixes.SpellCheckerQuickFix;
 
-public class SpellcheckingStrategy {
-  protected final Tokenizer<PsiComment> myCommentTokenizer = new CommentTokenizer();
+public class SpellcheckingStrategy
+{
+	protected final Tokenizer<PsiComment> myCommentTokenizer = new CommentTokenizer();
+	protected final Tokenizer<PsiNameIdentifierOwner> myNameIdentifierOwnerTokenizer = new PsiIdentifierOwnerTokenizer();
 
-  public static final ExtensionPointName<SpellcheckingStrategy> EP_NAME = ExtensionPointName.create("com.intellij.spellchecker.support");
-  public static final Tokenizer EMPTY_TOKENIZER = new Tokenizer() {
-    @Override
-    public void tokenize(@NotNull PsiElement element, TokenConsumer consumer) {
-    }
-  };
+	public static final ExtensionPointName<SpellcheckingStrategy> EP_NAME = ExtensionPointName.create("com.intellij.spellchecker.support");
+	public static final Tokenizer EMPTY_TOKENIZER = new Tokenizer()
+	{
+		@Override
+		public void tokenize(@NotNull PsiElement element, TokenConsumer consumer)
+		{
+		}
+	};
 
-  public static final Tokenizer<PsiElement> TEXT_TOKENIZER = new TokenizerBase<PsiElement>(PlainTextSplitter.getInstance());
+	public static final Tokenizer<PsiElement> TEXT_TOKENIZER = new TokenizerBase<PsiElement>(PlainTextSplitter.getInstance());
 
-  private static final SpellCheckerQuickFix[] BATCH_FIXES = new SpellCheckerQuickFix[]{new AcceptWordAsCorrect()};
+	private static final SpellCheckerQuickFix[] BATCH_FIXES = new SpellCheckerQuickFix[]{new AcceptWordAsCorrect()};
 
-  @NotNull
-  public Tokenizer getTokenizer(PsiElement element) {
-    if (element instanceof PsiNameIdentifierOwner) return new PsiIdentifierOwnerTokenizer();
-    if (element instanceof PsiComment) {
-      if (SuppressionUtil.isSuppressionComment(element)) {
-        return EMPTY_TOKENIZER;
-      }
-      return myCommentTokenizer;
-    }
-    if (element instanceof PsiPlainText) return TEXT_TOKENIZER;
-    return EMPTY_TOKENIZER;
-  }
+	@NotNull
+	public Tokenizer getTokenizer(PsiElement element)
+	{
+		if(element instanceof PsiNameIdentifierOwner)
+		{
+			return myNameIdentifierOwnerTokenizer;
+		}
+		if(element instanceof PsiComment)
+		{
+			if(SuppressionUtil.isSuppressionComment(element))
+			{
+				return EMPTY_TOKENIZER;
+			}
+			return myCommentTokenizer;
+		}
+		if(element instanceof PsiPlainText)
+		{
+			return TEXT_TOKENIZER;
+		}
+		return EMPTY_TOKENIZER;
+	}
 
-  public SpellCheckerQuickFix[] getRegularFixes(PsiElement element,
-                                                int offset,
-                                                @NotNull TextRange textRange,
-                                                boolean useRename,
-                                                String wordWithTypo) {
-    return getDefaultRegularFixes(useRename, wordWithTypo);
-  }
+	public SpellCheckerQuickFix[] getRegularFixes(PsiElement element, int offset, @NotNull TextRange textRange, boolean useRename,
+			String wordWithTypo)
+	{
+		return getDefaultRegularFixes(useRename, wordWithTypo);
+	}
 
-  public static SpellCheckerQuickFix[] getDefaultRegularFixes(boolean useRename, String wordWithTypo) {
-    return new SpellCheckerQuickFix[]{
-      (useRename ? new RenameTo(wordWithTypo) : new ChangeTo(wordWithTypo)),
-      new AcceptWordAsCorrect(wordWithTypo)
-    };
-  }
+	public static SpellCheckerQuickFix[] getDefaultRegularFixes(boolean useRename, String wordWithTypo)
+	{
+		return new SpellCheckerQuickFix[]{
+				(useRename ? new RenameTo(wordWithTypo) : new ChangeTo(wordWithTypo)),
+				new AcceptWordAsCorrect(wordWithTypo)
+		};
+	}
 
-  public SpellCheckerQuickFix[] getBatchFixes(PsiElement element, int offset, @NotNull TextRange textRange) {
-    return getDefaultBatchFixes();
-  }
+	public SpellCheckerQuickFix[] getBatchFixes(PsiElement element, int offset, @NotNull TextRange textRange)
+	{
+		return getDefaultBatchFixes();
+	}
 
-  public static SpellCheckerQuickFix[] getDefaultBatchFixes() {
-    return BATCH_FIXES;
-  }
+	public static SpellCheckerQuickFix[] getDefaultBatchFixes()
+	{
+		return BATCH_FIXES;
+	}
 }
