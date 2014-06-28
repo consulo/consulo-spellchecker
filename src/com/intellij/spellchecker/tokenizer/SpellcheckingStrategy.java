@@ -92,4 +92,9 @@ public class SpellcheckingStrategy
 	{
 		return BATCH_FIXES;
 	}
+
+	public boolean isMyContext(@NotNull PsiElement element)
+	{
+		return true;
+	}
 }
