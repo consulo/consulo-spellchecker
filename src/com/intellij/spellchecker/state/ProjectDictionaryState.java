@@ -15,22 +15,27 @@
  */
 package com.intellij.spellchecker.state;
 
-import com.intellij.openapi.components.*;
-import com.intellij.openapi.project.Project;
-import com.intellij.spellchecker.dictionary.EditableDictionary;
-import com.intellij.spellchecker.dictionary.ProjectDictionary;
-import com.intellij.util.xmlb.annotations.AbstractCollection;
-import com.intellij.util.xmlb.annotations.Property;
-import com.intellij.util.xmlb.annotations.Transient;
 import gnu.trove.THashSet;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.State;
+import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.components.StoragePathMacros;
+import com.intellij.openapi.components.StorageScheme;
+import com.intellij.openapi.project.Project;
+import com.intellij.spellchecker.dictionary.EditableDictionary;
+import com.intellij.spellchecker.dictionary.ProjectDictionary;
+import com.intellij.util.xmlb.annotations.AbstractCollection;
+import com.intellij.util.xmlb.annotations.Property;
+import com.intellij.util.xmlb.annotations.Transient;
+
 @State(
   name = "ProjectDictionaryState",
-  storages = {@Storage(file = StoragePathMacros.PROJECT_FILE),
+  storages = {
     @Storage(file = StoragePathMacros.PROJECT_CONFIG_DIR + "/dictionaries/",
     scheme = StorageScheme.DIRECTORY_BASED, stateSplitter = ProjectDictionarySplitter.class)})
 
@@ -38,7 +43,6 @@ public class ProjectDictionaryState implements PersistentStateComponent<ProjectD
 
   @Property(surroundWithTag = false) @AbstractCollection(surroundWithTag = false, elementTypes = DictionaryState.class)
   public List<DictionaryState> dictionaryStates = new ArrayList<DictionaryState>();
-
 
   private ProjectDictionary projectDictionary;
   private String currentUser;
@@ -76,6 +80,7 @@ public class ProjectDictionaryState implements PersistentStateComponent<ProjectD
     return projectDictionary;
   }
 
+  @Override
   public ProjectDictionaryState getState() {
     if (projectDictionary!=null){
       //ensure all dictionaries within project dictionary will be stored
@@ -85,6 +90,7 @@ public class ProjectDictionaryState implements PersistentStateComponent<ProjectD
   }
   
 
+  @Override
   public void loadState(ProjectDictionaryState state) {
     if (state != null) {
       this.dictionaryStates = state.dictionaryStates;
