@@ -15,6 +15,10 @@
  */
 package com.intellij.spellchecker.ui;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.jetbrains.annotations.NotNull;
 import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer;
 import com.intellij.codeInsight.daemon.HighlightDisplayKey;
 import com.intellij.codeInsight.intention.IntentionManager;
@@ -25,15 +29,12 @@ import com.intellij.codeInspection.ex.LocalInspectionToolWrapper;
 import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.spellchecker.inspections.SpellCheckingInspection;
 import com.intellij.ui.SimpleEditorCustomization;
 import com.intellij.util.Function;
 import com.intellij.util.containers.WeakHashMap;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Allows to enforce editors to use/don't use spell checking ignoring user-defined spelling inspection settings.
@@ -43,121 +44,145 @@ import java.util.Map;
  * @author Denis Zhdanov
  * @since Aug 20, 2010 3:54:42 PM
  */
-public class SpellCheckingEditorCustomization extends SimpleEditorCustomization {
+public class SpellCheckingEditorCustomization extends SimpleEditorCustomization
+{
 
-  public static final SpellCheckingEditorCustomization ENABLED = new SpellCheckingEditorCustomization(true);
-  public static final SpellCheckingEditorCustomization DISABLED = new SpellCheckingEditorCustomization(false);
+	public static final SpellCheckingEditorCustomization ENABLED = new SpellCheckingEditorCustomization(true);
+	public static final SpellCheckingEditorCustomization DISABLED = new SpellCheckingEditorCustomization(false);
 
-  private static final Map<String, LocalInspectionToolWrapper> SPELL_CHECK_TOOLS = new HashMap<String, LocalInspectionToolWrapper>();
-  private static final boolean READY = init();
+	private static final Map<String, LocalInspectionToolWrapper> SPELL_CHECK_TOOLS = new HashMap<String, LocalInspectionToolWrapper>();
+	private static final boolean READY = init();
 
-  @NotNull
-  public static SpellCheckingEditorCustomization getInstance(boolean enabled) {
-    return enabled ? ENABLED : DISABLED;
-  }
+	@NotNull
+	public static SpellCheckingEditorCustomization getInstance(boolean enabled)
+	{
+		return enabled ? ENABLED : DISABLED;
+	}
 
-  private SpellCheckingEditorCustomization(boolean enabled) {
-    super(enabled);
-  }
+	private SpellCheckingEditorCustomization(boolean enabled)
+	{
+		super(enabled);
+	}
 
-  @SuppressWarnings({"unchecked"})
-  private static boolean init() {
-    // It's assumed that default spell checking inspection settings are just fine for processing all types of data.
-    // Please perform corresponding settings tuning if that assumption is broken at future.
+	@SuppressWarnings({"unchecked"})
+	private static boolean init()
+	{
+		// It's assumed that default spell checking inspection settings are just fine for processing all types of data.
+		// Please perform corresponding settings tuning if that assumption is broken at future.
 
-    Class<LocalInspectionTool>[] inspectionClasses = (Class<LocalInspectionTool>[])new Class<?>[] {SpellCheckingInspection.class};
-    for (Class<LocalInspectionTool> inspectionClass : inspectionClasses) {
-      try {
-        LocalInspectionTool tool = inspectionClass.newInstance();
-        SPELL_CHECK_TOOLS.put(tool.getShortName(), new LocalInspectionToolWrapper(tool));
-      }
-      catch (Throwable e) {
-        return false;
-      }
-    }
-    return true;
-  }
+		Class<LocalInspectionTool>[] inspectionClasses = (Class<LocalInspectionTool>[]) new Class<?>[]{SpellCheckingInspection.class};
+		for(Class<LocalInspectionTool> inspectionClass : inspectionClasses)
+		{
+			try
+			{
+				LocalInspectionTool tool = inspectionClass.newInstance();
+				SPELL_CHECK_TOOLS.put(tool.getShortName(), new LocalInspectionToolWrapper(tool));
+			}
+			catch(Throwable e)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
 
-  @Override
-  public void customize(@NotNull EditorEx editor) {
-    boolean apply = isEnabled();
+	@Override
+	public void customize(@NotNull EditorEx editor)
+	{
+		boolean apply = isEnabled();
 
-    if (!READY) {
-      return;
-    }
+		if(!READY)
+		{
+			return;
+		}
 
-    Project project = editor.getProject();
-    if (project == null) {
-      return;
-    }
+		Project project = editor.getProject();
+		if(project == null)
+		{
+			return;
+		}
 
-    PsiFile file = PsiDocumentManager.getInstance(project).getPsiFile(editor.getDocument());
-    if (file == null) {
-      return;
-    }
+		PsiFile file = PsiDocumentManager.getInstance(project).getPsiFile(editor.getDocument());
+		if(file == null)
+		{
+			return;
+		}
 
-    Function<InspectionProfileWrapper, InspectionProfileWrapper> strategy = file.getUserData(InspectionProfileWrapper.CUSTOMIZATION_KEY);
-    if (strategy == null) {
-      file.putUserData(InspectionProfileWrapper.CUSTOMIZATION_KEY, strategy = new MyInspectionProfileStrategy());
-    }
+		Function<InspectionProfileWrapper, InspectionProfileWrapper> strategy = file.getUserData(InspectionProfileWrapper.CUSTOMIZATION_KEY);
+		if(strategy == null)
+		{
+			file.putUserData(InspectionProfileWrapper.CUSTOMIZATION_KEY, strategy = new MyInspectionProfileStrategy());
+		}
 
-    if (!(strategy instanceof MyInspectionProfileStrategy)) {
-      return;
-    }
+		if(!(strategy instanceof MyInspectionProfileStrategy))
+		{
+			return;
+		}
 
-    ((MyInspectionProfileStrategy)strategy).setUseSpellCheck(apply);
+		((MyInspectionProfileStrategy) strategy).setUseSpellCheck(apply);
 
-    if (apply) {
-      editor.putUserData(IntentionManager.SHOW_INTENTION_OPTIONS_KEY, false);
-    }
+		if(apply)
+		{
+			editor.putUserData(IntentionManager.SHOW_INTENTION_OPTIONS_KEY, false);
+		}
 
-    // Update representation.
-    DaemonCodeAnalyzer analyzer = DaemonCodeAnalyzer.getInstance(project);
-    if (analyzer != null) {
-      analyzer.restart(file);
-    }
-  }
+		// Update representation.
+		DaemonCodeAnalyzer analyzer = DaemonCodeAnalyzer.getInstance(project);
+		if(analyzer != null)
+		{
+			analyzer.restart(file);
+		}
+	}
 
-  private static class MyInspectionProfileStrategy implements Function<InspectionProfileWrapper, InspectionProfileWrapper> {
+	private static class MyInspectionProfileStrategy implements Function<InspectionProfileWrapper, InspectionProfileWrapper>
+	{
 
-    private final Map<InspectionProfileWrapper, MyInspectionProfileWrapper> myWrappers
-      = new WeakHashMap<InspectionProfileWrapper, MyInspectionProfileWrapper>();
-    private boolean myUseSpellCheck;
+		private final Map<InspectionProfileWrapper, MyInspectionProfileWrapper> myWrappers = new WeakHashMap<InspectionProfileWrapper,
+				MyInspectionProfileWrapper>();
+		private boolean myUseSpellCheck;
 
-    @Override
-    public InspectionProfileWrapper fun(InspectionProfileWrapper inspectionProfileWrapper) {
-      if (!READY) {
-        return inspectionProfileWrapper;
-      }
-      MyInspectionProfileWrapper wrapper = myWrappers.get(inspectionProfileWrapper);
-      if (wrapper == null) {
-        myWrappers.put(inspectionProfileWrapper, wrapper = new MyInspectionProfileWrapper(inspectionProfileWrapper));
-      }
-      wrapper.setUseSpellCheck(myUseSpellCheck);
-      return wrapper;
-    }
+		@Override
+		public InspectionProfileWrapper fun(InspectionProfileWrapper inspectionProfileWrapper)
+		{
+			if(!READY)
+			{
+				return inspectionProfileWrapper;
+			}
+			MyInspectionProfileWrapper wrapper = myWrappers.get(inspectionProfileWrapper);
+			if(wrapper == null)
+			{
+				myWrappers.put(inspectionProfileWrapper, wrapper = new MyInspectionProfileWrapper(inspectionProfileWrapper));
+			}
+			wrapper.setUseSpellCheck(myUseSpellCheck);
+			return wrapper;
+		}
 
-    public void setUseSpellCheck(boolean useSpellCheck) {
-      myUseSpellCheck = useSpellCheck;
-    }
-  }
+		public void setUseSpellCheck(boolean useSpellCheck)
+		{
+			myUseSpellCheck = useSpellCheck;
+		}
+	}
 
-  private static class MyInspectionProfileWrapper extends InspectionProfileWrapper {
-    private final InspectionProfileWrapper myDelegate;
-    private boolean myUseSpellCheck;
+	private static class MyInspectionProfileWrapper extends InspectionProfileWrapper
+	{
+		private final InspectionProfileWrapper myDelegate;
+		private boolean myUseSpellCheck;
 
-    MyInspectionProfileWrapper(InspectionProfileWrapper delegate) {
-      super(new InspectionProfileImpl("CommitDialog"));
-      myDelegate = delegate;
-    }
+		MyInspectionProfileWrapper(InspectionProfileWrapper delegate)
+		{
+			super(new InspectionProfileImpl("CommitDialog"));
+			myDelegate = delegate;
+		}
 
-    @Override
-    public boolean isToolEnabled(HighlightDisplayKey key) {
-      return myDelegate.isToolEnabled(key) && SPELL_CHECK_TOOLS.containsKey(key.toString()) && myUseSpellCheck;
-    }
+		@Override
+		public boolean isToolEnabled(HighlightDisplayKey key, PsiElement element)
+		{
+			return SPELL_CHECK_TOOLS.containsKey(key.toString()) && myUseSpellCheck;
+		}
 
-    public void setUseSpellCheck(boolean useSpellCheck) {
-      myUseSpellCheck = useSpellCheck;
-    }
-  }
+		public void setUseSpellCheck(boolean useSpellCheck)
+		{
+			myUseSpellCheck = useSpellCheck;
+		}
+	}
 }
