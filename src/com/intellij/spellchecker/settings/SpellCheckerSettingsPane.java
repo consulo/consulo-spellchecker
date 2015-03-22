@@ -58,21 +58,21 @@ import com.intellij.util.Consumer;
 
 public class SpellCheckerSettingsPane extends JPanel implements Disposable
 {
-	private OptionalChooserComponent<String> optionalChooserComponent;
-	private PathsChooserComponent pathsChooserComponent;
-	private final List<Pair<String, Boolean>> allDictionaries = new ArrayList<Pair<String, Boolean>>();
-	private final List<String> dictionariesFolders = new ArrayList<String>();
-	private final List<String> removedDictionaries = new ArrayList<String>();
-	private final WordsPanel wordsPanel;
-	private final SpellCheckerManager manager;
-	private final SpellCheckerSettings settings;
+	private OptionalChooserComponent<String> myOptionalChooserComponent;
+	private PathsChooserComponent myPathsChooserComponent;
+	private final List<Pair<String, Boolean>> myAllDictionaries = new ArrayList<Pair<String, Boolean>>();
+	private final List<String> myDictionariesFolders = new ArrayList<String>();
+	private final List<String> myRemovedDictionaries = new ArrayList<String>();
+	private final WordsPanel myWordsPanel;
+	private final SpellCheckerManager myManager;
+	private final SpellCheckerSettings mySpellCheckerSettings;
 
 	public SpellCheckerSettingsPane(SpellCheckerSettings settings, final Project project)
 	{
 		super(new VerticalFlowLayout(VerticalFlowLayout.TOP, 0, 0, true, true));
 
-		this.settings = settings;
-		manager = SpellCheckerManager.getInstance(project);
+		mySpellCheckerSettings = settings;
+		myManager = SpellCheckerManager.getInstance(project);
 		HyperlinkLabel link = new HyperlinkLabel(SpellCheckerBundle.message("link.to.inspection.settings"));
 		link.addHyperlinkListener(new HyperlinkListener()
 		{
@@ -110,7 +110,7 @@ public class SpellCheckerSettingsPane extends JPanel implements Disposable
 		fillAllDictionaries();
 
 
-		pathsChooserComponent = new PathsChooserComponent(dictionariesFolders, new PathsChooserComponent.PathProcessor()
+		myPathsChooserComponent = new PathsChooserComponent(myDictionariesFolders, new PathsChooserComponent.PathProcessor()
 		{
 			@Override
 			public boolean addPath(List<String> paths, String path)
@@ -124,7 +124,7 @@ public class SpellCheckerSettingsPane extends JPanel implements Disposable
 				}
 				paths.add(path);
 
-				final ArrayList<Pair<String, Boolean>> currentDictionaries = optionalChooserComponent.getCurrentModel();
+				final ArrayList<Pair<String, Boolean>> currentDictionaries = myOptionalChooserComponent.getCurrentModel();
 				SPFileUtil.processFilesRecursively(path, new Consumer<String>()
 				{
 					@Override
@@ -133,7 +133,7 @@ public class SpellCheckerSettingsPane extends JPanel implements Disposable
 						currentDictionaries.add(Pair.create(s, true));
 					}
 				});
-				optionalChooserComponent.refresh();
+				myOptionalChooserComponent.refresh();
 				return true;
 			}
 
@@ -143,7 +143,7 @@ public class SpellCheckerSettingsPane extends JPanel implements Disposable
 				if(paths.remove(path))
 				{
 					final ArrayList<Pair<String, Boolean>> result = new ArrayList<Pair<String, Boolean>>();
-					final ArrayList<Pair<String, Boolean>> currentDictionaries = optionalChooserComponent.getCurrentModel();
+					final ArrayList<Pair<String, Boolean>> currentDictionaries = myOptionalChooserComponent.getCurrentModel();
 					for(Pair<String, Boolean> pair : currentDictionaries)
 					{
 						if(!pair.first.startsWith(FileUtil.toSystemDependentName(path)))
@@ -152,21 +152,21 @@ public class SpellCheckerSettingsPane extends JPanel implements Disposable
 						}
 						else
 						{
-							removedDictionaries.add(pair.first);
+							myRemovedDictionaries.add(pair.first);
 						}
 					}
 					currentDictionaries.clear();
 					currentDictionaries.addAll(result);
-					optionalChooserComponent.refresh();
+					myOptionalChooserComponent.refresh();
 					return true;
 				}
 				return false;
 			}
 		}, project);
 
-		pathsChooserComponent.getEmptyText().setText(SpellCheckerBundle.message("no.custom.folders"));
+		myPathsChooserComponent.getEmptyText().setText(SpellCheckerBundle.message("no.custom.folders"));
 
-		optionalChooserComponent = new OptionalChooserComponent<String>(allDictionaries)
+		myOptionalChooserComponent = new OptionalChooserComponent<String>(myAllDictionaries)
 		{
 			@Override
 			public JCheckBox createCheckBox(String path, boolean checked)
@@ -185,24 +185,24 @@ public class SpellCheckerSettingsPane extends JPanel implements Disposable
 			}
 		};
 
-		wordsPanel = new WordsPanel(manager);
+		myWordsPanel = new WordsPanel(myManager);
 
 		TabbedPaneWrapper tabbedPaneWrapper = new TabbedPaneWrapper(this);
-		tabbedPaneWrapper.addTab("Accepted Words", wordsPanel);
+		tabbedPaneWrapper.addTab("Accepted Words", myWordsPanel);
 
 		JPanel secondPanel = new JPanel(new VerticalFlowLayout(VerticalFlowLayout.TOP, 0, 0, true, true));
 
 		JPanel customDictionariesPanel = new JPanel(new VerticalFlowLayout(VerticalFlowLayout.TOP, 0, 0, true, true));
 		customDictionariesPanel.setBorder(IdeBorderFactory.createTitledBorder(SpellCheckerBundle.message("add.directory.title"), false));
 		customDictionariesPanel.add(new JBLabel(SpellCheckerBundle.message("add.directory.description")));
-		customDictionariesPanel.add(pathsChooserComponent.getContentPane());
+		customDictionariesPanel.add(myPathsChooserComponent.getContentPane());
 		secondPanel.add(customDictionariesPanel);
 
-		optionalChooserComponent.getEmptyText().setText(SpellCheckerBundle.message("no.dictionaries"));
+		myOptionalChooserComponent.getEmptyText().setText(SpellCheckerBundle.message("no.dictionaries"));
 		JPanel dictionariesPanel = new JPanel(new VerticalFlowLayout(VerticalFlowLayout.TOP, 0, 0, true, true));
 		dictionariesPanel.setBorder(IdeBorderFactory.createTitledBorder(SpellCheckerBundle.message("dictionaries.panel.title"), false));
 		dictionariesPanel.add(new JBLabel(SpellCheckerBundle.message("dictionaries.panel.description")));
-		dictionariesPanel.add(ScrollPaneFactory.createScrollPane(optionalChooserComponent.getContentPane()));
+		dictionariesPanel.add(ScrollPaneFactory.createScrollPane(myOptionalChooserComponent.getContentPane()));
 		secondPanel.add(dictionariesPanel);
 
 		tabbedPaneWrapper.addTab("Dictionaries", secondPanel);
@@ -212,27 +212,27 @@ public class SpellCheckerSettingsPane extends JPanel implements Disposable
 
 	public boolean isModified()
 	{
-		return wordsPanel.isModified() || optionalChooserComponent.isModified() || pathsChooserComponent.isModified();
+		return myWordsPanel.isModified() || myOptionalChooserComponent.isModified() || myPathsChooserComponent.isModified();
 	}
 
 	public void apply() throws ConfigurationException
 	{
-		if(wordsPanel.isModified())
+		if(myWordsPanel.isModified())
 		{
-			manager.updateUserDictionary(wordsPanel.getWords());
+			myManager.updateUserDictionary(myWordsPanel.getWords());
 		}
-		if(!optionalChooserComponent.isModified() && !pathsChooserComponent.isModified())
+		if(!myOptionalChooserComponent.isModified() && !myPathsChooserComponent.isModified())
 		{
 			return;
 		}
 
-		optionalChooserComponent.apply();
-		pathsChooserComponent.apply();
-		settings.setDictionaryFoldersPaths(pathsChooserComponent.getValues());
+		myOptionalChooserComponent.apply();
+		myPathsChooserComponent.apply();
+		mySpellCheckerSettings.setDictionaryFoldersPaths(myPathsChooserComponent.getValues());
 
 		final HashSet<String> disabledDictionaries = new HashSet<String>();
 		final HashSet<String> bundledDisabledDictionaries = new HashSet<String>();
-		for(Pair<String, Boolean> pair : allDictionaries)
+		for(Pair<String, Boolean> pair : myAllDictionaries)
 		{
 			if(!pair.second)
 			{
@@ -248,16 +248,16 @@ public class SpellCheckerSettingsPane extends JPanel implements Disposable
 			}
 
 		}
-		settings.setDisabledDictionariesPaths(disabledDictionaries);
-		settings.setBundledDisabledDictionariesPaths(bundledDisabledDictionaries);
+		mySpellCheckerSettings.setDisabledDictionariesPaths(disabledDictionaries);
+		mySpellCheckerSettings.setBundledDisabledDictionariesPaths(bundledDisabledDictionaries);
 
-		manager.updateBundledDictionaries(removedDictionaries);
+		myManager.updateBundledDictionaries(myRemovedDictionaries);
 	}
 
 	private boolean isUserDictionary(final String dictionary)
 	{
 		boolean isUserDictionary = false;
-		for(String dictionaryFolder : pathsChooserComponent.getValues())
+		for(String dictionaryFolder : myPathsChooserComponent.getValues())
 		{
 			if(FileUtil.toSystemIndependentName(dictionary).startsWith(dictionaryFolder))
 			{
@@ -271,34 +271,34 @@ public class SpellCheckerSettingsPane extends JPanel implements Disposable
 
 	public void reset()
 	{
-		pathsChooserComponent.reset();
+		myPathsChooserComponent.reset();
 		fillAllDictionaries();
-		optionalChooserComponent.reset();
-		removedDictionaries.clear();
+		myOptionalChooserComponent.reset();
+		myRemovedDictionaries.clear();
 	}
 
 
 	private void fillAllDictionaries()
 	{
-		dictionariesFolders.clear();
-		dictionariesFolders.addAll(settings.getDictionaryFoldersPaths());
-		allDictionaries.clear();
+		myDictionariesFolders.clear();
+		myDictionariesFolders.addAll(mySpellCheckerSettings.getDictionaryFoldersPaths());
+		myAllDictionaries.clear();
 		for(String dictionary : SpellCheckerManager.getBundledDictionaries())
 		{
-			allDictionaries.add(Pair.create(dictionary, !settings.getBundledDisabledDictionariesPaths().contains(dictionary)));
+			myAllDictionaries.add(Pair.create(dictionary, !mySpellCheckerSettings.getBundledDisabledDictionariesPaths().contains(dictionary)));
 		}
 
 		// user
 		//todo [shkate]: refactoring  - SpellCheckerManager contains the same code withing reloadConfiguration()
-		final Set<String> disabledDictionaries = settings.getDisabledDictionariesPaths();
-		for(String folder : dictionariesFolders)
+		final Set<String> disabledDictionaries = mySpellCheckerSettings.getDisabledDictionariesPaths();
+		for(String folder : myDictionariesFolders)
 		{
 			SPFileUtil.processFilesRecursively(folder, new Consumer<String>()
 			{
 				@Override
 				public void consume(final String s)
 				{
-					allDictionaries.add(Pair.create(s, !disabledDictionaries.contains(s)));
+					myAllDictionaries.add(Pair.create(s, !disabledDictionaries.contains(s)));
 				}
 			});
 		}
@@ -308,9 +308,9 @@ public class SpellCheckerSettingsPane extends JPanel implements Disposable
 	@Override
 	public void dispose()
 	{
-		if(wordsPanel != null)
+		if(myWordsPanel != null)
 		{
-			wordsPanel.dispose();
+			myWordsPanel.dispose();
 		}
 	}
 
