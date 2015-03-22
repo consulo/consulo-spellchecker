@@ -16,6 +16,7 @@
 package com.intellij.spellchecker.settings;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -23,7 +24,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.swing.JCheckBox;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
@@ -36,6 +36,7 @@ import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.newEditor.OptionsEditor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.ui.VerticalFlowLayout;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.profile.codeInspection.ui.ErrorsConfigurable;
@@ -47,17 +48,16 @@ import com.intellij.spellchecker.util.SpellCheckerBundle;
 import com.intellij.spellchecker.util.Strings;
 import com.intellij.ui.AddDeleteListPanel;
 import com.intellij.ui.HyperlinkLabel;
+import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.OptionalChooserComponent;
 import com.intellij.ui.PathsChooserComponent;
+import com.intellij.ui.ScrollPaneFactory;
+import com.intellij.ui.TabbedPaneWrapper;
+import com.intellij.ui.components.JBLabel;
 import com.intellij.util.Consumer;
 
-public class SpellCheckerSettingsPane implements Disposable
+public class SpellCheckerSettingsPane extends JPanel implements Disposable
 {
-	private JPanel root;
-	private JPanel linkContainer;
-	private JPanel panelForDictionaryChooser;
-	private JPanel panelForAcceptedWords;
-	private JPanel panelForFolderChooser;
 	private OptionalChooserComponent<String> optionalChooserComponent;
 	private PathsChooserComponent pathsChooserComponent;
 	private final List<Pair<String, Boolean>> allDictionaries = new ArrayList<Pair<String, Boolean>>();
@@ -69,6 +69,8 @@ public class SpellCheckerSettingsPane implements Disposable
 
 	public SpellCheckerSettingsPane(SpellCheckerSettings settings, final Project project)
 	{
+		super(new VerticalFlowLayout(VerticalFlowLayout.TOP, 0, 0, true, true));
+
 		this.settings = settings;
 		manager = SpellCheckerManager.getInstance(project);
 		HyperlinkLabel link = new HyperlinkLabel(SpellCheckerBundle.message("link.to.inspection.settings"));
@@ -98,8 +100,11 @@ public class SpellCheckerSettingsPane implements Disposable
 				}
 			}
 		});
-		linkContainer.setLayout(new BorderLayout());
-		linkContainer.add(link);
+
+		JPanel linkContainer = new JPanel(new BorderLayout());
+		linkContainer.setPreferredSize(new Dimension(24, 38));
+		linkContainer.add(link, BorderLayout.CENTER);
+		add(linkContainer);
 
 		// Fill in all the dictionaries folders (not implemented yet) and enabled dictionaries
 		fillAllDictionaries();
@@ -114,7 +119,7 @@ public class SpellCheckerSettingsPane implements Disposable
 				{
 					final String title = SpellCheckerBundle.message("add.directory.title");
 					final String msg = SpellCheckerBundle.message("directory.is.already.included");
-					Messages.showErrorDialog(root, msg, title);
+					Messages.showErrorDialog(SpellCheckerSettingsPane.this, msg, title);
 					return false;
 				}
 				paths.add(path);
@@ -158,8 +163,7 @@ public class SpellCheckerSettingsPane implements Disposable
 				return false;
 			}
 		}, project);
-		panelForFolderChooser.setLayout(new BorderLayout());
-		panelForFolderChooser.add(pathsChooserComponent.getContentPane(), BorderLayout.CENTER);
+
 		pathsChooserComponent.getEmptyText().setText(SpellCheckerBundle.message("no.custom.folders"));
 
 		optionalChooserComponent = new OptionalChooserComponent<String>(allDictionaries)
@@ -181,20 +185,29 @@ public class SpellCheckerSettingsPane implements Disposable
 			}
 		};
 
-		panelForDictionaryChooser.setLayout(new BorderLayout());
-		panelForDictionaryChooser.add(optionalChooserComponent.getContentPane(), BorderLayout.CENTER);
-		optionalChooserComponent.getEmptyText().setText(SpellCheckerBundle.message("no.dictionaries"));
-
-
 		wordsPanel = new WordsPanel(manager);
-		panelForAcceptedWords.setLayout(new BorderLayout());
-		panelForAcceptedWords.add(wordsPanel, BorderLayout.CENTER);
 
-	}
+		TabbedPaneWrapper tabbedPaneWrapper = new TabbedPaneWrapper(this);
+		tabbedPaneWrapper.addTab("Accepted Words", wordsPanel);
 
-	public JComponent getPane()
-	{
-		return root;
+		JPanel secondPanel = new JPanel(new VerticalFlowLayout(VerticalFlowLayout.TOP, 0, 0, true, true));
+
+		JPanel customDictionariesPanel = new JPanel(new VerticalFlowLayout(VerticalFlowLayout.TOP, 0, 0, true, true));
+		customDictionariesPanel.setBorder(IdeBorderFactory.createTitledBorder(SpellCheckerBundle.message("add.directory.title"), false));
+		customDictionariesPanel.add(new JBLabel(SpellCheckerBundle.message("add.directory.description")));
+		customDictionariesPanel.add(pathsChooserComponent.getContentPane());
+		secondPanel.add(customDictionariesPanel);
+
+		optionalChooserComponent.getEmptyText().setText(SpellCheckerBundle.message("no.dictionaries"));
+		JPanel dictionariesPanel = new JPanel(new VerticalFlowLayout(VerticalFlowLayout.TOP, 0, 0, true, true));
+		dictionariesPanel.setBorder(IdeBorderFactory.createTitledBorder(SpellCheckerBundle.message("dictionaries.panel.title"), false));
+		dictionariesPanel.add(new JBLabel(SpellCheckerBundle.message("dictionaries.panel.description")));
+		dictionariesPanel.add(ScrollPaneFactory.createScrollPane(optionalChooserComponent.getContentPane()));
+		secondPanel.add(dictionariesPanel);
+
+		tabbedPaneWrapper.addTab("Dictionaries", secondPanel);
+
+		add(tabbedPaneWrapper.getComponent());
 	}
 
 	public boolean isModified()
@@ -332,7 +345,7 @@ public class SpellCheckerSettingsPane implements Disposable
 		}
 	}
 
-	private static final class WordsPanel extends AddDeleteListPanel implements Disposable
+	private static final class WordsPanel extends AddDeleteListPanel<String> implements Disposable
 	{
 		private final SpellCheckerManager manager;
 
@@ -345,7 +358,7 @@ public class SpellCheckerSettingsPane implements Disposable
 
 
 		@Override
-		protected Object findItemToAdd()
+		protected String findItemToAdd()
 		{
 			String word = Messages.showInputDialog(SpellCheckerBundle.message("enter.simple.word"), SpellCheckerBundle.message("add.new.word"),
 					null);

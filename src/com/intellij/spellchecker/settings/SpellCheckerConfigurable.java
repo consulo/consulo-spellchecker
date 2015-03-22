@@ -74,7 +74,7 @@ public class SpellCheckerConfigurable implements SearchableConfigurable, Configu
 		{
 			myPanel = new SpellCheckerSettingsPane(mySpellCheckerSettings, myProject);
 		}
-		return myPanel.getPane();
+		return myPanel;
 	}
 
 	@Override
