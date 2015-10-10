@@ -1,5 +1,5 @@
 /*
- * Copyright 2000-2014 JetBrains s.r.o.
+ * Copyright 2000-2015 JetBrains s.r.o.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,9 +24,12 @@ import java.awt.Color;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.Icon;
+
 import org.jetbrains.annotations.NotNull;
 import com.intellij.codeInsight.daemon.impl.HighlightInfoType;
 import com.intellij.codeInsight.daemon.impl.SeveritiesProvider;
+import com.intellij.icons.AllIcons;
 import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.editor.markup.TextAttributes;
@@ -36,12 +39,26 @@ public class SpellCheckerSeveritiesProvider extends SeveritiesProvider
 	private static final TextAttributesKey TYPO_KEY = TextAttributesKey.createTextAttributesKey("TYPO");
 	public static final HighlightSeverity TYPO = new HighlightSeverity("TYPO", HighlightSeverity.INFORMATION.myVal + 5);
 
+	static class TYPO extends HighlightInfoType.HighlightInfoTypeImpl implements HighlightInfoType.Iconable
+	{
+		public TYPO()
+		{
+			super(TYPO, TYPO_KEY);
+		}
+
+		@NotNull
+		@Override
+		public Icon getIcon()
+		{
+			return AllIcons.General.InspectionsTypos;
+		}
+	}
+
 	@Override
 	@NotNull
 	public List<HighlightInfoType> getSeveritiesHighlightInfoTypes()
 	{
-		HighlightInfoType typo = new HighlightInfoType.HighlightInfoTypeImpl(TYPO, TYPO_KEY);
-		return Collections.singletonList(typo);
+		return Collections.<HighlightInfoType>singletonList(new TYPO());
 	}
 
 	@Override
