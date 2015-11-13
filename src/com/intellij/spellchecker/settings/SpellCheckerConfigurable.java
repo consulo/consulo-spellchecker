@@ -20,11 +20,11 @@ import javax.swing.JComponent;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Disposer;
 import com.intellij.spellchecker.util.SpellCheckerBundle;
 
 public class SpellCheckerConfigurable implements SearchableConfigurable, Configurable.NoScroll
@@ -47,7 +47,7 @@ public class SpellCheckerConfigurable implements SearchableConfigurable, Configu
 	}
 
 	@Override
-	@Nullable
+	@NotNull
 	@NonNls
 	public String getHelpTopic()
 	{
@@ -104,6 +104,7 @@ public class SpellCheckerConfigurable implements SearchableConfigurable, Configu
 	@Override
 	public void disposeUIResources()
 	{
+		Disposer.dispose(myPanel);
 		myPanel = null;
 	}
 }
