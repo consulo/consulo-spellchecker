@@ -15,7 +15,7 @@
  */
 package com.intellij.spellchecker.util;
 
-import org.consulo.lombok.annotations.Bundle;
+import consulo.lombok.annotations.Bundle;
 
 @Bundle("com.intellij.spellchecker.util.SpellCheckerBundle")
 public final class SpellCheckerBundle {
