@@ -1,1 +1,1 @@
-![Build Status](http://must-be.org/vulcan/statusImage?name=consulo-spellchecker)
+[![Build Status](http://must-be.org/jenkins/job/consulo-spellchecker/badge/icon)](http://must-be.org/jenkins/job/consulo-spellchecker/)
