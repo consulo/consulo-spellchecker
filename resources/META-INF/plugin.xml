@@ -30,8 +30,6 @@
 	</extensions>
 
 	<extensions defaultExtensionNs="com.intellij">
-		<errorHandler implementation="com.intellij.diagnostic.ITNReporter"/>
-
 		<additionalTextAttributes scheme="Darcula" file="/colorScheme/SpellcheckerDarcula.xml"/>
 		<additionalTextAttributes scheme="Default" file="/colorScheme/SpellcheckerDefault.xml"/>
 		<additionalTextAttributes scheme="Consulo Light" file="/colorScheme/SpellcheckerDefault.xml"/>
