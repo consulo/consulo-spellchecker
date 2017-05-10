@@ -1,1 +1,1 @@
-[![Build Status](http://must-be.org/jenkins/job/consulo-spellchecker/badge/icon)](http://must-be.org/jenkins/job/consulo-spellchecker/)
+[![Build Status](https://ci.consulo.io/job/consulo-spellchecker/badge/icon)](https://ci.consulo.io/job/consulo-spellchecker/)
