@@ -15,12 +15,25 @@
  */
 package com.intellij.spellchecker.actions;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.codeInsight.daemon.impl.ShowIntentionsPass;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.codeInspection.LocalQuickFix;
 import com.intellij.codeInspection.ex.QuickFixWrapper;
-import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.actionSystem.ActionGroup;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.AnSeparator;
+import com.intellij.openapi.actionSystem.Anchor;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.diagnostic.Logger;
@@ -29,120 +42,140 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
 import com.intellij.spellchecker.quickfixes.SpellCheckerQuickFix;
 import com.intellij.util.IncorrectOperationException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Spelling action group.
  */
-public final class SpellingPopupActionGroup extends ActionGroup {
-  public SpellingPopupActionGroup() {
-  }
+public final class SpellingPopupActionGroup extends ActionGroup
+{
+	public SpellingPopupActionGroup()
+	{
+	}
 
-  public SpellingPopupActionGroup(String shortName, boolean popup) {
-    super(shortName, popup);
-  }
+	public SpellingPopupActionGroup(String shortName, boolean popup)
+	{
+		super(shortName, popup);
+	}
 
-  @NotNull
-  public AnAction[] getChildren(@Nullable AnActionEvent e) {
-    if (e != null) {
-      AnAction[] children = findActions(e);
-      // No actions
-      if (children.length == 0) {
-        e.getPresentation().setEnabled(false);
-      }
-      return children;
-    }
-    return AnAction.EMPTY_ARRAY;
-  }
+	@NotNull
+	public AnAction[] getChildren(@Nullable AnActionEvent e)
+	{
+		if(e != null)
+		{
+			AnAction[] children = findActions(e);
+			// No actions
+			if(children.length == 0)
+			{
+				e.getPresentation().setEnabled(false);
+			}
+			return children;
+		}
+		return AnAction.EMPTY_ARRAY;
+	}
 
-  @NotNull
-  private static AnAction[] findActions(@NotNull AnActionEvent e) {
-    PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
-    Project project = e.getData(CommonDataKeys.PROJECT);
-    Editor editor = e.getData(LangDataKeys.EDITOR);
-    if (psiFile != null && project != null && editor != null) {
-      List<HighlightInfo.IntentionActionDescriptor> quickFixes = ShowIntentionsPass.getAvailableActions(editor, psiFile, -1);
-      Map<Anchor, List<AnAction>> children = new HashMap<Anchor, List<AnAction>>();
-      ArrayList<AnAction> first = new ArrayList<AnAction>();
-      children.put(Anchor.FIRST, first);
-      ArrayList<AnAction> last = new ArrayList<AnAction>();
-      children.put(Anchor.LAST, last);
-      extractActions(quickFixes, children);
-      if (first.size() > 0 && last.size() > 0) {
-        first.add(new AnSeparator());
-      }
-      first.addAll(last);
-      if (first.size() > 0) {
-        return first.toArray(new AnAction[first.size()]);
-      }
-    }
+	@NotNull
+	private static AnAction[] findActions(@NotNull AnActionEvent e)
+	{
+		PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
+		Project project = e.getData(LangDataKeys.PROJECT);
+		Editor editor = e.getData(LangDataKeys.EDITOR);
+		if(psiFile != null && project != null && editor != null)
+		{
+			List<HighlightInfo.IntentionActionDescriptor> quickFixes = ShowIntentionsPass.getAvailableFixes(editor, psiFile, -1);
+			Map<Anchor, List<AnAction>> children = new HashMap<>();
+			ArrayList<AnAction> first = new ArrayList<>();
+			children.put(Anchor.FIRST, first);
+			ArrayList<AnAction> last = new ArrayList<>();
+			children.put(Anchor.LAST, last);
+			extractActions(quickFixes, children);
+			if(first.size() > 0 && last.size() > 0)
+			{
+				first.add(new AnSeparator());
+			}
+			first.addAll(last);
+			if(first.size() > 0)
+			{
+				return first.toArray(new AnAction[first.size()]);
+			}
+		}
 
-    return AnAction.EMPTY_ARRAY;
-  }
+		return AnAction.EMPTY_ARRAY;
+	}
 
-  private static void extractActions(List<HighlightInfo.IntentionActionDescriptor> descriptors, Map<Anchor, List<AnAction>> actions) {
-    for (HighlightInfo.IntentionActionDescriptor actionDescriptor : descriptors) {
-      IntentionAction action = actionDescriptor.getAction();
-      if (action instanceof QuickFixWrapper) {
-        QuickFixWrapper wrapper = (QuickFixWrapper)action;
-        LocalQuickFix localQuickFix = wrapper.getFix();
-        if (localQuickFix instanceof SpellCheckerQuickFix) {
-          SpellCheckerQuickFix spellCheckerQuickFix = (SpellCheckerQuickFix)localQuickFix;
-          Anchor anchor = spellCheckerQuickFix.getPopupActionAnchor();
-          SpellCheckerIntentionAction popupAction = new SpellCheckerIntentionAction(action);
-          List<AnAction> list = actions.get(anchor);
-          if (list != null) {
-            list.add(popupAction);
-          }
-        }
-      }
-    }
-  }
+	private static void extractActions(List<HighlightInfo.IntentionActionDescriptor> descriptors, Map<Anchor, List<AnAction>> actions)
+	{
+		for(HighlightInfo.IntentionActionDescriptor actionDescriptor : descriptors)
+		{
+			IntentionAction action = actionDescriptor.getAction();
+			if(action instanceof QuickFixWrapper)
+			{
+				QuickFixWrapper wrapper = (QuickFixWrapper) action;
+				LocalQuickFix localQuickFix = wrapper.getFix();
+				if(localQuickFix instanceof SpellCheckerQuickFix)
+				{
+					SpellCheckerQuickFix spellCheckerQuickFix = (SpellCheckerQuickFix) localQuickFix;
+					Anchor anchor = spellCheckerQuickFix.getPopupActionAnchor();
+					SpellCheckerIntentionAction popupAction = new SpellCheckerIntentionAction(action);
+					List<AnAction> list = actions.get(anchor);
+					if(list != null)
+					{
+						list.add(popupAction);
+					}
+				}
+			}
+		}
+	}
 
-  public void update(AnActionEvent e) {
-    super.update(e);
-    if (e != null) {
-      if (e.getPresentation().isVisible() && findActions(e).length == 0) {
-        e.getPresentation().setVisible(false);
-      }
-    }
-  }
+	public void update(AnActionEvent e)
+	{
+		super.update(e);
+		if(e != null)
+		{
+			if(e.getPresentation().isVisible() && findActions(e).length == 0)
+			{
+				e.getPresentation().setVisible(false);
+			}
+		}
+	}
 
-  private static class SpellCheckerIntentionAction extends AnAction {
-    private static final Logger LOGGER = Logger.getInstance("#SpellCheckerAction");
-    private final IntentionAction intention;
+	private static class SpellCheckerIntentionAction extends AnAction
+	{
+		private static final Logger LOGGER = Logger.getInstance("#SpellCheckerAction");
+		private final IntentionAction intention;
 
-    public SpellCheckerIntentionAction(IntentionAction intention) {
-      super(intention.getText());
-      this.intention = intention;
-    }
+		public SpellCheckerIntentionAction(IntentionAction intention)
+		{
+			super(intention.getText());
+			this.intention = intention;
+		}
 
-    public void actionPerformed(final AnActionEvent e) {
-      final PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
-      final Project project = e.getData(CommonDataKeys.PROJECT);
-      final Editor editor = e.getData(LangDataKeys.EDITOR);
-      if (psiFile != null && project != null && editor != null) {
-        ApplicationManager.getApplication().runWriteAction(new Runnable() {
-          public void run() {
-            CommandProcessor.getInstance().executeCommand(project, new Runnable() {
-              public void run() {
-                try {
-                  intention.invoke(project, editor, psiFile);
-                }
-                catch (IncorrectOperationException ex) {
-                  LOGGER.error(ex);
-                }
-              }
-            }, e.getPresentation().getText(), e.getActionManager().getId(SpellCheckerIntentionAction.this));
-          }
-        });
-      }
-    }
-  }
+		public void actionPerformed(final AnActionEvent e)
+		{
+			final PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
+			final Project project = e.getData(LangDataKeys.PROJECT);
+			final Editor editor = e.getData(LangDataKeys.EDITOR);
+			if(psiFile != null && project != null && editor != null)
+			{
+				final Runnable runnable = () -> CommandProcessor.getInstance().executeCommand(project, () ->
+				{
+					try
+					{
+						intention.invoke(project, editor, psiFile);
+					}
+					catch(IncorrectOperationException ex)
+					{
+						LOGGER.error(ex);
+					}
+				}, e.getPresentation().getText(), e.getActionManager().getId(this));
+				if(intention.startInWriteAction())
+				{
+					ApplicationManager.getApplication().runWriteAction(runnable);
+				}
+				else
+				{
+					runnable.run();
+				}
+			}
+		}
+	}
 }
