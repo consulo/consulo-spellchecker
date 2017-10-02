@@ -15,12 +15,16 @@
  */
 package com.intellij.spellchecker;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import org.jetbrains.annotations.NotNull;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.spellchecker.dictionary.Loader;
 import com.intellij.util.Consumer;
-import org.jetbrains.annotations.NotNull;
-
-import java.io.*;
 
 public class StreamLoader implements Loader {
 

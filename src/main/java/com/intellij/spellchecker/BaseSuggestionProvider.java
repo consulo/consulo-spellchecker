@@ -15,13 +15,13 @@
  */
 package com.intellij.spellchecker;
 
-import com.intellij.psi.codeStyle.NameUtil;
-import com.intellij.spellchecker.engine.SuggestionProvider;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
+import com.intellij.psi.codeStyle.NameUtil;
+import com.intellij.spellchecker.engine.SuggestionProvider;
 
 public class BaseSuggestionProvider implements SuggestionProvider {
 

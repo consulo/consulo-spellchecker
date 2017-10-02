@@ -15,12 +15,13 @@
  */
 package com.intellij.spellchecker.inspector;
 
+import java.util.List;
+
+import org.junit.Ignore;
 import com.intellij.spellchecker.SpellCheckerManager;
 import com.intellij.testFramework.fixtures.CodeInsightFixtureTestCase;
 
-import java.util.List;
-
-
+@Ignore("until consulo test driver fixed")
 public class SuggestionTest extends CodeInsightFixtureTestCase {
 
   private SpellCheckerManager spManager;

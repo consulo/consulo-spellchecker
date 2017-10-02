@@ -15,28 +15,19 @@
  */
 package com.intellij.spellchecker.inspection;
 
+import org.junit.Ignore;
+
 /**
- * @author  Ekaterina Shliakhovetskaja
+ * @author Ekaterina Shliakhovetskaja
  */
-public class CommentsWithMistakesInspectionTest extends SpellcheckerInspectionTestCase {
+@Ignore("until consulo test driver fixed")
+public class XmlWithMistakesInspectionTest extends SpellcheckerInspectionTestCase {
   @Override
   protected String getBasePath() {
-    return getSpellcheckerTestDataPath() + "/inspection/commentsWithMistakes";
-  }
-
-  public void testJava() {
-    doTest("SPITest1.java");
+    return SpellcheckerInspectionTestCase.getSpellcheckerTestDataPath() + "inspection/xmlWithMistakes";
   }
 
   public void testXml() {
-    doTest("A.xml");
-  }
-
-  public void testHtml() {
-    doTest("test.html");
-  }
-
-  public void testTxt() {
-    doTest("test.txt");
+    doTest("test.xml");
   }
 }

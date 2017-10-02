@@ -15,12 +15,12 @@
  */
 package com.intellij.spellchecker.state;
 
+import org.jetbrains.annotations.NotNull;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.spellchecker.dictionary.AggregatedDictionary;
 import com.intellij.spellchecker.dictionary.ProjectDictionary;
 import com.intellij.spellchecker.dictionary.UserDictionary;
-import org.jetbrains.annotations.NotNull;
 
 public class AggregatedDictionaryState {
 

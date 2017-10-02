@@ -21,11 +21,6 @@ import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCa
 
 public abstract class SpellcheckerInspectionTestCase extends LightPlatformCodeInsightFixtureTestCase {
   @Override
-  protected boolean isCommunity() {
-    return true;
-  }
-
-  @Override
   protected boolean isWriteActionRequired() {
     return false;
   }

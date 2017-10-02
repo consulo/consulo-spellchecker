@@ -15,6 +15,18 @@
  */
 package com.intellij.spellchecker.compress;
 
+import gnu.trove.THashSet;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.jetbrains.annotations.NotNull;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.util.text.StringUtil;
@@ -26,13 +38,7 @@ import com.intellij.spellchecker.engine.Transformation;
 import com.intellij.testFramework.PlatformTestUtil;
 import com.intellij.util.Consumer;
 import com.intellij.util.ThrowableRunnable;
-import gnu.trove.THashSet;
 import junit.framework.TestCase;
-import org.jetbrains.annotations.NotNull;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
 
 @SuppressWarnings({"JUnitTestCaseWithNonTrivialConstructors"})
 public class DictionaryTest extends TestCase {
