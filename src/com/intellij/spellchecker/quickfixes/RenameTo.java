@@ -17,6 +17,7 @@ package com.intellij.spellchecker.quickfixes;
 
 import java.awt.Component;
 import java.awt.KeyboardFocusManager;
+import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
@@ -38,6 +39,7 @@ import com.intellij.openapi.editor.impl.EditorComponentImpl;
 import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.fileEditor.impl.text.TextEditorPsiDataProvider;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Key;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.tree.injected.InjectedLanguageUtil;
@@ -110,7 +112,7 @@ public class RenameTo extends ShowSuggestions implements SpellCheckerQuickFix
 				}
 
 				Editor editor = getEditorFromFocus();
-				HashMap<String, Object> map = new HashMap<String, Object>();
+				Map<Key, Object> map = new HashMap<>();
 				PsiElement psiElement = descriptor.getPsiElement();
 				if(psiElement == null)
 				{
@@ -129,21 +131,19 @@ public class RenameTo extends ShowSuggestions implements SpellCheckerQuickFix
 
 				if(editor instanceof EditorWindow)
 				{
-					map.put(CommonDataKeys.EDITOR.getName(), editor);
-					map.put(CommonDataKeys.PSI_ELEMENT.getName(), psiElement);
+					map.put(CommonDataKeys.EDITOR, editor);
+					map.put(CommonDataKeys.PSI_ELEMENT, psiElement);
 				}
 				else if(ApplicationManager.getApplication().isUnitTestMode())
 				{ // TextEditorComponent / FiledEditorManagerImpl give away the data in real life
-					map.put(CommonDataKeys.PSI_ELEMENT.getName(), new TextEditorPsiDataProvider().getData(CommonDataKeys.PSI_ELEMENT.getName(),
-							editor, editor.getCaretModel().getCurrentCaret()));
+					map.put(CommonDataKeys.PSI_ELEMENT, new TextEditorPsiDataProvider().getData(CommonDataKeys.PSI_ELEMENT, editor, editor.getCaretModel().getCurrentCaret()));
 				}
 
 				final Boolean selectAll = editor.getUserData(RenameHandlerRegistry.SELECT_ALL);
 				try
 				{
 					editor.putUserData(RenameHandlerRegistry.SELECT_ALL, true);
-					DataContext dataContext = SimpleDataContext.getSimpleContext(map, DataManager.getInstance().getDataContext(editor.getComponent
-							()));
+					DataContext dataContext = SimpleDataContext.getSimpleContext(map, DataManager.getInstance().getDataContext(editor.getComponent()));
 					AnAction action = new RenameElementAction();
 					AnActionEvent event = new AnActionEvent(null, dataContext, "", action.getTemplatePresentation(), ActionManager.getInstance(), 0);
 					action.actionPerformed(event);
