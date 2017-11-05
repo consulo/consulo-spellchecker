@@ -26,6 +26,7 @@ import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.spellchecker.util.SpellCheckerBundle;
+import consulo.annotations.RequiredDispatchThread;
 
 public class SpellCheckerConfigurable implements SearchableConfigurable, Configurable.NoScroll
 {
@@ -67,6 +68,7 @@ public class SpellCheckerConfigurable implements SearchableConfigurable, Configu
 		return null;
 	}
 
+	@RequiredDispatchThread
 	@Override
 	public JComponent createComponent()
 	{
@@ -77,12 +79,14 @@ public class SpellCheckerConfigurable implements SearchableConfigurable, Configu
 		return myPanel;
 	}
 
+	@RequiredDispatchThread
 	@Override
 	public boolean isModified()
 	{
 		return myPanel == null || myPanel.isModified();
 	}
 
+	@RequiredDispatchThread
 	@Override
 	public void apply() throws ConfigurationException
 	{
@@ -92,6 +96,7 @@ public class SpellCheckerConfigurable implements SearchableConfigurable, Configu
 		}
 	}
 
+	@RequiredDispatchThread
 	@Override
 	public void reset()
 	{
@@ -101,10 +106,14 @@ public class SpellCheckerConfigurable implements SearchableConfigurable, Configu
 		}
 	}
 
+	@RequiredDispatchThread
 	@Override
 	public void disposeUIResources()
 	{
-		Disposer.dispose(myPanel);
-		myPanel = null;
+		if(myPanel!= null)
+		{
+			Disposer.dispose(myPanel);
+			myPanel = null;
+		}
 	}
 }
