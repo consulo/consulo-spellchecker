@@ -81,7 +81,7 @@ public class SpellCheckerSettingsPane extends JPanel implements Disposable
 			{
 				if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED)
 				{
-					final OptionsEditor optionsEditor = OptionsEditor.KEY.getData(DataManager.getInstance().getDataContext());
+					final OptionsEditor optionsEditor = DataManager.getInstance().getDataContext().getData(OptionsEditor.KEY);
 					if(optionsEditor != null)
 					{
 						final ErrorsConfigurable errorsConfigurable = optionsEditor.findConfigurable(ErrorsConfigurable.class);
