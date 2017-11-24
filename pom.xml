@@ -27,6 +27,7 @@
 	<groupId>consulo.plugin</groupId>
 	<artifactId>com.intellij.spellchecker</artifactId>
 	<version>2-SNAPSHOT</version>
+	<packaging>consulo-plugin</packaging>
 
 	<repositories>
 		<repository>
@@ -45,28 +46,21 @@
 				<groupId>consulo.maven</groupId>
 				<artifactId>consulo-maven-plugin</artifactId>
 				<version>2-SNAPSHOT</version>
+				<extensions>true</extensions>
 				<configuration>
-					<pluginDirectories>
-						<pluginDirectory>${project.basedir}/target/${project.artifactId}-${project.version}-dist</pluginDirectory>
-					</pluginDirectories>
+					<packaging>
+						<skip>${dev.mode}</skip>
+						<version>${build.number}</version>
+					</packaging>
+					<execution>
+						<repositoryChannel>nightly</repositoryChannel>
+					</execution>
 				</configuration>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>${maven.assembly.plugin}</version>
 				<executions>
 					<execution>
-						<id>dist</id>
-						<configuration>
-							<descriptors>
-								<descriptor>src/assembly/dist.xml</descriptor>
-							</descriptors>
-							<attach>false</attach>
-						</configuration>
 						<phase>package</phase>
 						<goals>
-							<goal>single</goal>
+							<goal>workspace</goal>
 						</goals>
 					</execution>
 				</executions>

@@ -38,8 +38,10 @@
           <orderEntry type="library" scope="PROVIDED" name="Maven: javax.inject:javax.inject:1" level="project" />
           <orderEntry type="library" scope="PROVIDED" name="Maven: consulo:consulo-util:2-SNAPSHOT" level="project" />
           <orderEntry type="library" scope="PROVIDED" name="Maven: consulo:consulo-ui-api:2-SNAPSHOT" level="project" />
-          <orderEntry type="library" scope="PROVIDED" name="Maven: net.java.dev.jna:jna:4.1.0" level="project" />
-          <orderEntry type="library" scope="PROVIDED" name="Maven: net.java.dev.jna:jna-platform:4.1.0" level="project" />
+          <orderEntry type="library" scope="PROVIDED" name="Maven: consulo:consulo-localize-api:2-SNAPSHOT" level="project" />
+          <orderEntry type="library" scope="PROVIDED" name="Maven: consulo:consulo-ui-api-shared:2-SNAPSHOT" level="project" />
+          <orderEntry type="library" scope="PROVIDED" name="Maven: net.java.dev.jna:jna:4.4.0" level="project" />
+          <orderEntry type="library" scope="PROVIDED" name="Maven: net.java.dev.jna:jna-platform:4.4.0" level="project" />
           <orderEntry type="library" scope="PROVIDED" name="Maven: consulo:consulo-core-impl:2-SNAPSHOT" level="project" />
           <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.guava:guava:23.0" level="project" />
           <orderEntry type="library" scope="PROVIDED" name="Maven: consulo:consulo-platform-api:2-SNAPSHOT" level="project" />
@@ -66,7 +68,6 @@
           <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.code.gson:gson:2.8.0" level="project" />
           <orderEntry type="library" scope="PROVIDED" name="Maven: args4j:args4j:2.33" level="project" />
           <orderEntry type="library" scope="PROVIDED" name="Maven: org.swinglabs:swingx:1.6.1" level="project" />
-          <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.sanselan:sanselan:0.97-incubator" level="project" />
           <orderEntry type="library" scope="PROVIDED" name="Maven: org.jvnet.winp:winp:1.25" level="project" />
           <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.commons:commons-compress:1.14" level="project" />
           <orderEntry type="library" scope="PROVIDED" name="Maven: consulo:consulo-lang-api:2-SNAPSHOT" level="project" />
