@@ -1,3 +1,4 @@
 /out
-/.consulo/workspace.xml
-/.consulo/sandbox
+/target
+/.consulo
+!/.consulo/codeStyleSettings.xml
