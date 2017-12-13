@@ -48,13 +48,11 @@
 				<version>2-SNAPSHOT</version>
 				<extensions>true</extensions>
 				<configuration>
+					<repositoryChannel>nightly</repositoryChannel>
 					<packaging>
 						<skip>${dev.mode}</skip>
 						<version>${build.number}</version>
 					</packaging>
-					<execution>
-						<repositoryChannel>nightly</repositoryChannel>
-					</execution>
 				</configuration>
 				<executions>
 					<execution>
