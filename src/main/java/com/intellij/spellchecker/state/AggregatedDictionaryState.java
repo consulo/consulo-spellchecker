@@ -15,7 +15,7 @@
  */
 package com.intellij.spellchecker.state;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.spellchecker.dictionary.AggregatedDictionary;
@@ -34,7 +34,7 @@ public class AggregatedDictionaryState {
   public AggregatedDictionaryState() {
   }
 
-  public AggregatedDictionaryState(@NotNull AggregatedDictionary dictionary) {
+  public AggregatedDictionaryState(@Nonnull AggregatedDictionary dictionary) {
     setDictionary(dictionary);
   }
 

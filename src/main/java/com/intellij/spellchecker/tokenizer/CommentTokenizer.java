@@ -15,14 +15,15 @@
  */
 package com.intellij.spellchecker.tokenizer;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.psi.PsiComment;
 import com.intellij.spellchecker.inspections.CommentSplitter;
-import org.jetbrains.annotations.NotNull;
 
 public class CommentTokenizer extends Tokenizer<PsiComment> {
 
   @Override
-  public void tokenize(@NotNull PsiComment element, TokenConsumer consumer) {
+  public void tokenize(@Nonnull PsiComment element, TokenConsumer consumer) {
     // doccomment chameleon expands as PsiComment inside PsiComment, avoid duplication
     if (element.getParent() instanceof PsiComment) return;
     consumer.consumeToken(element, CommentSplitter.getInstance());

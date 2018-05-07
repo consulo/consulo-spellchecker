@@ -17,8 +17,8 @@ package com.intellij.spellchecker.dictionary;
 
 import com.intellij.util.Consumer;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import java.util.Collection;
 import java.util.Set;
@@ -28,13 +28,13 @@ public class AggregatedDictionary implements EditableDictionary {
   private final EditableDictionary cachedDictionary;
   private final ProjectDictionary projectDictionary;
 
-  @NotNull
+  @Nonnull
   @Override
   public String getName() {
     return DICTIONARY_NAME;
   }
 
-  public AggregatedDictionary(@NotNull ProjectDictionary projectDictionary, @NotNull EditableDictionary cachedDictionary) {
+  public AggregatedDictionary(@Nonnull ProjectDictionary projectDictionary, @Nonnull EditableDictionary cachedDictionary) {
     this.projectDictionary = projectDictionary;
     this.cachedDictionary = cachedDictionary;
     this.cachedDictionary.addToDictionary(projectDictionary.getWords());
@@ -56,7 +56,7 @@ public class AggregatedDictionary implements EditableDictionary {
 
   @Override
   @Nullable
-  public Boolean contains(@NotNull String word) {
+  public Boolean contains(@Nonnull String word) {
     return cachedDictionary.contains(word);
   }
 
@@ -92,7 +92,7 @@ public class AggregatedDictionary implements EditableDictionary {
   }
 
   @Override
-  public void traverse(@NotNull final Consumer<String> consumer) {
+  public void traverse(@Nonnull final Consumer<String> consumer) {
     cachedDictionary.traverse(consumer);
   }
 

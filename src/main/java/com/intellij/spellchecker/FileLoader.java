@@ -18,7 +18,7 @@ package com.intellij.spellchecker;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.spellchecker.dictionary.Loader;
 import com.intellij.util.Consumer;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,7 +42,7 @@ public class FileLoader implements Loader {
     return name;
   }
 
-  public void load(@NotNull Consumer<String> consumer) {
+  public void load(@Nonnull Consumer<String> consumer) {
     File file = new File(url);
     FileInputStream stream = null;
     try {

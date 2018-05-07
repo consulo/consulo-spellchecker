@@ -23,8 +23,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import com.intellij.codeHighlighting.HighlightDisplayLevel;
 import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer;
 import com.intellij.openapi.application.ApplicationManager;
@@ -61,7 +61,7 @@ public class SpellCheckerManager {
   private EditableDictionary userDictionary;
 
 
-  @NotNull
+  @Nonnull
   private final SuggestionProvider suggestionProvider = new BaseSuggestionProvider(this);
 
   private final SpellCheckerSettings settings;
@@ -188,11 +188,11 @@ public class SpellCheckerManager {
   }
 
 
-  public boolean hasProblem(@NotNull String word) {
+  public boolean hasProblem(@Nonnull String word) {
     return !spellChecker.isCorrect(word);
   }
 
-  public void acceptWordAsCorrect(@NotNull String word, Project project) {
+  public void acceptWordAsCorrect(@Nonnull String word, Project project) {
     final String transformed = spellChecker.getTransformation().transform(word);
     if (transformed != null) {
       userDictionary.addToDictionary(transformed);
@@ -209,7 +209,7 @@ public class SpellCheckerManager {
 
 
 
-  @NotNull
+  @Nonnull
   public static List<String> getBundledDictionaries() {
     final ArrayList<String> dictionaries = new ArrayList<String>();
     for (BundledDictionaryProvider provider : Extensions.getExtensions(BundledDictionaryProvider.EP_NAME)) {
@@ -218,19 +218,19 @@ public class SpellCheckerManager {
     return dictionaries;
   }
 
-  @NotNull
+  @Nonnull
   public static HighlightDisplayLevel getHighlightDisplayLevel() {
     return HighlightDisplayLevel.find(SpellCheckerSeveritiesProvider.TYPO);
   }
 
-  @NotNull
-  public List<String> getSuggestions(@NotNull String text) {
+  @Nonnull
+  public List<String> getSuggestions(@Nonnull String text) {
     return suggestionProvider.getSuggestions(text);
   }
 
 
-  @NotNull
-  protected List<String> getRawSuggestions(@NotNull String word) {
+  @Nonnull
+  protected List<String> getRawSuggestions(@Nonnull String word) {
     if (!spellChecker.isCorrect(word)) {
       List<String> suggestions = spellChecker.getSuggestions(word, MAX_SUGGESTIONS_THRESHOLD, MAX_METRICS);
       if (!suggestions.isEmpty()) {

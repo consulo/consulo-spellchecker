@@ -15,9 +15,9 @@
  */
 package com.intellij.spellchecker.quickfixes;
 
+import javax.annotation.Nonnull;
 import javax.swing.Icon;
 
-import org.jetbrains.annotations.NotNull;
 import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.codeInspection.ProblemDescriptorUtil;
 import com.intellij.openapi.actionSystem.Anchor;
@@ -40,28 +40,28 @@ public class AcceptWordAsCorrect implements SpellCheckerQuickFix
 	}
 
 	@Override
-	@NotNull
+	@Nonnull
 	public String getName()
 	{
 		return myWord != null ? SpellCheckerBundle.message("add.0.to.dictionary", myWord) : SpellCheckerBundle.message("add.to.dictionary");
 	}
 
 	@Override
-	@NotNull
+	@Nonnull
 	public String getFamilyName()
 	{
 		return SpellCheckerBundle.message("spelling");
 	}
 
 	@Override
-	@NotNull
+	@Nonnull
 	public Anchor getPopupActionAnchor()
 	{
 		return Anchor.LAST;
 	}
 
 	@Override
-	public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor)
+	public void applyFix(@Nonnull Project project, @Nonnull ProblemDescriptor descriptor)
 	{
 		SpellCheckerManager spellCheckerManager = SpellCheckerManager.getInstance(project);
 		if(myWord != null)

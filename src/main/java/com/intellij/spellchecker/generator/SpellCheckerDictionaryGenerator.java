@@ -37,7 +37,7 @@ import com.intellij.spellchecker.inspections.Splitter;
 import com.intellij.spellchecker.tokenizer.TokenConsumer;
 import com.intellij.util.Consumer;
 import com.intellij.util.containers.MultiMap;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -94,7 +94,7 @@ public abstract class SpellCheckerDictionaryGenerator {
     }, "Generating Dictionaries", false, myProject);
   }
 
-  private void generate(@NotNull String dict, ProgressIndicator progressIndicator) {
+  private void generate(@Nonnull String dict, ProgressIndicator progressIndicator) {
     progressIndicator.setText("Processing dictionary: " + dict);
     generateDictionary(myProject, myDict2FolderMap.get(dict), myDictOutputFolder + "/" + dict + ".dic", progressIndicator);
   }
@@ -143,7 +143,7 @@ public abstract class SpellCheckerDictionaryGenerator {
   protected void processFolder(final HashSet<String> seenNames, final PsiManager manager, final VirtualFile folder) {
     VfsUtilCore.visitChildrenRecursively(folder, new VirtualFileVisitor() {
       @Override
-      public boolean visitFile(@NotNull VirtualFile file) {
+      public boolean visitFile(@Nonnull VirtualFile file) {
         if (myExcludedFolders.contains(file)) {
           return false;
         }
@@ -160,7 +160,7 @@ public abstract class SpellCheckerDictionaryGenerator {
 
   protected abstract void processFile(PsiFile file, HashSet<String> seenNames);
 
-  protected void process(final PsiElement element, @NotNull final HashSet<String> seenNames) {
+  protected void process(final PsiElement element, @Nonnull final HashSet<String> seenNames) {
     final int endOffset = element.getTextRange().getEndOffset();
 
     // collect leafs  (spell checker inspection works with leafs)
@@ -182,7 +182,7 @@ public abstract class SpellCheckerDictionaryGenerator {
     }
   }
 
-  protected void processLeafsNames(@NotNull final PsiElement leafElement, @NotNull final HashSet<String> seenNames) {
+  protected void processLeafsNames(@Nonnull final PsiElement leafElement, @Nonnull final HashSet<String> seenNames) {
     final Language language = leafElement.getLanguage();
     SpellCheckingInspection.tokenize(leafElement, language, new TokenConsumer() {
       @Override

@@ -16,7 +16,7 @@
 package com.intellij.spellchecker.engine;
 
 import com.intellij.util.containers.hash.HashSet;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import java.util.Collection;
 import java.util.Set;

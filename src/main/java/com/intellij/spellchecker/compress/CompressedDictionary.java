@@ -24,8 +24,8 @@ import gnu.trove.THashSet;
 import gnu.trove.TIntObjectHashMap;
 import gnu.trove.TIntObjectProcedure;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import java.util.*;
 
@@ -46,13 +46,13 @@ public final class CompressedDictionary implements Dictionary {
     }
   };
 
-  private CompressedDictionary(@NotNull Alphabet alphabet, @NotNull Encoder encoder, @NotNull String name) {
+  private CompressedDictionary(@Nonnull Alphabet alphabet, @Nonnull Encoder encoder, @Nonnull String name) {
     this.alphabet = alphabet;
     this.encoder = encoder;
     this.name = name;
   }
 
-  private void addToDictionary(@NotNull byte[] word) {
+  private void addToDictionary(@Nonnull byte[] word) {
     SortedSet<byte[]> set = rawData.get(word.length);
     if (set == null) {
       set = createSet();
@@ -85,12 +85,12 @@ public final class CompressedDictionary implements Dictionary {
     rawData = null;
   }
 
-  @NotNull
+  @Nonnull
   private static SortedSet<byte[]> createSet() {
     return new TreeSet<byte[]>(COMPARATOR);
   }
 
-  @NotNull
+  @Nonnull
   public List<String> getWords(char first, int minLength, int maxLength) {
     int index = alphabet.getIndex(first, false);
     List<String> result = new ArrayList<String>();
@@ -114,12 +114,12 @@ public final class CompressedDictionary implements Dictionary {
     return result;
   }
 
-  @NotNull
+  @Nonnull
   public List<String> getWords(char first) {
     return getWords(first, 0, Integer.MAX_VALUE);
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public String getName() {
     return name;
@@ -127,7 +127,7 @@ public final class CompressedDictionary implements Dictionary {
 
   @Override
   @Nullable
-  public Boolean contains(@NotNull String word) {
+  public Boolean contains(@Nonnull String word) {
     UnitBitSet bs = encoder.encode(word, false);
     if (bs == Encoder.WORD_OF_ENTIRELY_UNKNOWN_LETTERS) return null;
     if (bs == null) return false;
@@ -143,7 +143,7 @@ public final class CompressedDictionary implements Dictionary {
   }
 
   @Override
-  public void traverse(@NotNull Consumer<String> action) {
+  public void traverse(@Nonnull Consumer<String> action) {
     throw new UnsupportedOperationException();
   }
 
@@ -172,8 +172,8 @@ public final class CompressedDictionary implements Dictionary {
     return sb.toString();
   }
 
-  @NotNull
-  public static CompressedDictionary create(@NotNull Loader loader, @NotNull final Transformation transform) {
+  @Nonnull
+  public static CompressedDictionary create(@Nonnull Loader loader, @Nonnull final Transformation transform) {
     Alphabet alphabet = new Alphabet();
     final Encoder encoder = new Encoder(alphabet);
     final CompressedDictionary dictionary = new CompressedDictionary(alphabet, encoder, loader.getName());
@@ -197,10 +197,10 @@ public final class CompressedDictionary implements Dictionary {
     return dictionary;
   }
 
-  public static int compareArrays(@NotNull byte[] array1, @NotNull byte[] array2) {
+  public static int compareArrays(@Nonnull byte[] array1, @Nonnull byte[] array2) {
     return compareArrays(array1, 0, array1.length, array2);
   }
-  private static int compareArrays(@NotNull byte[] array1, int start1, int length1, @NotNull byte[] array2) {
+  private static int compareArrays(@Nonnull byte[] array1, int start1, int length1, @Nonnull byte[] array2) {
     if (length1 != array2.length) {
       return length1 < array2.length ? -1 : 1;
     }
@@ -218,11 +218,11 @@ public final class CompressedDictionary implements Dictionary {
   }
 
 
-  public static boolean contains(@NotNull byte[] goal, @NotNull byte[] data) {
+  public static boolean contains(@Nonnull byte[] goal, @Nonnull byte[] data) {
     return binarySearchNew(goal, 0, data.length / goal.length, data) >= 0;
   }
 
-  public static int binarySearchNew(@NotNull byte[] goal, int fromIndex, int toIndex, @NotNull byte[] data) {
+  public static int binarySearchNew(@Nonnull byte[] goal, int fromIndex, int toIndex, @Nonnull byte[] data) {
     int unitLength = goal.length;
     int low = fromIndex;
     int high = toIndex - 1;

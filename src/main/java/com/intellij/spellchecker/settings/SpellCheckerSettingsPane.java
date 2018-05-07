@@ -28,8 +28,8 @@ import javax.swing.JPanel;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.options.ConfigurationException;
@@ -323,7 +323,7 @@ public class SpellCheckerSettingsPane extends JPanel implements Disposable
 			this.dictionary = dictionary;
 		}
 
-		@NotNull
+		@Nonnull
 		public List<String> process()
 		{
 			if(this.dictionary == null)

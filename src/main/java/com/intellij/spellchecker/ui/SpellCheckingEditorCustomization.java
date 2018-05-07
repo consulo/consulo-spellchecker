@@ -18,7 +18,7 @@ package com.intellij.spellchecker.ui;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer;
 import com.intellij.codeInsight.daemon.HighlightDisplayKey;
 import com.intellij.codeInsight.intention.IntentionManager;
@@ -53,7 +53,7 @@ public class SpellCheckingEditorCustomization extends SimpleEditorCustomization
 	private static final Map<String, LocalInspectionToolWrapper> SPELL_CHECK_TOOLS = new HashMap<String, LocalInspectionToolWrapper>();
 	private static final boolean READY = init();
 
-	@NotNull
+	@Nonnull
 	public static SpellCheckingEditorCustomization getInstance(boolean enabled)
 	{
 		return enabled ? ENABLED : DISABLED;
@@ -87,7 +87,7 @@ public class SpellCheckingEditorCustomization extends SimpleEditorCustomization
 	}
 
 	@Override
-	public void customize(@NotNull EditorEx editor)
+	public void customize(@Nonnull EditorEx editor)
 	{
 		boolean apply = isEnabled();
 

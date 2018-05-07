@@ -15,18 +15,19 @@
  */
 package com.intellij.spellchecker.vcs;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.vcs.ui.SpellCheckerCustomization;
 import com.intellij.spellchecker.ui.SpellCheckingEditorCustomization;
 import com.intellij.ui.EditorCustomization;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * @author VISTALL
  * @since 12:12/03.07.13
  */
 public class SpellCheckerCustomizationImpl extends SpellCheckerCustomization implements ApplicationComponent{
-  @NotNull
+  @Nonnull
   @Override
   public EditorCustomization getCustomization(boolean enabled) {
     return SpellCheckingEditorCustomization.getInstance(enabled);
@@ -46,7 +47,7 @@ public class SpellCheckerCustomizationImpl extends SpellCheckerCustomization imp
   public void disposeComponent() {
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public String getComponentName() {
     return getClass().getSimpleName();

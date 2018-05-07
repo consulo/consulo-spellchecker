@@ -24,9 +24,9 @@ import java.awt.Color;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.swing.Icon;
 
-import org.jetbrains.annotations.NotNull;
 import com.intellij.codeInsight.daemon.impl.HighlightInfoType;
 import com.intellij.codeInsight.daemon.impl.SeveritiesProvider;
 import com.intellij.icons.AllIcons;
@@ -46,7 +46,7 @@ public class SpellCheckerSeveritiesProvider extends SeveritiesProvider
 			super(TYPO, TYPO_KEY);
 		}
 
-		@NotNull
+		@Nonnull
 		@Override
 		public Icon getIcon()
 		{
@@ -55,14 +55,14 @@ public class SpellCheckerSeveritiesProvider extends SeveritiesProvider
 	}
 
 	@Override
-	@NotNull
+	@Nonnull
 	public List<HighlightInfoType> getSeveritiesHighlightInfoTypes()
 	{
 		return Collections.<HighlightInfoType>singletonList(new TYPO());
 	}
 
 	@Override
-	public Color getTrafficRendererColor(@NotNull TextAttributes textAttributes)
+	public Color getTrafficRendererColor(@Nonnull TextAttributes textAttributes)
 	{
 		return textAttributes.getErrorStripeColor();
 	}

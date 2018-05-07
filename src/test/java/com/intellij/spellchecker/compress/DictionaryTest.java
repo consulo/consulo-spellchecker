@@ -26,7 +26,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.util.text.StringUtil;
@@ -120,7 +121,7 @@ public class DictionaryTest extends TestCase {
     return new StreamLoader(DefaultBundledDictionariesProvider.class.getResourceAsStream(ENGLISH_DIC), ENGLISH_DIC);
   }
 
-  public void loadDictionaryTest(@NotNull final String name, int wordCount) throws IOException {
+  public void loadDictionaryTest(@Nonnull final String name, int wordCount) throws IOException {
     final Transformation transform = new Transformation();
     PlatformTestUtil.startPerformanceTest("load dictionary", times.get(name), new ThrowableRunnable() {
       @Override
@@ -144,7 +145,7 @@ public class DictionaryTest extends TestCase {
   private static Loader createLoader(final Set<String> words) {
     return new Loader() {
       @Override
-      public void load(@NotNull Consumer<String> consumer) {
+      public void load(@Nonnull Consumer<String> consumer) {
         for (String word : words) {
           consumer.consume(word);
         }

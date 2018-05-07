@@ -15,14 +15,15 @@
  */
 package com.intellij.spellchecker.quickfixes;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.codeInspection.LocalQuickFix;
 import com.intellij.openapi.actionSystem.Anchor;
 import com.intellij.openapi.util.Iconable;
-import org.jetbrains.annotations.NotNull;
 
 public interface SpellCheckerQuickFix extends LocalQuickFix, Iconable {
   SpellCheckerQuickFix[] EMPTY_ARRAY = new SpellCheckerQuickFix[0];
 
-  @NotNull
+  @Nonnull
   Anchor getPopupActionAnchor();
 }

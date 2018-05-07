@@ -22,8 +22,8 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.Consumer;
 import com.intellij.util.SmartList;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
@@ -40,7 +40,7 @@ public abstract class BaseSplitter implements Splitter {
   public static final int MIN_RANGE_LENGTH = 3;
 
 
-  protected static void addWord(@NotNull Consumer<TextRange> consumer, boolean ignore, @Nullable TextRange found) {
+  protected static void addWord(@Nonnull Consumer<TextRange> consumer, boolean ignore, @Nullable TextRange found) {
     if (found == null || ignore) {
       return;
     }
@@ -52,7 +52,7 @@ public abstract class BaseSplitter implements Splitter {
   }
 
 
-  protected static boolean isAllWordsAreUpperCased(@NotNull String text, @NotNull List<TextRange> words) {
+  protected static boolean isAllWordsAreUpperCased(@Nonnull String text, @Nonnull List<TextRange> words) {
     for (TextRange word : words) {
       CharacterIterator it = new StringCharacterIterator(text, word.getStartOffset(), word.getEndOffset(), word.getStartOffset());
       for (char c = it.first(); c != CharacterIterator.DONE; c = it.next()) {
@@ -65,7 +65,7 @@ public abstract class BaseSplitter implements Splitter {
 
   }
 
-  protected static boolean containsShortWord(@NotNull List<TextRange> words) {
+  protected static boolean containsShortWord(@Nonnull List<TextRange> words) {
     for (TextRange word : words) {
       if (word.getLength() < MIN_RANGE_LENGTH) {
         return true;
@@ -74,18 +74,18 @@ public abstract class BaseSplitter implements Splitter {
     return false;
   }
 
-  @NotNull
-  protected static TextRange matcherRange(@NotNull TextRange range, @NotNull Matcher matcher) {
+  @Nonnull
+  protected static TextRange matcherRange(@Nonnull TextRange range, @Nonnull Matcher matcher) {
     return subRange(range, matcher.start(), matcher.end());
   }
 
-  @NotNull
-  protected static TextRange matcherRange(@NotNull TextRange range, @NotNull Matcher matcher, int group) {
+  @Nonnull
+  protected static TextRange matcherRange(@Nonnull TextRange range, @Nonnull Matcher matcher, int group) {
     return subRange(range, matcher.start(group), matcher.end(group));
   }
 
-  @NotNull
-  protected static TextRange subRange(@NotNull TextRange range, int start, int end) {
+  @Nonnull
+  protected static TextRange subRange(@Nonnull TextRange range, int start, int end) {
     return TextRange.from(range.getStartOffset() + start, end - start);
   }
 
@@ -94,8 +94,8 @@ public abstract class BaseSplitter implements Splitter {
     return l <= MIN_RANGE_LENGTH;
   }
 
-  @NotNull
-  static protected List<TextRange> excludeByPattern(String text, TextRange range, @NotNull Pattern toExclude, int groupToInclude) {
+  @Nonnull
+  static protected List<TextRange> excludeByPattern(String text, TextRange range, @Nonnull Pattern toExclude, int groupToInclude) {
     List<TextRange> toCheck = new SmartList<TextRange>();
     int from = range.getStartOffset();
     int till;

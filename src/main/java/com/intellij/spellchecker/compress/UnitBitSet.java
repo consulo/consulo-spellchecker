@@ -1,6 +1,6 @@
 package com.intellij.spellchecker.compress;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.Arrays;
 
@@ -11,7 +11,7 @@ public class UnitBitSet {
   final byte[] b;
   private final Alphabet alpha;
 
-  public UnitBitSet(@NotNull byte[] indices, @NotNull Alphabet alphabet) {
+  public UnitBitSet(@Nonnull byte[] indices, @Nonnull Alphabet alphabet) {
     b = indices;
     alpha = alphabet;
   }
@@ -43,7 +43,7 @@ public class UnitBitSet {
     return s.toString();
   }
 
-  @NotNull
+  @Nonnull
   public byte[] pack() {
     int meaningfulBits = 32 - Integer.numberOfLeadingZeros(alpha.getLastIndexUsed());
     assert meaningfulBits <= 8;
@@ -69,8 +69,8 @@ public class UnitBitSet {
     return result;
   }
 
-  @NotNull
-  public static String decode(@NotNull byte[] packed, @NotNull Alphabet alphabet) {
+  @Nonnull
+  public static String decode(@Nonnull byte[] packed, @Nonnull Alphabet alphabet) {
     int meaningfulBits = 32 - Integer.numberOfLeadingZeros(alphabet.getLastIndexUsed());
     assert meaningfulBits <= 8;
 
@@ -101,7 +101,7 @@ public class UnitBitSet {
     return result.toString();
   }
 
-  public static int getFirstLetterIndex(byte firstPackedByte, @NotNull Alphabet alphabet) {
+  public static int getFirstLetterIndex(byte firstPackedByte, @Nonnull Alphabet alphabet) {
     int meaningfulBits = 32 - Integer.numberOfLeadingZeros(alphabet.getLastIndexUsed());
     assert meaningfulBits <= 8;
 

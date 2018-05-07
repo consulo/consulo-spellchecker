@@ -15,7 +15,7 @@
  */
 package com.intellij.spellchecker.compress;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 public final class Alphabet {
 
@@ -75,7 +75,7 @@ public final class Alphabet {
   }
 
   // TODO: this should be ONLY way to create it to sped up getIndex
-  Alphabet(@NotNull CharSequence alphabet) {
+  Alphabet(@Nonnull CharSequence alphabet) {
     this(alphabet.length() + 1);
     for (int i = 0; i < alphabet.length(); i++) {
       add(alphabet.charAt(i));

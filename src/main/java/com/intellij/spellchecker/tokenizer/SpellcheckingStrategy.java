@@ -15,7 +15,8 @@
  */
 package com.intellij.spellchecker.tokenizer;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import com.intellij.codeInspection.SuppressionUtil;
 import com.intellij.openapi.extensions.ExtensionPointName;
 import com.intellij.openapi.util.TextRange;
@@ -38,7 +39,7 @@ public class SpellcheckingStrategy
 	public static final Tokenizer EMPTY_TOKENIZER = new Tokenizer()
 	{
 		@Override
-		public void tokenize(@NotNull PsiElement element, TokenConsumer consumer)
+		public void tokenize(@Nonnull PsiElement element, TokenConsumer consumer)
 		{
 		}
 	};
@@ -47,7 +48,7 @@ public class SpellcheckingStrategy
 
 	private static final SpellCheckerQuickFix[] BATCH_FIXES = new SpellCheckerQuickFix[]{new AcceptWordAsCorrect()};
 
-	@NotNull
+	@Nonnull
 	public Tokenizer getTokenizer(PsiElement element)
 	{
 		if(element instanceof PsiNameIdentifierOwner)
@@ -69,7 +70,7 @@ public class SpellcheckingStrategy
 		return EMPTY_TOKENIZER;
 	}
 
-	public SpellCheckerQuickFix[] getRegularFixes(PsiElement element, int offset, @NotNull TextRange textRange, boolean useRename,
+	public SpellCheckerQuickFix[] getRegularFixes(PsiElement element, int offset, @Nonnull TextRange textRange, boolean useRename,
 			String wordWithTypo)
 	{
 		return getDefaultRegularFixes(useRename, wordWithTypo);
@@ -83,7 +84,7 @@ public class SpellcheckingStrategy
 		};
 	}
 
-	public SpellCheckerQuickFix[] getBatchFixes(PsiElement element, int offset, @NotNull TextRange textRange)
+	public SpellCheckerQuickFix[] getBatchFixes(PsiElement element, int offset, @Nonnull TextRange textRange)
 	{
 		return getDefaultBatchFixes();
 	}
@@ -93,7 +94,7 @@ public class SpellcheckingStrategy
 		return BATCH_FIXES;
 	}
 
-	public boolean isMyContext(@NotNull PsiElement element)
+	public boolean isMyContext(@Nonnull PsiElement element)
 	{
 		return true;
 	}

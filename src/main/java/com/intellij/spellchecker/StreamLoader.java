@@ -21,7 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.spellchecker.dictionary.Loader;
 import com.intellij.util.Consumer;
@@ -45,7 +46,7 @@ public class StreamLoader implements Loader {
   }
 
   @Override
-  public void load(@NotNull Consumer<String> consumer) {
+  public void load(@Nonnull Consumer<String> consumer) {
     DataInputStream in = new DataInputStream(stream);
     BufferedReader br = null;
 

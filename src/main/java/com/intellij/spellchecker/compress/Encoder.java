@@ -15,9 +15,11 @@
  */
 package com.intellij.spellchecker.compress;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.openapi.diagnostic.Logger;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 public final class Encoder {
 
@@ -39,7 +41,7 @@ public final class Encoder {
   }
 
   @Nullable
-  public UnitBitSet encode(@NotNull CharSequence letters, boolean force) {
+  public UnitBitSet encode(@Nonnull CharSequence letters, boolean force) {
     if (UnitBitSet.MAX_CHARS_IN_WORD <= letters.length() + offset) return null;
     int unknownLetters = 0;
     byte[] indices = new byte[letters.length()];
@@ -58,8 +60,8 @@ public final class Encoder {
     return new UnitBitSet(indices, alphabet);
   }
 
-  @NotNull
-  public String decode(@NotNull byte[] compressed) {
+  @Nonnull
+  public String decode(@Nonnull byte[] compressed) {
     return UnitBitSet.decode(compressed, alphabet);
   }
 

@@ -15,12 +15,12 @@
  */
 package com.intellij.spellchecker.engine;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.List;
 
 public interface SuggestionProvider {
 
-  @NotNull
-  List<String> getSuggestions(@NotNull String text);
+  @Nonnull
+  List<String> getSuggestions(@Nonnull String text);
 }

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import com.intellij.psi.codeStyle.NameUtil;
 import com.intellij.spellchecker.engine.SuggestionProvider;
 
@@ -27,13 +27,13 @@ public class BaseSuggestionProvider implements SuggestionProvider {
 
   private final SpellCheckerManager manager;
 
-  public BaseSuggestionProvider(@NotNull SpellCheckerManager manager) {
+  public BaseSuggestionProvider(@Nonnull SpellCheckerManager manager) {
     this.manager = manager;
   }
 
   @Override
-  @NotNull
-  public List<String> getSuggestions(@NotNull String text) {
+  @Nonnull
+  public List<String> getSuggestions(@Nonnull String text) {
 
     String[] words = NameUtil.nameToWords(text);
 

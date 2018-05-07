@@ -16,7 +16,7 @@
 package com.intellij.spellchecker.engine;
 
 import com.intellij.spellchecker.dictionary.Loader;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.List;
 
@@ -24,23 +24,23 @@ import java.util.List;
 public interface SpellCheckerEngine {
 
 
-  void loadDictionary(@NotNull Loader loader);
+  void loadDictionary(@Nonnull Loader loader);
 
   Transformation getTransformation();
 
-  boolean isCorrect(@NotNull String word);
+  boolean isCorrect(@Nonnull String word);
 
 
-  @NotNull
-  List<String> getSuggestions(@NotNull String word, int threshold, int quality);
+  @Nonnull
+  List<String> getSuggestions(@Nonnull String word, int threshold, int quality);
 
-  @NotNull
-  List<String> getVariants(@NotNull String prefix);
+  @Nonnull
+  List<String> getVariants(@Nonnull String prefix);
 
 
   void reset();
 
-  boolean isDictionaryLoad(@NotNull String name);
+  boolean isDictionaryLoad(@Nonnull String name);
 
-  void removeDictionary(@NotNull String name);
+  void removeDictionary(@Nonnull String name);
 }

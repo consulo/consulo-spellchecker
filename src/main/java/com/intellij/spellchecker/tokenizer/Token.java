@@ -19,7 +19,7 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.spellchecker.inspections.Splitter;
 import com.intellij.util.Consumer;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 
 public class Token<T extends PsiElement> {
@@ -76,7 +76,7 @@ public class Token<T extends PsiElement> {
     return offset;
   }
 
-  @NotNull
+  @Nonnull
   public TextRange getRange() {
     if (range==null){
       range = new TextRange(0,(text!=null?text.length():0));

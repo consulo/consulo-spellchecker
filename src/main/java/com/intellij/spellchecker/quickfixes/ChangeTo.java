@@ -28,7 +28,7 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiUtilBase;
 import com.intellij.spellchecker.util.SpellCheckerBundle;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,23 +40,23 @@ public class ChangeTo extends ShowSuggestions implements SpellCheckerQuickFix {
   }
 
 
-  @NotNull
+  @Nonnull
   public String getName() {
     return SpellCheckerBundle.message("change.to");
   }
 
-  @NotNull
+  @Nonnull
   public String getFamilyName() {
     return SpellCheckerBundle.message("change.to");
   }
 
-  @NotNull
+  @Nonnull
   public Anchor getPopupActionAnchor() {
     return Anchor.FIRST;
   }
 
 
-  public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
+  public void applyFix(@Nonnull Project project, @Nonnull ProblemDescriptor descriptor) {
     PsiElement element = descriptor.getPsiElement();
     if (element == null) return;
     Editor editor = PsiUtilBase.findEditor(element);

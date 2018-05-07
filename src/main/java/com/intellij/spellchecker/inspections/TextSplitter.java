@@ -18,8 +18,8 @@ package com.intellij.spellchecker.inspections;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.Consumer;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,14 +34,14 @@ public class TextSplitter extends BaseSplitter {
   private static final Pattern EXTENDED_WORD_AND_SPECIAL = Pattern.compile("([&#]|0x[0-9]*)?\\p{L}+'?\\p{L}[_\\p{L}]*");
 
   @Override
-  public void split(@Nullable String text, @NotNull TextRange range, Consumer<TextRange> consumer) {
+  public void split(@Nullable String text, @Nonnull TextRange range, Consumer<TextRange> consumer) {
     if (text == null || StringUtil.isEmpty(text)) {
       return;
     }
     doSplit(text, range, consumer);
   }
 
-  protected void doSplit(@NotNull String text, @NotNull TextRange range, Consumer<TextRange> consumer) {
+  protected void doSplit(@Nonnull String text, @Nonnull TextRange range, Consumer<TextRange> consumer) {
     final WordSplitter ws = WordSplitter.getInstance();
     Matcher matcher = EXTENDED_WORD_AND_SPECIAL.matcher(text);
     matcher.region(range.getStartOffset(), range.getEndOffset());

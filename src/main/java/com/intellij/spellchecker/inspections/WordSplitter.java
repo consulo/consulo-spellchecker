@@ -18,8 +18,8 @@ package com.intellij.spellchecker.inspections;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.util.Consumer;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,7 +35,7 @@ public class WordSplitter extends BaseSplitter {
   private static final Pattern SPECIAL = Pattern.compile("&\\p{Alnum}{4};?|#\\p{Alnum}{3,6}|0x\\p{Alnum}?");
 
   @Override
-  public void split(@Nullable String text, @NotNull TextRange range, Consumer<TextRange> consumer) {
+  public void split(@Nullable String text, @Nonnull TextRange range, Consumer<TextRange> consumer) {
     if (text == null || range.getLength() <= 1) {
       return;
     }

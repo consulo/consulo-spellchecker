@@ -18,7 +18,7 @@ package com.intellij.spellchecker.state;
 import java.util.List;
 
 import org.jdom.Element;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import com.intellij.openapi.components.StateSplitterEx;
 import com.intellij.openapi.util.Pair;
 
@@ -28,7 +28,7 @@ import com.intellij.openapi.util.Pair;
 public class ProjectDictionarySplitter extends StateSplitterEx
 {
 	@Override
-	public List<Pair<Element, String>> splitState(@NotNull Element state)
+	public List<Pair<Element, String>> splitState(@Nonnull Element state)
 	{
 		return splitState(state, DictionaryState.NAME_ATTRIBUTE);
 	}

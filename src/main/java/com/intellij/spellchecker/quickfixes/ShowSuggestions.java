@@ -19,7 +19,7 @@ import java.util.List;
 
 import javax.swing.Icon;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import com.intellij.codeInspection.LocalQuickFix;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Iconable;
@@ -38,7 +38,7 @@ public abstract class ShowSuggestions implements LocalQuickFix, Iconable
 		myWordWithTypo = wordWithTypo;
 	}
 
-	@NotNull
+	@Nonnull
 	public List<String> getSuggestions(Project project)
 	{
 		if(!processed)

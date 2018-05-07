@@ -20,14 +20,14 @@ import gnu.trove.THashSet;
 import java.awt.BorderLayout;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.Box;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import com.intellij.codeHighlighting.HighlightDisplayLevel;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemDescriptor;
@@ -61,7 +61,7 @@ public class SpellCheckingInspection extends LocalInspectionTool
 
 	@Override
 	@Nls
-	@NotNull
+	@Nonnull
 	public String getGroupDisplayName()
 	{
 		return SpellCheckerBundle.message("spelling");
@@ -69,13 +69,13 @@ public class SpellCheckingInspection extends LocalInspectionTool
 
 	@Override
 	@Nls
-	@NotNull
+	@Nonnull
 	public String getDisplayName()
 	{
 		return SpellCheckerBundle.message("spellchecking.inspection.name");
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public SuppressQuickFix[] getBatchSuppressActions(@Nullable PsiElement element)
 	{
@@ -91,7 +91,7 @@ public class SpellCheckingInspection extends LocalInspectionTool
 		return super.getBatchSuppressActions(element);
 	}
 
-	private static SpellcheckingStrategy getSpellcheckingStrategy(@NotNull PsiElement element, @NotNull Language language)
+	private static SpellcheckingStrategy getSpellcheckingStrategy(@Nonnull PsiElement element, @Nonnull Language language)
 	{
 		for(SpellcheckingStrategy strategy : LanguageSpellchecking.INSTANCE.allForLanguage(language))
 		{
@@ -104,7 +104,7 @@ public class SpellCheckingInspection extends LocalInspectionTool
 	}
 
 	@Override
-	public boolean isSuppressedFor(@NotNull PsiElement element)
+	public boolean isSuppressedFor(@Nonnull PsiElement element)
 	{
 		final Language language = element.getLanguage();
 		SpellcheckingStrategy strategy = getSpellcheckingStrategy(element, language);
@@ -117,7 +117,7 @@ public class SpellCheckingInspection extends LocalInspectionTool
 
 	@Override
 	@NonNls
-	@NotNull
+	@Nonnull
 	public String getShortName()
 	{
 		return SPELL_CHECKING_INSPECTION_TOOL_NAME;
@@ -130,15 +130,15 @@ public class SpellCheckingInspection extends LocalInspectionTool
 	}
 
 	@Override
-	@NotNull
+	@Nonnull
 	public HighlightDisplayLevel getDefaultLevel()
 	{
 		return SpellCheckerManager.getHighlightDisplayLevel();
 	}
 
 	@Override
-	@NotNull
-	public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, final boolean isOnTheFly)
+	@Nonnull
+	public PsiElementVisitor buildVisitor(@Nonnull final ProblemsHolder holder, final boolean isOnTheFly)
 	{
 		final SpellCheckerManager manager = SpellCheckerManager.getInstance(holder.getProject());
 
@@ -193,7 +193,7 @@ public class SpellCheckingInspection extends LocalInspectionTool
 	 * @param language Usually element.getLanguage()
 	 * @param consumer the consumer of tokens
 	 */
-	public static void tokenize(@NotNull final PsiElement element, @NotNull final Language language, TokenConsumer consumer)
+	public static void tokenize(@Nonnull final PsiElement element, @Nonnull final Language language, TokenConsumer consumer)
 	{
 		final SpellcheckingStrategy factoryByLanguage = getSpellcheckingStrategy(element, language);
 		if(factoryByLanguage == null)
@@ -206,7 +206,7 @@ public class SpellCheckingInspection extends LocalInspectionTool
 	}
 
 
-	private static void addBatchDescriptor(PsiElement element, int offset, @NotNull TextRange textRange, @NotNull ProblemsHolder holder)
+	private static void addBatchDescriptor(PsiElement element, int offset, @Nonnull TextRange textRange, @Nonnull ProblemsHolder holder)
 	{
 		final SpellcheckingStrategy strategy = getSpellcheckingStrategy(element, element.getLanguage());
 
@@ -216,7 +216,7 @@ public class SpellCheckingInspection extends LocalInspectionTool
 		holder.registerProblem(problemDescriptor);
 	}
 
-	private static void addRegularDescriptor(PsiElement element, int offset, @NotNull TextRange textRange, @NotNull ProblemsHolder holder,
+	private static void addRegularDescriptor(PsiElement element, int offset, @Nonnull TextRange textRange, @Nonnull ProblemsHolder holder,
 			boolean useRename, String wordWithTypo)
 	{
 		SpellcheckingStrategy strategy = getSpellcheckingStrategy(element, element.getLanguage());

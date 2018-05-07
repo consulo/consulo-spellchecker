@@ -22,7 +22,7 @@ import com.intellij.util.xmlb.annotations.AbstractCollection;
 import com.intellij.util.xmlb.annotations.Attribute;
 import com.intellij.util.xmlb.annotations.Tag;
 import com.intellij.util.xmlb.annotations.Transient;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -44,12 +44,12 @@ public class DictionaryState implements PersistentStateComponent<DictionaryState
   public DictionaryState() {
   }
 
-  public DictionaryState(@NotNull EditableDictionary dictionary) {
+  public DictionaryState(@Nonnull EditableDictionary dictionary) {
     setDictionary(dictionary);
   }
 
   @Transient
-  public void setDictionary(@NotNull EditableDictionary dictionary) {
+  public void setDictionary(@Nonnull EditableDictionary dictionary) {
     this.dictionary = dictionary;
     this.name = dictionary.getName();
     synchronizeWords();

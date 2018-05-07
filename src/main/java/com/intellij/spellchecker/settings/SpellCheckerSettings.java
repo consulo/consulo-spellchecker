@@ -19,7 +19,7 @@ import com.intellij.openapi.components.*;
 import com.intellij.openapi.components.StoragePathMacros;
 import com.intellij.openapi.project.Project;
 import org.jdom.Element;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.*;
 
@@ -110,7 +110,7 @@ public class SpellCheckerSettings implements PersistentStateComponent<Element> {
   }
 
 
-  public void loadState(@NotNull final Element element) {
+  public void loadState(@Nonnull final Element element) {
     myBundledDisabledDictionariesPaths.clear();
     myDictionaryFoldersPaths.clear();
     myDisabledDictionariesPaths.clear();

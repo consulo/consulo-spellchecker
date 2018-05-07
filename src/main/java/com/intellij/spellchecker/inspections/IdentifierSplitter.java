@@ -19,8 +19,8 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.spellchecker.util.Strings;
 import com.intellij.util.Consumer;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,7 @@ public class IdentifierSplitter extends BaseSplitter {
   private static final Pattern WORD_IN_QUOTES = Pattern.compile("'([^']*)'");
 
   @Override
-  public void split(@Nullable String text, @NotNull TextRange range, Consumer<TextRange> consumer) {
+  public void split(@Nullable String text, @Nonnull TextRange range, Consumer<TextRange> consumer) {
     if (text == null || range.getLength() < 1 || range.getStartOffset() < 0) {
       return;
     }
@@ -83,8 +83,8 @@ public class IdentifierSplitter extends BaseSplitter {
     }
   }
 
-  @NotNull
-  private static List<TextRange> splitByCase(@NotNull String text, @NotNull TextRange range) {
+  @Nonnull
+  private static List<TextRange> splitByCase(@Nonnull String text, @Nonnull TextRange range) {
     //System.out.println("text = " + text + " range = " + range);
     List<TextRange> result = new ArrayList<TextRange>();
     int i = range.getStartOffset();

@@ -17,7 +17,7 @@ package com.intellij.spellchecker.util;
 
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
@@ -38,7 +38,7 @@ public final class Strings {
   }
 
 
-  public static boolean isCapitalized(@NotNull String text, @NotNull TextRange range) {
+  public static boolean isCapitalized(@Nonnull String text, @Nonnull TextRange range) {
     if (range.getLength() == 0) return false;
     CharacterIterator it = new StringCharacterIterator(text, range.getStartOffset() + 1, range.getEndOffset(), range.getStartOffset() + 1);
     boolean lowCase = true;
@@ -49,7 +49,7 @@ public final class Strings {
     return Character.isUpperCase(text.charAt(range.getStartOffset())) && lowCase;
   }
 
-  public static boolean isUpperCased(@NotNull String text, @NotNull TextRange range) {
+  public static boolean isUpperCased(@Nonnull String text, @Nonnull TextRange range) {
     if (range.getLength() == 0) return false;
     CharacterIterator it = new StringCharacterIterator(text, range.getStartOffset(), range.getEndOffset(), range.getStartOffset());
 

@@ -20,7 +20,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.spellchecker.dictionary.EditableDictionary;
 import com.intellij.spellchecker.dictionary.EditableDictionaryLoader;
 import com.intellij.util.Consumer;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.util.Set;
 
@@ -35,7 +35,7 @@ public class StateLoader implements EditableDictionaryLoader {
   }
 
 
-  public void load(@NotNull Consumer<String> consumer) {
+  public void load(@Nonnull Consumer<String> consumer) {
     AggregatedDictionaryState state = ServiceManager.getService(project, AggregatedDictionaryState.class);
     state.setProject(project);
     state.loadState();

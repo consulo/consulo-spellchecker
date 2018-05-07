@@ -15,10 +15,11 @@
  */
 package com.intellij.spellchecker.tokenizer;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.psi.PsiElement;
-import org.jetbrains.annotations.NotNull;
 
 public abstract class Tokenizer<T extends PsiElement> {
 
-  public abstract void tokenize(@NotNull T element, TokenConsumer consumer);
+  public abstract void tokenize(@Nonnull T element, TokenConsumer consumer);
 }

@@ -15,17 +15,18 @@
  */
 package com.intellij.spellchecker.tokenizer;
 
+import javax.annotation.Nonnull;
+
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNameIdentifierOwner;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.spellchecker.inspections.IdentifierSplitter;
-import org.jetbrains.annotations.NotNull;
 
 
 public class PsiIdentifierOwnerTokenizer extends Tokenizer<PsiNameIdentifierOwner> {
   @Override
-  public void tokenize(@NotNull PsiNameIdentifierOwner element, TokenConsumer consumer) {
+  public void tokenize(@Nonnull PsiNameIdentifierOwner element, TokenConsumer consumer) {
     PsiElement identifier = element.getNameIdentifier();
     if (identifier == null) {
       return;

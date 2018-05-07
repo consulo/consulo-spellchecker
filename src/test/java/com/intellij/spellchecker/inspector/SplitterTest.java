@@ -20,7 +20,7 @@ import com.intellij.spellchecker.inspections.*;
 import com.intellij.util.Consumer;
 import junit.framework.Assert;
 import junit.framework.TestCase;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -375,7 +375,7 @@ public class SplitterTest extends TestCase {
   }
 
 
-  private static void correctListToCheck(Splitter splitter, String text, @NotNull String... expected) {
+  private static void correctListToCheck(Splitter splitter, String text, @Nonnull String... expected) {
     List<String> words = wordsToCheck(splitter, text);
     List<String> expectedWords = Arrays.asList(expected);
     Assert.assertEquals("Splitting:'" + text + "'", expectedWords.toString(), words!=null ? words.toString() : "[]");

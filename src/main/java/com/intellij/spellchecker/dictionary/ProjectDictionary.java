@@ -18,8 +18,8 @@ package com.intellij.spellchecker.dictionary;
 import com.intellij.util.Consumer;
 import gnu.trove.THashSet;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -35,7 +35,7 @@ public class ProjectDictionary implements EditableDictionary {
   public ProjectDictionary() {
   }
 
-  public ProjectDictionary(@NotNull Set<EditableDictionary> dictionaries) {
+  public ProjectDictionary(@Nonnull Set<EditableDictionary> dictionaries) {
     this.dictionaries = dictionaries;
   }
 
@@ -44,7 +44,7 @@ public class ProjectDictionary implements EditableDictionary {
     return false;
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public String getName() {
     return DEFAULT_PROJECT_DICTIONARY_NAME;
@@ -60,7 +60,7 @@ public class ProjectDictionary implements EditableDictionary {
 
   @Override
   @Nullable
-  public Boolean contains(@NotNull String word) {
+  public Boolean contains(@Nonnull String word) {
     if (dictionaries == null) {
       return false;
     }
@@ -88,12 +88,12 @@ public class ProjectDictionary implements EditableDictionary {
     getActiveDictionary().removeFromDictionary(word);
   }
 
-  @NotNull
+  @Nonnull
   private EditableDictionary getActiveDictionary() {
     return ensureCurrentUserDictionary();
   }
 
-  @NotNull
+  @Nonnull
   private EditableDictionary ensureCurrentUserDictionary() {
     if (activeName == null) {
       activeName = DEFAULT_CURRENT_USER_NAME;
@@ -110,7 +110,7 @@ public class ProjectDictionary implements EditableDictionary {
   }
 
   @Nullable
-  private EditableDictionary getDictionaryByName(@NotNull String name) {
+  private EditableDictionary getDictionaryByName(@Nonnull String name) {
     if (dictionaries == null) {
       return null;
     }
@@ -159,7 +159,7 @@ public class ProjectDictionary implements EditableDictionary {
   }
 
   @Override
-  public void traverse(@NotNull final Consumer<String> consumer) {
+  public void traverse(@Nonnull final Consumer<String> consumer) {
     if (dictionaries == null) {
       return;
     }

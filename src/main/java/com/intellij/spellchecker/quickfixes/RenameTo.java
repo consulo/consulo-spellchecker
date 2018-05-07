@@ -19,10 +19,10 @@ import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
 import javax.swing.SwingUtilities;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.ide.DataManager;
 import com.intellij.injected.editor.EditorWindow;
@@ -59,14 +59,14 @@ public class RenameTo extends ShowSuggestions implements SpellCheckerQuickFix
 	}
 
 	@Override
-	@NotNull
+	@Nonnull
 	public String getName()
 	{
 		return SpellCheckerBundle.message("rename.to");
 	}
 
 	@Override
-	@NotNull
+	@Nonnull
 	public String getFamilyName()
 	{
 		return SpellCheckerBundle.message("rename.to");
@@ -90,7 +90,7 @@ public class RenameTo extends ShowSuggestions implements SpellCheckerQuickFix
 
 
 	@Override
-	@NotNull
+	@Nonnull
 	public Anchor getPopupActionAnchor()
 	{
 		return Anchor.FIRST;
@@ -98,7 +98,7 @@ public class RenameTo extends ShowSuggestions implements SpellCheckerQuickFix
 
 	@Override
 	@SuppressWarnings({"SSBasedInspection"})
-	public void applyFix(@NotNull final Project project, @NotNull final ProblemDescriptor descriptor)
+	public void applyFix(@Nonnull final Project project, @Nonnull final ProblemDescriptor descriptor)
 	{
 		Runnable fix = new Runnable()
 		{

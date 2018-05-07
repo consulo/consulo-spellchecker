@@ -18,8 +18,8 @@ package com.intellij.spellchecker.dictionary;
 import com.intellij.util.Consumer;
 import gnu.trove.THashSet;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import java.util.Collection;
 import java.util.Set;
@@ -27,14 +27,14 @@ import java.util.Set;
 public class UserDictionary implements EditableDictionary {
   private final String name;
 
-  @NotNull
+  @Nonnull
   private final Set<String> words = new THashSet<String>();
 
-  public UserDictionary(@NotNull String name) {
+  public UserDictionary(@Nonnull String name) {
     this.name = name;
   }
 
-  @NotNull
+  @Nonnull
   @Override
   public String getName() {
     return name;
@@ -42,7 +42,7 @@ public class UserDictionary implements EditableDictionary {
 
   @Override
   @Nullable
-  public Boolean contains(@NotNull String word) {
+  public Boolean contains(@Nonnull String word) {
     boolean contains = words.contains(word);
     if(contains) return true;
     return null;
@@ -120,7 +120,7 @@ public class UserDictionary implements EditableDictionary {
   }
 
   @Override
-  public void traverse(@NotNull final Consumer<String> consumer) {
+  public void traverse(@Nonnull final Consumer<String> consumer) {
     for (String word : words) {
       consumer.consume(word);
     }

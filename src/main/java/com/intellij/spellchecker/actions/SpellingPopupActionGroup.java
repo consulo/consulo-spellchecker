@@ -20,8 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.codeInsight.daemon.impl.ShowIntentionsPass;
 import com.intellij.codeInsight.intention.IntentionAction;
@@ -57,7 +58,7 @@ public final class SpellingPopupActionGroup extends ActionGroup
 		super(shortName, popup);
 	}
 
-	@NotNull
+	@Nonnull
 	public AnAction[] getChildren(@Nullable AnActionEvent e)
 	{
 		if(e != null)
@@ -73,8 +74,8 @@ public final class SpellingPopupActionGroup extends ActionGroup
 		return AnAction.EMPTY_ARRAY;
 	}
 
-	@NotNull
-	private static AnAction[] findActions(@NotNull AnActionEvent e)
+	@Nonnull
+	private static AnAction[] findActions(@Nonnull AnActionEvent e)
 	{
 		PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
 		Project project = e.getData(LangDataKeys.PROJECT);
