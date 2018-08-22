@@ -16,8 +16,8 @@
 package com.intellij.spellchecker.vcs;
 
 import javax.annotation.Nonnull;
+import javax.inject.Singleton;
 
-import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.vcs.ui.SpellCheckerCustomization;
 import com.intellij.spellchecker.ui.SpellCheckingEditorCustomization;
 import com.intellij.ui.EditorCustomization;
@@ -26,30 +26,24 @@ import com.intellij.ui.EditorCustomization;
  * @author VISTALL
  * @since 12:12/03.07.13
  */
-public class SpellCheckerCustomizationImpl extends SpellCheckerCustomization implements ApplicationComponent{
-  @Nonnull
-  @Override
-  public EditorCustomization getCustomization(boolean enabled) {
-    return SpellCheckingEditorCustomization.getInstance(enabled);
-  }
+@Singleton
+public class SpellCheckerCustomizationImpl extends SpellCheckerCustomization
+{
+	public SpellCheckerCustomizationImpl()
+	{
+		setInstance(this);
+	}
 
-  @Override
-  public boolean isEnabled() {
-    return true;
-  }
+	@Nonnull
+	@Override
+	public EditorCustomization getCustomization(boolean enabled)
+	{
+		return SpellCheckingEditorCustomization.getInstance(enabled);
+	}
 
-  @Override
-  public void initComponent() {
-    setInstance(new SpellCheckerCustomizationImpl());
-  }
-
-  @Override
-  public void disposeComponent() {
-  }
-
-  @Nonnull
-  @Override
-  public String getComponentName() {
-    return getClass().getSimpleName();
-  }
+	@Override
+	public boolean isEnabled()
+	{
+		return true;
+	}
 }

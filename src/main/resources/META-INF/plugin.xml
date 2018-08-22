@@ -11,12 +11,6 @@
 
 	</actions>
 
-	<application-components>
-		<component>
-			<implementation-class>com.intellij.spellchecker.vcs.SpellCheckerCustomizationImpl</implementation-class>
-		</component>
-	</application-components>
-
 	<extensionPoints>
 		<extensionPoint name="support" beanClass="com.intellij.lang.LanguageExtensionPoint">
 			<with attribute="implementationClass" implements="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
@@ -57,5 +51,6 @@
 		<projectService serviceImplementation="com.intellij.spellchecker.state.ProjectDictionaryState"/>
 		<projectService serviceImplementation="com.intellij.spellchecker.state.AggregatedDictionaryState"/>
 		<applicationService serviceImplementation="com.intellij.spellchecker.state.CachedDictionaryState"/>
+		<applicationService serviceImplementation="com.intellij.spellchecker.vcs.SpellCheckerCustomizationImpl" lazy="false" />
 	</extensions>
 </idea-plugin>
