@@ -15,11 +15,12 @@
  */
 package com.intellij.spellchecker.settings;
 
+import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import javax.swing.JComponent;
 
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NonNls;
-import javax.annotation.Nonnull;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
@@ -34,6 +35,7 @@ public class SpellCheckerConfigurable implements SearchableConfigurable, Configu
 	private final SpellCheckerSettings mySpellCheckerSettings;
 	private final Project myProject;
 
+	@Inject
 	public SpellCheckerConfigurable(Project project, SpellCheckerSettings spellCheckerSettings)
 	{
 		myProject = project;

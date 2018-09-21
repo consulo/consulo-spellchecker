@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.inject.Singleton;
+
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
@@ -32,6 +34,7 @@ import com.intellij.util.xmlb.annotations.AbstractCollection;
 import com.intellij.util.xmlb.annotations.Property;
 import com.intellij.util.xmlb.annotations.Transient;
 
+@Singleton
 @State(name = "ProjectDictionaryState", storages =  @Storage(file = StoragePathMacros.PROJECT_CONFIG_DIR + "/dictionaries/", stateSplitter = ProjectDictionarySplitter.class))
 public class ProjectDictionaryState implements PersistentStateComponent<ProjectDictionaryState>{
 

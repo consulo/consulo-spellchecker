@@ -15,18 +15,25 @@
  */
 package com.intellij.spellchecker.settings;
 
-import com.intellij.openapi.components.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+import javax.inject.Singleton;
+
+import org.jdom.Element;
+import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.components.State;
+import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.components.StoragePathMacros;
 import com.intellij.openapi.project.Project;
-import org.jdom.Element;
-import javax.annotation.Nonnull;
 
-import java.util.*;
-
-@State(
-  name = "SpellCheckerSettings",
-  storages = {@Storage(
-    file = StoragePathMacros.WORKSPACE_FILE)})
+@Singleton
+@State( name = "SpellCheckerSettings", storages = @Storage(StoragePathMacros.WORKSPACE_FILE))
 public class SpellCheckerSettings implements PersistentStateComponent<Element> {
   // For xml serialization
   private static final String SPELLCHECKER_MANAGER_SETTINGS_TAG = "SpellCheckerSettings";

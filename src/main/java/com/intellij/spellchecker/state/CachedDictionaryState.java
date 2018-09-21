@@ -15,25 +15,20 @@
  */
 package com.intellij.spellchecker.state;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
-import com.intellij.openapi.components.StoragePathMacros;
-import com.intellij.spellchecker.dictionary.EditableDictionary;
 
-@State(
-  name = "CachedDictionaryState",
-  storages = {@Storage(
-    file = StoragePathMacros.APP_CONFIG + "/cachedDictionary.xml")})
+@Singleton
+@State( name = "CachedDictionaryState", storages = @Storage("cachedDictionary.xml"))
 public class CachedDictionaryState extends DictionaryState implements PersistentStateComponent<DictionaryState> {
   public static final String DEFAULT_NAME = "cached";
 
+  @Inject
   public CachedDictionaryState() {
-    name = DEFAULT_NAME;
-  }
-
-  public CachedDictionaryState(EditableDictionary dictionary) {
-    super(dictionary);
     name = DEFAULT_NAME;
   }
 

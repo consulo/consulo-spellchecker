@@ -16,12 +16,16 @@
 package com.intellij.spellchecker.state;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.spellchecker.dictionary.AggregatedDictionary;
 import com.intellij.spellchecker.dictionary.ProjectDictionary;
 import com.intellij.spellchecker.dictionary.UserDictionary;
 
+@Singleton
 public class AggregatedDictionaryState {
 
   private ProjectDictionaryState projectDictionaryState;
@@ -30,12 +34,8 @@ public class AggregatedDictionaryState {
   private String currentUser;
   private Project project;
 
-
+  @Inject
   public AggregatedDictionaryState() {
-  }
-
-  public AggregatedDictionaryState(@Nonnull AggregatedDictionary dictionary) {
-    setDictionary(dictionary);
   }
 
   public void setProject(Project project) {

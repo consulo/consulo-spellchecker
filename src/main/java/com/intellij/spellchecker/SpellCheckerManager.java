@@ -25,6 +25,9 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import com.intellij.codeHighlighting.HighlightDisplayLevel;
 import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer;
 import com.intellij.openapi.application.ApplicationManager;
@@ -47,9 +50,10 @@ import com.intellij.spellchecker.util.Strings;
 import com.intellij.util.Consumer;
 import com.intellij.util.containers.ContainerUtil;
 
+@Singleton
 public class SpellCheckerManager {
 
-  private static final Logger LOG = Logger.getInstance("#com.intellij.spellchecker.SpellCheckerManager");
+  private static final Logger LOG = Logger.getInstance(SpellCheckerManager.class);
 
   private static final int MAX_SUGGESTIONS_THRESHOLD = 5;
   private static final int MAX_METRICS = 1;
@@ -70,6 +74,7 @@ public class SpellCheckerManager {
     return ServiceManager.getService(project, SpellCheckerManager.class);
   }
 
+  @Inject
   public SpellCheckerManager(Project project, SpellCheckerSettings settings) {
     this.project = project;
     this.settings = settings;
