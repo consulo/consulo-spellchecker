@@ -25,6 +25,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Iconable;
 import com.intellij.spellchecker.SpellCheckerIcons;
 import com.intellij.spellchecker.SpellCheckerManager;
+import consulo.ui.image.Image;
 
 
 public abstract class ShowSuggestions implements LocalQuickFix, Iconable
@@ -50,7 +51,7 @@ public abstract class ShowSuggestions implements LocalQuickFix, Iconable
 	}
 
 	@Override
-	public Icon getIcon(int flags)
+	public Image getIcon(int flags)
 	{
 		return SpellCheckerIcons.Spellcheck;
 	}
