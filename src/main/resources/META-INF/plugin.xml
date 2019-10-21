@@ -3,14 +3,6 @@
 	<name>Spellchecker</name>
 	<version>SNAPSHOT</version>
 
-	<actions>
-		<group id="com.intellij.spellchecker.actions.SpellingPopupActionGroup"
-			   class="com.intellij.spellchecker.actions.SpellingPopupActionGroup" text="Spelling" popup="true">
-			<add-to-group group-id="EditorPopupMenu" anchor="first"/>
-		</group>
-
-	</actions>
-
 	<extensionPoints>
 		<extensionPoint name="support" beanClass="com.intellij.lang.LanguageExtensionPoint">
 			<with attribute="implementationClass" implements="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
