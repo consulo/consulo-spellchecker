@@ -35,7 +35,6 @@ public class SpellcheckingStrategy
 	protected final Tokenizer<PsiComment> myCommentTokenizer = new CommentTokenizer();
 	protected final Tokenizer<PsiNameIdentifierOwner> myNameIdentifierOwnerTokenizer = new PsiIdentifierOwnerTokenizer();
 
-	public static final ExtensionPointName<SpellcheckingStrategy> EP_NAME = ExtensionPointName.create("com.intellij.spellchecker.support");
 	public static final Tokenizer EMPTY_TOKENIZER = new Tokenizer()
 	{
 		@Override

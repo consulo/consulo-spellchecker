@@ -1,4 +1,4 @@
-<idea-plugin>
+<consulo-plugin>
 	<id>com.intellij.spellchecker</id>
 	<name>Spellchecker</name>
 	<version>SNAPSHOT</version>
@@ -45,4 +45,4 @@
 		<applicationService serviceImplementation="com.intellij.spellchecker.state.CachedDictionaryState"/>
 		<applicationService serviceImplementation="com.intellij.spellchecker.vcs.SpellCheckerCustomizationImpl" lazy="false" />
 	</extensions>
-</idea-plugin>
+</consulo-plugin>
