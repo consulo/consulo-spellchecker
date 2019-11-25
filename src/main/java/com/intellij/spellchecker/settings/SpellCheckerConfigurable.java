@@ -15,19 +15,19 @@
  */
 package com.intellij.spellchecker.settings;
 
-import javax.annotation.Nonnull;
-import javax.inject.Inject;
-import javax.swing.JComponent;
-
-import org.jetbrains.annotations.Nls;
-import org.jetbrains.annotations.NonNls;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.spellchecker.util.SpellCheckerBundle;
-import consulo.annotations.RequiredDispatchThread;
+import consulo.ui.annotation.RequiredUIAccess;
+import org.jetbrains.annotations.Nls;
+import org.jetbrains.annotations.NonNls;
+
+import javax.annotation.Nonnull;
+import javax.inject.Inject;
+import javax.swing.*;
 
 public class SpellCheckerConfigurable implements SearchableConfigurable, Configurable.NoScroll
 {
@@ -70,7 +70,7 @@ public class SpellCheckerConfigurable implements SearchableConfigurable, Configu
 		return null;
 	}
 
-	@RequiredDispatchThread
+	@RequiredUIAccess
 	@Override
 	public JComponent createComponent()
 	{
@@ -81,14 +81,14 @@ public class SpellCheckerConfigurable implements SearchableConfigurable, Configu
 		return myPanel;
 	}
 
-	@RequiredDispatchThread
+	@RequiredUIAccess
 	@Override
 	public boolean isModified()
 	{
 		return myPanel == null || myPanel.isModified();
 	}
 
-	@RequiredDispatchThread
+	@RequiredUIAccess
 	@Override
 	public void apply() throws ConfigurationException
 	{
@@ -98,7 +98,7 @@ public class SpellCheckerConfigurable implements SearchableConfigurable, Configu
 		}
 	}
 
-	@RequiredDispatchThread
+	@RequiredUIAccess
 	@Override
 	public void reset()
 	{
@@ -108,7 +108,7 @@ public class SpellCheckerConfigurable implements SearchableConfigurable, Configu
 		}
 	}
 
-	@RequiredDispatchThread
+	@RequiredUIAccess
 	@Override
 	public void disposeUIResources()
 	{
