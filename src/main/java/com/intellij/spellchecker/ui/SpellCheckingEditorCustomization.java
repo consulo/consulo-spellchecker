@@ -15,10 +15,6 @@
  */
 package com.intellij.spellchecker.ui;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
 import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer;
 import com.intellij.codeInsight.daemon.HighlightDisplayKey;
 import com.intellij.codeInsight.intention.IntentionManager;
@@ -34,7 +30,11 @@ import com.intellij.psi.PsiFile;
 import com.intellij.spellchecker.inspections.SpellCheckingInspection;
 import com.intellij.ui.SimpleEditorCustomization;
 import com.intellij.util.Function;
-import com.intellij.util.containers.WeakHashMap;
+import consulo.util.collection.ContainerUtil;
+
+import javax.annotation.Nonnull;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Allows to enforce editors to use/don't use spell checking ignoring user-defined spelling inspection settings.
@@ -128,17 +128,12 @@ public class SpellCheckingEditorCustomization extends SimpleEditorCustomization
 
 		// Update representation.
 		DaemonCodeAnalyzer analyzer = DaemonCodeAnalyzer.getInstance(project);
-		if(analyzer != null)
-		{
-			analyzer.restart(file);
-		}
+		analyzer.restart(file);
 	}
 
 	private static class MyInspectionProfileStrategy implements Function<InspectionProfileWrapper, InspectionProfileWrapper>
 	{
-
-		private final Map<InspectionProfileWrapper, MyInspectionProfileWrapper> myWrappers = new WeakHashMap<InspectionProfileWrapper,
-				MyInspectionProfileWrapper>();
+		private final Map<InspectionProfileWrapper, MyInspectionProfileWrapper> myWrappers = ContainerUtil.createWeakMap();
 		private boolean myUseSpellCheck;
 
 		@Override
