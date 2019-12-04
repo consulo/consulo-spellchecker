@@ -15,7 +15,7 @@
  */
 package com.intellij.spellchecker;
 
-import com.intellij.openapi.diagnostic.Logger;
+import consulo.logging.Logger;
 import com.intellij.spellchecker.dictionary.Loader;
 import com.intellij.util.Consumer;
 import javax.annotation.Nonnull;

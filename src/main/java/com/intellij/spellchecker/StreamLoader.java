@@ -23,9 +23,9 @@ import java.io.InputStreamReader;
 
 import javax.annotation.Nonnull;
 
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.spellchecker.dictionary.Loader;
 import com.intellij.util.Consumer;
+import consulo.logging.Logger;
 
 public class StreamLoader implements Loader {
 

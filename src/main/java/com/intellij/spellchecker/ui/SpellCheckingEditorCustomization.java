@@ -30,7 +30,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.spellchecker.inspections.SpellCheckingInspection;
 import com.intellij.ui.SimpleEditorCustomization;
 import com.intellij.util.Function;
-import consulo.util.collection.ContainerUtil;
+import consulo.util.collection.Maps;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -133,7 +133,7 @@ public class SpellCheckingEditorCustomization extends SimpleEditorCustomization
 
 	private static class MyInspectionProfileStrategy implements Function<InspectionProfileWrapper, InspectionProfileWrapper>
 	{
-		private final Map<InspectionProfileWrapper, MyInspectionProfileWrapper> myWrappers = ContainerUtil.createWeakMap();
+		private final Map<InspectionProfileWrapper, MyInspectionProfileWrapper> myWrappers = Maps.newWeakHashMap();
 		private boolean myUseSpellCheck;
 
 		@Override

@@ -17,7 +17,7 @@ package com.intellij.spellchecker.compress;
 
 import javax.annotation.Nonnull;
 
-import com.intellij.openapi.diagnostic.Logger;
+import consulo.logging.Logger;
 
 import javax.annotation.Nullable;
 
