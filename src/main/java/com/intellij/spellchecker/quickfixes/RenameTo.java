@@ -15,31 +15,16 @@
  */
 package com.intellij.spellchecker.quickfixes;
 
-import java.awt.Component;
-import java.awt.KeyboardFocusManager;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-import javax.swing.SwingUtilities;
-
-import javax.annotation.Nullable;
 import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.ide.DataManager;
 import com.intellij.injected.editor.EditorWindow;
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.Anchor;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.impl.EditorComponentImpl;
-import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.fileEditor.impl.text.TextEditorPsiDataProvider;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Key;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.tree.injected.InjectedLanguageUtil;
@@ -48,11 +33,17 @@ import com.intellij.refactoring.rename.NameSuggestionProvider;
 import com.intellij.refactoring.rename.RenameHandlerRegistry;
 import com.intellij.spellchecker.util.SpellCheckerBundle;
 import com.intellij.util.containers.HashMap;
+import consulo.util.dataholder.Key;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.swing.*;
+import java.awt.*;
+import java.util.List;
+import java.util.Map;
 
 public class RenameTo extends ShowSuggestions implements SpellCheckerQuickFix
 {
-
 	public RenameTo(String wordWithTypo)
 	{
 		super(wordWithTypo);
@@ -76,9 +67,9 @@ public class RenameTo extends ShowSuggestions implements SpellCheckerQuickFix
 	@Nullable
 	private static DictionarySuggestionProvider findProvider()
 	{
-		Object[] extensions = Extensions.getExtensions(NameSuggestionProvider.EP_NAME);
+		List<NameSuggestionProvider> extensions = NameSuggestionProvider.EP_NAME.getExtensionList();
 
-		for(Object extension : extensions)
+		for(NameSuggestionProvider extension : extensions)
 		{
 			if(extension instanceof DictionarySuggestionProvider)
 			{
