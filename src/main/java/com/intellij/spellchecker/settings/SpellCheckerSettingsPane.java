@@ -31,7 +31,7 @@ import javax.swing.event.HyperlinkListener;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import com.intellij.ide.DataManager;
-import com.intellij.openapi.Disposable;
+import consulo.disposer.Disposable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.newEditor.OptionsEditor;
 import com.intellij.openapi.project.Project;
