@@ -20,19 +20,18 @@
  */
 package com.intellij.spellchecker;
 
-import java.awt.Color;
-import java.util.Collections;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.swing.Icon;
-
 import com.intellij.codeInsight.daemon.impl.HighlightInfoType;
 import com.intellij.codeInsight.daemon.impl.SeveritiesProvider;
 import com.intellij.icons.AllIcons;
 import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.editor.markup.TextAttributes;
+import consulo.ui.image.Image;
+
+import javax.annotation.Nonnull;
+import java.awt.*;
+import java.util.Collections;
+import java.util.List;
 
 public class SpellCheckerSeveritiesProvider extends SeveritiesProvider
 {
@@ -48,7 +47,7 @@ public class SpellCheckerSeveritiesProvider extends SeveritiesProvider
 
 		@Nonnull
 		@Override
-		public Icon getIcon()
+		public Image getIcon()
 		{
 			return AllIcons.General.InspectionsTypos;
 		}
