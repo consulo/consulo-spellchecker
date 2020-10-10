@@ -1,10 +1,10 @@
 package com.intellij.spellchecker;
 
-import com.intellij.openapi.util.IconLoader;
+import consulo.spellchecker.icon.SpellCheckerIconGroup;
 import consulo.ui.image.Image;
 
-// Generated Consulo DevKit plugin 
+@Deprecated
 public interface SpellCheckerIcons
 {
-	Image Spellcheck = IconLoader.getIcon("/icons/spellcheck.png");  // 16x16
+	Image Spellcheck = SpellCheckerIconGroup.spellcheck();  // 16x16
 }
