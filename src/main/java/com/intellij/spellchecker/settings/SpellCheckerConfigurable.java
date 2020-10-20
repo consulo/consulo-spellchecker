@@ -16,7 +16,7 @@
 package com.intellij.spellchecker.settings;
 
 import javax.annotation.Nonnull;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import javax.swing.*;
 
 import org.jetbrains.annotations.Nls;

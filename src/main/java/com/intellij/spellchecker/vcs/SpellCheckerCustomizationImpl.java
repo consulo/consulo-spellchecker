@@ -16,7 +16,7 @@
 package com.intellij.spellchecker.vcs;
 
 import javax.annotation.Nonnull;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import com.intellij.openapi.vcs.ui.SpellCheckerCustomization;
 import com.intellij.spellchecker.ui.SpellCheckingEditorCustomization;
