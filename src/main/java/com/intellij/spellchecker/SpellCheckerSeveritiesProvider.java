@@ -26,11 +26,10 @@ import com.intellij.icons.AllIcons;
 import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.editor.markup.TextAttributes;
+import consulo.ui.color.ColorValue;
 import consulo.ui.image.Image;
 
 import javax.annotation.Nonnull;
-import java.awt.*;
-import java.util.Collections;
 import java.util.List;
 
 public class SpellCheckerSeveritiesProvider extends SeveritiesProvider
@@ -57,11 +56,11 @@ public class SpellCheckerSeveritiesProvider extends SeveritiesProvider
 	@Nonnull
 	public List<HighlightInfoType> getSeveritiesHighlightInfoTypes()
 	{
-		return Collections.<HighlightInfoType>singletonList(new TYPO());
+		return List.of(new TYPO());
 	}
 
 	@Override
-	public Color getTrafficRendererColor(@Nonnull TextAttributes textAttributes)
+	public ColorValue getTrafficRendererColor(@Nonnull TextAttributes textAttributes)
 	{
 		return textAttributes.getErrorStripeColor();
 	}
