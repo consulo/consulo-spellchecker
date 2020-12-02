@@ -15,25 +15,9 @@
  */
 package com.intellij.spellchecker.settings;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.swing.JCheckBox;
-import javax.swing.JPanel;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import com.intellij.ide.DataManager;
-import consulo.disposer.Disposable;
 import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.options.newEditor.OptionsEditor;
+import com.intellij.openapi.options.ex.Settings;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.VerticalFlowLayout;
@@ -46,15 +30,19 @@ import com.intellij.spellchecker.inspections.SpellCheckingInspection;
 import com.intellij.spellchecker.util.SPFileUtil;
 import com.intellij.spellchecker.util.SpellCheckerBundle;
 import com.intellij.spellchecker.util.Strings;
-import com.intellij.ui.AddDeleteListPanel;
-import com.intellij.ui.HyperlinkLabel;
-import com.intellij.ui.IdeBorderFactory;
-import com.intellij.ui.OptionalChooserComponent;
-import com.intellij.ui.PathsChooserComponent;
-import com.intellij.ui.ScrollPaneFactory;
-import com.intellij.ui.TabbedPaneWrapper;
+import com.intellij.ui.*;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.util.Consumer;
+import consulo.disposer.Disposable;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.swing.*;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+import java.awt.*;
+import java.util.List;
+import java.util.*;
 
 public class SpellCheckerSettingsPane extends JPanel implements Disposable
 {
@@ -81,7 +69,7 @@ public class SpellCheckerSettingsPane extends JPanel implements Disposable
 			{
 				if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED)
 				{
-					final OptionsEditor optionsEditor = DataManager.getInstance().getDataContext().getData(OptionsEditor.KEY);
+					final Settings optionsEditor = DataManager.getInstance().getDataContext().getData(Settings.KEY);
 					if(optionsEditor != null)
 					{
 						final ErrorsConfigurable errorsConfigurable = optionsEditor.findConfigurable(ErrorsConfigurable.class);
