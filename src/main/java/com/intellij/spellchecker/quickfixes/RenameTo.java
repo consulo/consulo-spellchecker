@@ -32,13 +32,13 @@ import com.intellij.refactoring.actions.RenameElementAction;
 import com.intellij.refactoring.rename.NameSuggestionProvider;
 import com.intellij.refactoring.rename.RenameHandlerRegistry;
 import com.intellij.spellchecker.util.SpellCheckerBundle;
-import com.intellij.util.containers.HashMap;
 import consulo.util.dataholder.Key;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
