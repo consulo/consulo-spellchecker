@@ -15,19 +15,6 @@
  */
 package com.intellij.spellchecker.compress;
 
-import gnu.trove.THashSet;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.Nonnull;
-
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.util.text.StringUtil;
@@ -39,7 +26,14 @@ import com.intellij.spellchecker.engine.Transformation;
 import com.intellij.testFramework.PlatformTestUtil;
 import com.intellij.util.Consumer;
 import com.intellij.util.ThrowableRunnable;
+import consulo.util.collection.Sets;
+import gnu.trove.THashSet;
 import junit.framework.TestCase;
+
+import javax.annotation.Nonnull;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 @SuppressWarnings({"JUnitTestCaseWithNonTrivialConstructors"})
 public class DictionaryTest extends TestCase {
@@ -96,7 +90,7 @@ public class DictionaryTest extends TestCase {
   }
 
   public void cleanupDictionary() {
-    final Set<String> onDisk = new THashSet<String>(FileUtil.PATH_HASHING_STRATEGY);
+    final Set<String> onDisk = Sets.newHashSet(FileUtil.PATH_HASHING_STRATEGY);
     englishLoader().load(new Consumer<String>() {
       @Override
       public void consume(String s) {

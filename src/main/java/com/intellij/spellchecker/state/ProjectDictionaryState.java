@@ -15,14 +15,6 @@
  */
 package com.intellij.spellchecker.state;
 
-import gnu.trove.THashSet;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import jakarta.inject.Singleton;
-
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
@@ -33,6 +25,12 @@ import com.intellij.spellchecker.dictionary.ProjectDictionary;
 import com.intellij.util.xmlb.annotations.AbstractCollection;
 import com.intellij.util.xmlb.annotations.Property;
 import com.intellij.util.xmlb.annotations.Transient;
+import jakarta.inject.Singleton;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Singleton
 @State(name = "ProjectDictionaryState", storages =  @Storage(file = StoragePathMacros.PROJECT_CONFIG_DIR + "/dictionaries/", stateSplitter = ProjectDictionarySplitter.class))
@@ -96,7 +94,7 @@ public class ProjectDictionaryState implements PersistentStateComponent<ProjectD
   }
 
   private void retrieveProjectDictionaries() {
-    Set<EditableDictionary> dictionaries = new THashSet<EditableDictionary>();
+    Set<EditableDictionary> dictionaries = new HashSet<>();
     if (dictionaryStates != null) {
       for (DictionaryState dictionaryState : dictionaryStates) {
         dictionaryState.loadState(dictionaryState);

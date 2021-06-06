@@ -16,11 +16,10 @@
 package com.intellij.spellchecker.dictionary;
 
 import com.intellij.util.Consumer;
-import gnu.trove.THashSet;
 import org.jetbrains.annotations.NonNls;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -102,7 +101,7 @@ public class ProjectDictionary implements EditableDictionary {
     if (result == null) {
       result = new UserDictionary(activeName);
       if (dictionaries == null) {
-        dictionaries = new THashSet<EditableDictionary>();
+        dictionaries = new HashSet<>();
       }
       dictionaries.add(result);
     }

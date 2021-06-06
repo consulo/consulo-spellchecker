@@ -15,10 +15,9 @@
  */
 package com.intellij.spellchecker.engine;
 
-import com.intellij.util.containers.hash.HashSet;
 import javax.annotation.Nullable;
-
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @SuppressWarnings({"ALL"})
