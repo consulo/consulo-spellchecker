@@ -27,7 +27,6 @@ import com.intellij.testFramework.PlatformTestUtil;
 import com.intellij.util.Consumer;
 import com.intellij.util.ThrowableRunnable;
 import consulo.util.collection.Sets;
-import gnu.trove.THashSet;
 import junit.framework.TestCase;
 
 import javax.annotation.Nonnull;
@@ -68,7 +67,7 @@ public class DictionaryTest extends TestCase {
     final Transformation transform = new Transformation();
     CompressedDictionary dictionary = CompressedDictionary.create(englishLoader(), transform);
 
-    final Set<String> onDisk = new THashSet<String>();
+    final Set<String> onDisk = new HashSet<String>();
     englishLoader().load(new Consumer<String>() {
       @Override
       public void consume(String s) {
@@ -155,8 +154,8 @@ public class DictionaryTest extends TestCase {
   @SuppressWarnings({"unchecked"})
   private static Pair<Set<String>, Set<String>> createWordSets(String name, final int maxCount, final int mod) {
     Loader loader = new StreamLoader(DefaultBundledDictionariesProvider.class.getResourceAsStream(name), name);
-    final Set<String> wordsToStore = new THashSet<String>();
-    final Set<String> wordsToCheck = new THashSet<String>();
+    final Set<String> wordsToStore = new HashSet<String>();
+    final Set<String> wordsToCheck = new HashSet<String>();
     final Transformation transform = new Transformation();
     loader.load(new Consumer<String>() {
       private int counter = 0;
