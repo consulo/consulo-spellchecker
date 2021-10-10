@@ -15,10 +15,7 @@
  */
 package com.intellij.spellchecker.tokenizer;
 
-import javax.annotation.Nonnull;
-
 import com.intellij.codeInspection.SuppressionUtil;
-import com.intellij.openapi.extensions.ExtensionPointName;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiElement;
@@ -29,6 +26,9 @@ import com.intellij.spellchecker.quickfixes.AcceptWordAsCorrect;
 import com.intellij.spellchecker.quickfixes.ChangeTo;
 import com.intellij.spellchecker.quickfixes.RenameTo;
 import com.intellij.spellchecker.quickfixes.SpellCheckerQuickFix;
+import consulo.annotation.access.RequiredReadAction;
+
+import javax.annotation.Nonnull;
 
 public class SpellcheckingStrategy
 {
@@ -48,6 +48,7 @@ public class SpellcheckingStrategy
 	private static final SpellCheckerQuickFix[] BATCH_FIXES = new SpellCheckerQuickFix[]{new AcceptWordAsCorrect()};
 
 	@Nonnull
+	@RequiredReadAction
 	public Tokenizer getTokenizer(PsiElement element)
 	{
 		if(element instanceof PsiNameIdentifierOwner)
@@ -60,6 +61,12 @@ public class SpellcheckingStrategy
 			{
 				return EMPTY_TOKENIZER;
 			}
+
+			//don't check shebang
+			if(element.getTextOffset() == 0 && element.getText().startsWith("#!"))
+			{
+				return EMPTY_TOKENIZER;
+			}
 			return myCommentTokenizer;
 		}
 		if(element instanceof PsiPlainText)
@@ -69,8 +76,7 @@ public class SpellcheckingStrategy
 		return EMPTY_TOKENIZER;
 	}
 
-	public SpellCheckerQuickFix[] getRegularFixes(PsiElement element, int offset, @Nonnull TextRange textRange, boolean useRename,
-			String wordWithTypo)
+	public SpellCheckerQuickFix[] getRegularFixes(PsiElement element, int offset, @Nonnull TextRange textRange, boolean useRename, String wordWithTypo)
 	{
 		return getDefaultRegularFixes(useRename, wordWithTypo);
 	}
