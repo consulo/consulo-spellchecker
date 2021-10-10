@@ -17,10 +17,8 @@ package com.intellij.spellchecker.tokenizer;
 
 import com.intellij.codeInspection.SuppressionUtil;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiComment;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiNameIdentifierOwner;
-import com.intellij.psi.PsiPlainText;
+import com.intellij.psi.*;
+import com.intellij.psi.impl.source.tree.injected.InjectedLanguageUtil;
 import com.intellij.spellchecker.inspections.PlainTextSplitter;
 import com.intellij.spellchecker.quickfixes.AcceptWordAsCorrect;
 import com.intellij.spellchecker.quickfixes.ChangeTo;
@@ -43,7 +41,7 @@ public class SpellcheckingStrategy
 		}
 	};
 
-	public static final Tokenizer<PsiElement> TEXT_TOKENIZER = new TokenizerBase<PsiElement>(PlainTextSplitter.getInstance());
+	public static final Tokenizer<PsiElement> TEXT_TOKENIZER = new TokenizerBase<>(PlainTextSplitter.getInstance());
 
 	private static final SpellCheckerQuickFix[] BATCH_FIXES = new SpellCheckerQuickFix[]{new AcceptWordAsCorrect()};
 
@@ -51,10 +49,21 @@ public class SpellcheckingStrategy
 	@RequiredReadAction
 	public Tokenizer getTokenizer(PsiElement element)
 	{
+		if(element instanceof PsiWhiteSpace)
+		{
+			return EMPTY_TOKENIZER;
+		}
+
+		if(element instanceof PsiLanguageInjectionHost && InjectedLanguageUtil.hasInjections((PsiLanguageInjectionHost) element))
+		{
+			return EMPTY_TOKENIZER;
+		}
+
 		if(element instanceof PsiNameIdentifierOwner)
 		{
 			return myNameIdentifierOwnerTokenizer;
 		}
+
 		if(element instanceof PsiComment)
 		{
 			if(SuppressionUtil.isSuppressionComment(element))
@@ -69,6 +78,7 @@ public class SpellcheckingStrategy
 			}
 			return myCommentTokenizer;
 		}
+
 		if(element instanceof PsiPlainText)
 		{
 			return TEXT_TOKENIZER;
