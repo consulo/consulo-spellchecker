@@ -1,7 +1,10 @@
 <consulo-plugin>
 	<id>com.intellij.spellchecker</id>
-	<name>Spellchecker</name>
+	<name>Simple Spellchecker</name>
 	<version>SNAPSHOT</version>
+	<tags>
+		<tag>editor.spelling</tag>
+	</tags>
 
 	<extensionPoints>
 		<extensionPoint name="support" beanClass="com.intellij.lang.LanguageExtensionPoint">
