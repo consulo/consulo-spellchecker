@@ -104,7 +104,7 @@ public class SpellcheckingStrategy
 		}
 		else if(element != null)
 		{
-			result.add(new ChangeTo(typo));
+			result.add(new ChangeTo(typo, element, range));
 		}
 
 		if(element == null)
