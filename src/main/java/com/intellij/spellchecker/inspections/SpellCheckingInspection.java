@@ -29,10 +29,11 @@ import com.intellij.spellchecker.quickfixes.SpellCheckerQuickFix;
 import com.intellij.spellchecker.tokenizer.*;
 import com.intellij.spellchecker.util.SpellCheckerBundle;
 import com.intellij.util.Consumer;
+import consulo.annotation.access.RequiredReadAction;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NonNls;
-
 import javax.annotation.Nonnull;
+
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
@@ -190,37 +191,34 @@ public class SpellCheckingInspection extends LocalInspectionTool
 	}
 
 
-	private static void addBatchDescriptor(PsiElement element, int offset, @Nonnull TextRange textRange, @Nonnull ProblemsHolder holder)
+	private static void addBatchDescriptor(PsiElement element,
+										   @Nonnull TextRange textRange,
+										   @Nonnull ProblemsHolder holder)
 	{
-		final SpellcheckingStrategy strategy = getSpellcheckingStrategy(element, element.getLanguage());
-
-		SpellCheckerQuickFix[] fixes = strategy != null ? strategy.getBatchFixes(element, offset,
-				textRange) : SpellcheckingStrategy.getDefaultBatchFixes();
-		final ProblemDescriptor problemDescriptor = createProblemDescriptor(element, offset, textRange, holder, fixes, false);
+		SpellCheckerQuickFix[] fixes = SpellcheckingStrategy.getDefaultBatchFixes();
+		ProblemDescriptor problemDescriptor = createProblemDescriptor(element, textRange, fixes, false);
 		holder.registerProblem(problemDescriptor);
 	}
 
-	private static void addRegularDescriptor(PsiElement element, int offset, @Nonnull TextRange textRange, @Nonnull ProblemsHolder holder,
-			boolean useRename, String wordWithTypo)
+	private static void addRegularDescriptor(PsiElement element, @Nonnull TextRange textRange, @Nonnull ProblemsHolder holder,
+											 boolean useRename, String wordWithTypo)
 	{
 		SpellcheckingStrategy strategy = getSpellcheckingStrategy(element, element.getLanguage());
 
-		SpellCheckerQuickFix[] fixes = strategy != null ? strategy.getRegularFixes(element, offset, textRange, useRename,
-				wordWithTypo) : SpellcheckingStrategy.getDefaultRegularFixes(useRename, wordWithTypo);
+		LocalQuickFix[] fixes = strategy != null
+				? strategy.getRegularFixes(element, textRange, useRename, wordWithTypo)
+				: SpellcheckingStrategy.getDefaultRegularFixes(useRename, wordWithTypo, element, textRange);
 
-		final ProblemDescriptor problemDescriptor = createProblemDescriptor(element, offset, textRange, holder, fixes, true);
+		final ProblemDescriptor problemDescriptor = createProblemDescriptor(element, textRange, fixes, true);
 		holder.registerProblem(problemDescriptor);
 	}
 
-	private static ProblemDescriptor createProblemDescriptor(PsiElement element, int offset, TextRange textRange, ProblemsHolder holder,
-			SpellCheckerQuickFix[] fixes, boolean onTheFly)
+	private static ProblemDescriptor createProblemDescriptor(PsiElement element, TextRange textRange,
+															 LocalQuickFix[] fixes,
+															 boolean onTheFly)
 	{
 		final String description = SpellCheckerBundle.message("typo.in.word.ref");
-		final TextRange highlightRange = TextRange.from(offset + textRange.getStartOffset(), textRange.getLength());
-		assert highlightRange.getStartOffset() >= 0;
-
-		return holder.getManager().createProblemDescriptor(element, highlightRange, description, ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
-				onTheFly, fixes);
+		return new ProblemDescriptorBase(element, element, description, fixes, ProblemHighlightType.GENERIC_ERROR_OR_WARNING, false, textRange, onTheFly, onTheFly);
 	}
 
 	@SuppressWarnings({"PublicField"})
@@ -236,7 +234,7 @@ public class SpellCheckingInspection extends LocalInspectionTool
 		verticalBox.add(new SingleCheckboxOptionsPanel(SpellCheckerBundle.message("process.literals"), this, "processLiterals"));
 		verticalBox.add(new SingleCheckboxOptionsPanel(SpellCheckerBundle.message("process.comments"), this, "processComments"));
 	/*HyperlinkLabel linkToSettings = new HyperlinkLabel(SpellCheckerBundle.message("link.to.settings"));
-    linkToSettings.addHyperlinkListener(new HyperlinkListener() {
+	linkToSettings.addHyperlinkListener(new HyperlinkListener() {
       public void hyperlinkUpdate(final HyperlinkEvent e) {
         if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
           final OptionsEditor optionsEditor = OptionsEditor.KEY.getData(DataManager.getInstance().getDataContext());
@@ -273,7 +271,7 @@ public class SpellCheckingInspection extends LocalInspectionTool
 
 		@Override
 		public void consumeToken(final PsiElement element, final String text, final boolean useRename, final int offset, TextRange rangeToCheck,
-				Splitter splitter)
+								 Splitter splitter)
 		{
 			myElement = element;
 			myText = text;
@@ -283,10 +281,11 @@ public class SpellCheckingInspection extends LocalInspectionTool
 		}
 
 		@Override
-		public void consume(TextRange textRange)
+		@RequiredReadAction
+		public void consume(TextRange range)
 		{
-			final String word = textRange.substring(myText);
-			if(myHolder.isOnTheFly() && myAlreadyChecked.contains(word))
+			String word = range.substring(myText);
+			if(!myHolder.isOnTheFly() && myAlreadyChecked.contains(word))
 			{
 				return;
 			}
@@ -297,17 +296,26 @@ public class SpellCheckingInspection extends LocalInspectionTool
 				return;
 			}
 
-			boolean hasProblems = myManager.hasProblem(word);
-			if(hasProblems)
+			if(myManager.hasProblem(word))
 			{
+				//Use tokenizer to generate accurate range in element (e.g. in case of escape sequences in element)
+				SpellcheckingStrategy strategy = getSpellcheckingStrategy(myElement, myElement.getLanguage());
+
+				final Tokenizer tokenizer = strategy != null ? strategy.getTokenizer(myElement) : null;
+				if(tokenizer != null)
+				{
+					range = tokenizer.getHighlightingRange(myElement, myOffset, range);
+				}
+				assert range.getStartOffset() >= 0;
+
 				if(myHolder.isOnTheFly())
 				{
-					addRegularDescriptor(myElement, myOffset, textRange, myHolder, myUseRename, word);
+					addRegularDescriptor(myElement, range, myHolder, myUseRename, word);
 				}
 				else
 				{
 					myAlreadyChecked.add(word);
-					addBatchDescriptor(myElement, myOffset, textRange, myHolder);
+					addBatchDescriptor(myElement, range, myHolder);
 				}
 			}
 		}

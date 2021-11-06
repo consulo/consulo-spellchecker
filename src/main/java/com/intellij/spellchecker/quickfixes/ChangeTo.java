@@ -18,22 +18,23 @@ package com.intellij.spellchecker.quickfixes;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.codeInsight.lookup.LookupManager;
+import com.intellij.codeInspection.LocalQuickFix;
 import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.codeInspection.ProblemDescriptorBase;
-import com.intellij.openapi.actionSystem.Anchor;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Iconable;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiUtilBase;
 import com.intellij.spellchecker.util.SpellCheckerBundle;
-import javax.annotation.Nonnull;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChangeTo extends ShowSuggestions implements SpellCheckerQuickFix {
+public class ChangeTo extends ShowSuggestions implements LocalQuickFix, Iconable {
 
   public ChangeTo(String wordWithTypo) {
     super(wordWithTypo);
@@ -49,12 +50,6 @@ public class ChangeTo extends ShowSuggestions implements SpellCheckerQuickFix {
   public String getFamilyName() {
     return SpellCheckerBundle.message("change.to");
   }
-
-  @Nonnull
-  public Anchor getPopupActionAnchor() {
-    return Anchor.FIRST;
-  }
-
 
   public void applyFix(@Nonnull Project project, @Nonnull ProblemDescriptor descriptor) {
     PsiElement element = descriptor.getPsiElement();
@@ -82,8 +77,5 @@ public class ChangeTo extends ShowSuggestions implements SpellCheckerQuickFix {
     items = lookupItems.toArray(items);
     LookupManager lookupManager = LookupManager.getInstance(project);
     lookupManager.showLookup(editor, items);
-
   }
-
-
 }

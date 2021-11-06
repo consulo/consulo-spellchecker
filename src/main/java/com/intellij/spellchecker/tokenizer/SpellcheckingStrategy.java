@@ -15,18 +15,18 @@
  */
 package com.intellij.spellchecker.tokenizer;
 
+import com.intellij.codeInspection.LocalQuickFix;
 import com.intellij.codeInspection.SuppressionUtil;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.tree.injected.InjectedLanguageUtil;
 import com.intellij.spellchecker.inspections.PlainTextSplitter;
-import com.intellij.spellchecker.quickfixes.AcceptWordAsCorrect;
-import com.intellij.spellchecker.quickfixes.ChangeTo;
-import com.intellij.spellchecker.quickfixes.RenameTo;
-import com.intellij.spellchecker.quickfixes.SpellCheckerQuickFix;
+import com.intellij.spellchecker.quickfixes.*;
 import consulo.annotation.access.RequiredReadAction;
-
 import javax.annotation.Nonnull;
+
+import javax.annotation.Nullable;
+import java.util.ArrayList;
 
 public class SpellcheckingStrategy
 {
@@ -86,22 +86,42 @@ public class SpellcheckingStrategy
 		return EMPTY_TOKENIZER;
 	}
 
-	public SpellCheckerQuickFix[] getRegularFixes(PsiElement element, int offset, @Nonnull TextRange textRange, boolean useRename, String wordWithTypo)
+	public LocalQuickFix[] getRegularFixes(PsiElement element,
+										   @Nonnull TextRange textRange,
+										   boolean useRename,
+										   String typo)
 	{
-		return getDefaultRegularFixes(useRename, wordWithTypo);
+		return getDefaultRegularFixes(useRename, typo, element, textRange);
 	}
 
-	public static SpellCheckerQuickFix[] getDefaultRegularFixes(boolean useRename, String wordWithTypo)
+	public static LocalQuickFix[] getDefaultRegularFixes(boolean useRename, String typo, @Nullable PsiElement element, @Nonnull TextRange range)
 	{
-		return new SpellCheckerQuickFix[]{
-				(useRename ? new RenameTo(wordWithTypo) : new ChangeTo(wordWithTypo)),
-				new AcceptWordAsCorrect(wordWithTypo)
-		};
-	}
+		ArrayList<LocalQuickFix> result = new ArrayList<>();
 
-	public SpellCheckerQuickFix[] getBatchFixes(PsiElement element, int offset, @Nonnull TextRange textRange)
-	{
-		return getDefaultBatchFixes();
+		if(useRename)
+		{
+			result.add(new RenameTo(typo));
+		}
+		else if(element != null)
+		{
+			result.add(new ChangeTo(typo));
+		}
+
+		if(element == null)
+		{
+			result.add(new SaveTo(typo));
+			return result.toArray(LocalQuickFix.EMPTY_ARRAY);
+		}
+
+		//		final SpellCheckerSettings settings = SpellCheckerSettings.getInstance(element.getProject());
+		//		if(settings.isUseSingleDictionaryToSave())
+		//		{
+		//			result.add(new SaveTo(typo, DictionaryLevel.getLevelByName(settings.getDictionaryToSave())));
+		//			return result.toArray(LocalQuickFix.EMPTY_ARRAY);
+		//		}
+
+		result.add(new SaveTo(typo));
+		return result.toArray(LocalQuickFix.EMPTY_ARRAY);
 	}
 
 	public static SpellCheckerQuickFix[] getDefaultBatchFixes()

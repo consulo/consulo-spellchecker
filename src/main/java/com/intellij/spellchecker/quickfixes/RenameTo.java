@@ -79,14 +79,6 @@ public class RenameTo extends ShowSuggestions implements SpellCheckerQuickFix
 		return null;
 	}
 
-
-	@Override
-	@Nonnull
-	public Anchor getPopupActionAnchor()
-	{
-		return Anchor.FIRST;
-	}
-
 	@Override
 	@SuppressWarnings({"SSBasedInspection"})
 	public void applyFix(@Nonnull final Project project, @Nonnull final ProblemDescriptor descriptor)

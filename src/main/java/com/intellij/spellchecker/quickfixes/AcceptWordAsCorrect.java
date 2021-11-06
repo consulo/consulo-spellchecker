@@ -54,13 +54,6 @@ public class AcceptWordAsCorrect implements SpellCheckerQuickFix
 	}
 
 	@Override
-	@Nonnull
-	public Anchor getPopupActionAnchor()
-	{
-		return Anchor.LAST;
-	}
-
-	@Override
 	public void applyFix(@Nonnull Project project, @Nonnull ProblemDescriptor descriptor)
 	{
 		SpellCheckerManager spellCheckerManager = SpellCheckerManager.getInstance(project);
