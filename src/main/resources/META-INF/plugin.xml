@@ -1,4 +1,4 @@
-<consulo-plugin>
+<consulo-plugin url="https://github.com/consulo/consulo-spellchecker">
 	<id>com.intellij.spellchecker</id>
 	<name>Simple Spellchecker</name>
 	<version>SNAPSHOT</version>
