@@ -15,18 +15,19 @@
  */
 package com.intellij.spellchecker.settings;
 
-import javax.annotation.Nonnull;
-import jakarta.inject.Inject;
-import javax.swing.*;
-
-import org.jetbrains.annotations.Nls;
-import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.options.SearchableConfigurable;
-import com.intellij.openapi.project.Project;
 import com.intellij.spellchecker.util.SpellCheckerBundle;
+import consulo.configurable.Configurable;
+import consulo.configurable.ConfigurationException;
+import consulo.configurable.SearchableConfigurable;
+import consulo.disposer.Disposable;
 import consulo.disposer.Disposer;
+import consulo.project.Project;
 import consulo.ui.annotation.RequiredUIAccess;
+import jakarta.inject.Inject;
+import org.jetbrains.annotations.Nls;
+
+import javax.annotation.Nonnull;
+import javax.swing.*;
 
 public class SpellCheckerConfigurable implements SearchableConfigurable, Configurable.NoScroll
 {
@@ -70,7 +71,7 @@ public class SpellCheckerConfigurable implements SearchableConfigurable, Configu
 
 	@RequiredUIAccess
 	@Override
-	public JComponent createComponent()
+	public JComponent createComponent(@Nonnull Disposable uiDisposable)
 	{
 		if(myPanel == null)
 		{

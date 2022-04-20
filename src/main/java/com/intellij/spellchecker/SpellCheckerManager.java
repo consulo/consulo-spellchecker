@@ -15,14 +15,6 @@
  */
 package com.intellij.spellchecker;
 
-import com.intellij.codeHighlighting.HighlightDisplayLevel;
-import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectManager;
-import com.intellij.psi.PsiManager;
-import com.intellij.psi.impl.PsiModificationTrackerImpl;
 import com.intellij.spellchecker.dictionary.EditableDictionary;
 import com.intellij.spellchecker.dictionary.Loader;
 import com.intellij.spellchecker.engine.SpellCheckerEngine;
@@ -32,16 +24,24 @@ import com.intellij.spellchecker.settings.SpellCheckerSettings;
 import com.intellij.spellchecker.state.StateLoader;
 import com.intellij.spellchecker.util.SPFileUtil;
 import com.intellij.spellchecker.util.Strings;
-import com.intellij.util.Consumer;
-import com.intellij.util.containers.ContainerUtil;
+import consulo.application.ApplicationManager;
+import consulo.ide.ServiceManager;
+import consulo.language.editor.DaemonCodeAnalyzer;
+import consulo.language.editor.rawHighlight.HighlightDisplayLevel;
+import consulo.language.psi.PsiManager;
+import consulo.language.psi.PsiModificationTracker;
 import consulo.logging.Logger;
+import consulo.project.Project;
+import consulo.project.ProjectManager;
+import consulo.util.collection.ContainerUtil;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import jakarta.inject.Inject;
-import jakarta.inject.Singleton;
 import java.io.InputStream;
 import java.util.*;
+import java.util.function.Consumer;
 
 @Singleton
 public class SpellCheckerManager {
@@ -105,7 +105,7 @@ public class SpellCheckerManager {
       for (String folder : settings.getDictionaryFoldersPaths()) {
         SPFileUtil.processFilesRecursively(folder, new Consumer<String>() {
           @Override
-          public void consume(final String s) {
+          public void accept(final String s) {
             boolean dictionaryShouldBeLoad =!disabledDictionaries.contains(s);
             boolean dictionaryIsLoad = spellChecker.isDictionaryLoad(s);
             if (dictionaryIsLoad && !dictionaryShouldBeLoad) {
@@ -143,7 +143,7 @@ public class SpellCheckerManager {
     final StateLoader stateLoader = new StateLoader(project);
     stateLoader.load(new Consumer<String>() {
       @Override
-      public void consume(String s) {
+      public void accept(String s) {
         //do nothing - in this loader we don't worry about word list itself - the whole dictionary will be restored
       }
     });
@@ -168,7 +168,7 @@ public class SpellCheckerManager {
       for (String folder : settings.getDictionaryFoldersPaths()) {
         SPFileUtil.processFilesRecursively(folder, new Consumer<String>() {
           @Override
-          public void consume(final String s) {
+          public void accept(final String s) {
             if (!disabledDictionaries.contains(s)) {
               loaders.add(new FileLoader(s, s));
             }
@@ -194,14 +194,13 @@ public class SpellCheckerManager {
     final String transformed = spellChecker.getTransformation().transform(word);
     if (transformed != null) {
       userDictionary.addToDictionary(transformed);
-      final PsiModificationTrackerImpl modificationTracker =
-        (PsiModificationTrackerImpl)PsiManager.getInstance(project).getModificationTracker();
+      final PsiModificationTracker modificationTracker = PsiManager.getInstance(project).getModificationTracker();
       modificationTracker.incCounter();
     }
   }
 
   public void updateUserDictionary(@Nullable Collection<String> words) {
-    userDictionary.replaceAll(words);
+    userDictionary.replaceAll(words);                                                            
     restartInspections();
   }
 

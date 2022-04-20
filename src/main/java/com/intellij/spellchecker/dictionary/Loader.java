@@ -16,9 +16,7 @@
 package com.intellij.spellchecker.dictionary;
 
 import javax.annotation.Nonnull;
-
-import com.intellij.util.Consumer;
-
+import java.util.function.Consumer;
 
 public interface Loader {
 

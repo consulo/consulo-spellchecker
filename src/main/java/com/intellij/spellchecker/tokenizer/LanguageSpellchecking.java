@@ -15,15 +15,17 @@
  */
 package com.intellij.spellchecker.tokenizer;
 
-import com.intellij.lang.LanguageExtension;
+import consulo.language.LanguageExtension;
 
 /**
  * @author yole
  */
-public class LanguageSpellchecking extends LanguageExtension<SpellcheckingStrategy> {
-  public static final LanguageSpellchecking INSTANCE = new LanguageSpellchecking();
-  
-  private LanguageSpellchecking() {
-    super("com.intellij.spellchecker.support", new SpellcheckingStrategy());
-  }
+public class LanguageSpellchecking extends LanguageExtension<SpellcheckingStrategy>
+{
+	public static final LanguageSpellchecking INSTANCE = new LanguageSpellchecking();
+
+	private LanguageSpellchecking()
+	{
+		super("com.intellij.spellchecker.support", new SpellcheckingStrategy());
+	}
 }

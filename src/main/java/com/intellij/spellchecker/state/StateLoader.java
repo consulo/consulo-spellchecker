@@ -15,15 +15,13 @@
  */
 package com.intellij.spellchecker.state;
 
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.project.Project;
 import com.intellij.spellchecker.dictionary.EditableDictionary;
 import com.intellij.spellchecker.dictionary.EditableDictionaryLoader;
-import com.intellij.util.Consumer;
+import consulo.project.Project;
+
 import javax.annotation.Nonnull;
-
 import java.util.Set;
-
+import java.util.function.Consumer;
 
 public class StateLoader implements EditableDictionaryLoader {
 
@@ -36,7 +34,7 @@ public class StateLoader implements EditableDictionaryLoader {
 
 
   public void load(@Nonnull Consumer<String> consumer) {
-    AggregatedDictionaryState state = ServiceManager.getService(project, AggregatedDictionaryState.class);
+    AggregatedDictionaryState state = project.getInstance(AggregatedDictionaryState.class);
     state.setProject(project);
     state.loadState();
     dictionary = state.getDictionary();
@@ -46,7 +44,7 @@ public class StateLoader implements EditableDictionaryLoader {
     final Set<String> storedWords = dictionary.getWords();
     if (storedWords != null) {
       for (String word : storedWords) {
-        consumer.consume(word);
+        consumer.accept(word);
       }
     }
 

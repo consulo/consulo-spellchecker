@@ -15,25 +15,17 @@
  */
 package com.intellij.spellchecker.settings;
 
-import com.intellij.ide.DataManager;
-import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.options.ex.Settings;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.ui.VerticalFlowLayout;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.profile.codeInspection.ui.ErrorsConfigurable;
 import com.intellij.spellchecker.SpellCheckerManager;
 import com.intellij.spellchecker.dictionary.EditableDictionary;
-import com.intellij.spellchecker.inspections.SpellCheckingInspection;
 import com.intellij.spellchecker.util.SPFileUtil;
 import com.intellij.spellchecker.util.SpellCheckerBundle;
 import com.intellij.spellchecker.util.Strings;
-import com.intellij.ui.*;
-import com.intellij.ui.components.JBLabel;
-import com.intellij.util.Consumer;
+import consulo.configurable.ConfigurationException;
 import consulo.disposer.Disposable;
+import consulo.project.Project;
+import consulo.ui.ex.awt.*;
+import consulo.util.io.FileUtil;
+import consulo.util.lang.Pair;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -43,6 +35,7 @@ import javax.swing.event.HyperlinkListener;
 import java.awt.*;
 import java.util.List;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class SpellCheckerSettingsPane extends JPanel implements Disposable
 {
@@ -67,25 +60,26 @@ public class SpellCheckerSettingsPane extends JPanel implements Disposable
 			@Override
 			public void hyperlinkUpdate(final HyperlinkEvent e)
 			{
-				if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED)
-				{
-					final Settings optionsEditor = DataManager.getInstance().getDataContext().getData(Settings.KEY);
-					if(optionsEditor != null)
-					{
-						final ErrorsConfigurable errorsConfigurable = optionsEditor.findConfigurable(ErrorsConfigurable.class);
-						if(errorsConfigurable != null)
-						{
-							optionsEditor.clearSearchAndSelect(errorsConfigurable).doWhenDone(new Runnable()
-							{
-								@Override
-								public void run()
-								{
-									errorsConfigurable.selectInspectionTool(SpellCheckingInspection.SPELL_CHECKING_INSPECTION_TOOL_NAME);
-								}
-							});
-						}
-					}
-				}
+				// TODO
+//				if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED)
+//				{
+//					final Settings optionsEditor = DataManager.getInstance().getDataContext(SpellCheckerSettingsPane.this).getData(Settings.KEY);
+//					if(optionsEditor != null)
+//					{
+//						final ErrorsConfigurable errorsConfigurable = optionsEditor.findConfigurable(ErrorsConfigurable.class);
+//						if(errorsConfigurable != null)
+//						{
+//							optionsEditor.clearSearchAndSelect(errorsConfigurable).doWhenDone(new Runnable()
+//							{
+//								@Override
+//								public void run()
+//								{
+//									errorsConfigurable.selectInspectionTool(SpellCheckingInspection.SPELL_CHECKING_INSPECTION_TOOL_NAME);
+//								}
+//							});
+//						}
+//					}
+//				}
 			}
 		});
 
@@ -116,7 +110,7 @@ public class SpellCheckerSettingsPane extends JPanel implements Disposable
 				SPFileUtil.processFilesRecursively(path, new Consumer<String>()
 				{
 					@Override
-					public void consume(final String s)
+					public void accept(final String s)
 					{
 						currentDictionaries.add(Pair.create(s, true));
 					}
@@ -284,7 +278,7 @@ public class SpellCheckerSettingsPane extends JPanel implements Disposable
 			SPFileUtil.processFilesRecursively(folder, new Consumer<String>()
 			{
 				@Override
-				public void consume(final String s)
+				public void accept(final String s)
 				{
 					myAllDictionaries.add(Pair.create(s, !disabledDictionaries.contains(s)));
 				}

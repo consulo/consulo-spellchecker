@@ -15,30 +15,34 @@
  */
 package com.intellij.spellchecker.inspections;
 
-import com.intellij.codeHighlighting.HighlightDisplayLevel;
-import com.intellij.codeInspection.*;
-import com.intellij.codeInspection.ui.SingleCheckboxOptionsPanel;
-import com.intellij.lang.*;
-import com.intellij.lang.refactoring.NamesValidator;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.tree.IElementType;
 import com.intellij.spellchecker.SpellCheckerManager;
 import com.intellij.spellchecker.quickfixes.SpellCheckerQuickFix;
 import com.intellij.spellchecker.tokenizer.*;
 import com.intellij.spellchecker.util.SpellCheckerBundle;
-import com.intellij.util.Consumer;
 import consulo.annotation.access.RequiredReadAction;
+import consulo.document.util.TextRange;
+import consulo.language.Language;
+import consulo.language.ast.ASTNode;
+import consulo.language.ast.IElementType;
+import consulo.language.editor.inspection.*;
+import consulo.language.editor.inspection.ui.SingleCheckboxOptionsPanel;
+import consulo.language.editor.rawHighlight.HighlightDisplayLevel;
+import consulo.language.editor.refactoring.LanguageNamesValidation;
+import consulo.language.editor.refactoring.NamesValidator;
+import consulo.language.parser.LanguageParserDefinitions;
+import consulo.language.parser.ParserDefinition;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiElementVisitor;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NonNls;
-import javax.annotation.Nonnull;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 
 public class SpellCheckingInspection extends LocalInspectionTool
 {
@@ -282,7 +286,7 @@ public class SpellCheckingInspection extends LocalInspectionTool
 
 		@Override
 		@RequiredReadAction
-		public void consume(TextRange range)
+		public void accept(TextRange range)
 		{
 			String word = range.substring(myText);
 			if(!myHolder.isOnTheFly() && myAlreadyChecked.contains(word))

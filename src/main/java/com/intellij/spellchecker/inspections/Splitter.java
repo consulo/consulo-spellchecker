@@ -15,11 +15,11 @@
  */
 package com.intellij.spellchecker.inspections;
 
-import com.intellij.openapi.util.TextRange;
-import com.intellij.util.Consumer;
+import consulo.document.util.TextRange;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
+import java.util.function.Consumer;
 
 public interface Splitter {
   void split(@Nullable String text, @Nonnull TextRange range, Consumer<TextRange> consumer);

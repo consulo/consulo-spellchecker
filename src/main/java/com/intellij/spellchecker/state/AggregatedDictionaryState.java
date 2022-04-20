@@ -15,14 +15,14 @@
  */
 package com.intellij.spellchecker.state;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Singleton;
-
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.project.Project;
 import com.intellij.spellchecker.dictionary.AggregatedDictionary;
 import com.intellij.spellchecker.dictionary.ProjectDictionary;
 import com.intellij.spellchecker.dictionary.UserDictionary;
+import consulo.application.Application;
+import consulo.platform.Platform;
+import consulo.project.Project;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 @Singleton
 public class AggregatedDictionaryState {
@@ -55,13 +55,11 @@ public class AggregatedDictionaryState {
     return dictionary;
   }
 
-
-
   public void loadState() {
     assert project != null;
-    cachedDictionaryState = ServiceManager.getService(CachedDictionaryState.class);
-    projectDictionaryState = ServiceManager.getService(project, ProjectDictionaryState.class);
-    currentUser = System.getProperty("user.name");
+    cachedDictionaryState = Application.get().getInstance(CachedDictionaryState.class);
+    projectDictionaryState = project.getInstance(ProjectDictionaryState.class);
+    currentUser = Platform.current().user().name();
     retrieveDictionaries();
   }
 

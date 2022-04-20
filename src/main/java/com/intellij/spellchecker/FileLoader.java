@@ -15,14 +15,14 @@
  */
 package com.intellij.spellchecker;
 
-import consulo.logging.Logger;
 import com.intellij.spellchecker.dictionary.Loader;
-import com.intellij.util.Consumer;
-import javax.annotation.Nonnull;
+import consulo.logging.Logger;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.function.Consumer;
 
 
 @SuppressWarnings({"IOResourceOpenedButNotSafelyClosed"})

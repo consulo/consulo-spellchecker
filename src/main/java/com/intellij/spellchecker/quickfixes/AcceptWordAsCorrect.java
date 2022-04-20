@@ -15,16 +15,15 @@
  */
 package com.intellij.spellchecker.quickfixes;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.codeInspection.ProblemDescriptor;
-import com.intellij.codeInspection.ProblemDescriptorUtil;
-import com.intellij.openapi.actionSystem.Anchor;
-import com.intellij.openapi.project.Project;
 import com.intellij.spellchecker.SpellCheckerIcons;
 import com.intellij.spellchecker.SpellCheckerManager;
 import com.intellij.spellchecker.util.SpellCheckerBundle;
+import consulo.language.editor.inspection.ProblemDescriptor;
+import consulo.language.editor.inspection.ProblemDescriptorUtil;
+import consulo.project.Project;
 import consulo.ui.image.Image;
+
+import javax.annotation.Nonnull;
 
 public class AcceptWordAsCorrect implements SpellCheckerQuickFix
 {

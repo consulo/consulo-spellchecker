@@ -15,13 +15,13 @@
  */
 package com.intellij.spellchecker.inspections;
 
-import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.util.Consumer;
+import consulo.document.util.TextRange;
+import consulo.util.lang.StringUtil;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 public class CommentSplitter extends BaseSplitter {

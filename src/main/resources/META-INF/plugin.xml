@@ -7,7 +7,7 @@
 	</tags>
 
 	<extensionPoints>
-		<extensionPoint name="support" beanClass="com.intellij.lang.LanguageExtensionPoint">
+		<extensionPoint name="support" beanClass="consulo.language.LanguageExtensionPoint">
 			<with attribute="implementationClass" implements="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
 		</extensionPoint>
 		<extensionPoint name="bundledDictionaryProvider" interface="com.intellij.spellchecker.BundledDictionaryProvider"/>
@@ -18,7 +18,7 @@
 		<bundledDictionaryProvider implementation="com.intellij.spellchecker.DefaultBundledDictionariesProvider"/>
 	</extensions>
 
-	<extensions defaultExtensionNs="com.intellij">
+	<extensions defaultExtensionNs="consulo">
 		<additionalTextAttributes scheme="Darcula" file="/colorScheme/SpellcheckerDarcula.xml"/>
 		<additionalTextAttributes scheme="Default" file="/colorScheme/SpellcheckerDefault.xml"/>
 		<additionalTextAttributes scheme="Consulo Light" file="/colorScheme/SpellcheckerDefault.xml"/>

@@ -15,14 +15,13 @@
  */
 package com.intellij.spellchecker.tokenizer;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiNameIdentifierOwner;
-import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.spellchecker.inspections.IdentifierSplitter;
+import consulo.document.util.TextRange;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiNameIdentifierOwner;
+import consulo.language.psi.util.PsiTreeUtil;
 
+import javax.annotation.Nonnull;
 
 public class PsiIdentifierOwnerTokenizer extends Tokenizer<PsiNameIdentifierOwner> {
   @Override

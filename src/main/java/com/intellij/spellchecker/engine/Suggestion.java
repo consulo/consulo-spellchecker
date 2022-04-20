@@ -15,7 +15,7 @@
  */
 package com.intellij.spellchecker.engine;
 
-import com.intellij.openapi.util.text.StringUtil;
+import consulo.util.lang.StringUtil;
 
 public class Suggestion implements Comparable{
   private final String word;
@@ -60,7 +60,7 @@ public class Suggestion implements Comparable{
   public int compareTo(Object o) {
     if (!(o instanceof Suggestion)) throw new IllegalArgumentException();
     Suggestion r = (Suggestion)o;
-    int c = new Integer(getMetrics()).compareTo(r.getMetrics());
+    int c = Integer.valueOf(getMetrics()).compareTo(r.getMetrics());
     if (c !=0) return c;
     return StringUtil.compare(word, r.word, true);
   }

@@ -15,26 +15,27 @@
  */
 package com.intellij.spellchecker.ui;
 
-import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer;
-import com.intellij.codeInsight.daemon.HighlightDisplayKey;
-import com.intellij.codeInsight.intention.IntentionManager;
-import com.intellij.codeInspection.LocalInspectionTool;
-import com.intellij.codeInspection.ex.InspectionProfileImpl;
-import com.intellij.codeInspection.ex.InspectionProfileWrapper;
-import com.intellij.codeInspection.ex.LocalInspectionToolWrapper;
-import com.intellij.openapi.editor.ex.EditorEx;
-import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
 import com.intellij.spellchecker.inspections.SpellCheckingInspection;
-import com.intellij.ui.SimpleEditorCustomization;
-import com.intellij.util.Function;
+import consulo.application.Application;
+import consulo.codeEditor.EditorEx;
+import consulo.language.editor.DaemonCodeAnalyzer;
+import consulo.language.editor.inspection.LocalInspectionTool;
+import consulo.language.editor.inspection.scheme.InspectionProfile;
+import consulo.language.editor.inspection.scheme.InspectionProfileWrapper;
+import consulo.language.editor.inspection.scheme.LocalInspectionToolWrapper;
+import consulo.language.editor.intention.IntentionManager;
+import consulo.language.editor.rawHighlight.HighlightDisplayKey;
+import consulo.language.editor.ui.SimpleEditorCustomization;
+import consulo.language.psi.PsiDocumentManager;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.project.Project;
 import consulo.util.collection.Maps;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * Allows to enforce editors to use/don't use spell checking ignoring user-defined spelling inspection settings.
@@ -75,7 +76,7 @@ public class SpellCheckingEditorCustomization extends SimpleEditorCustomization
 		{
 			try
 			{
-				LocalInspectionTool tool = inspectionClass.newInstance();
+				LocalInspectionTool tool = Application.get().getUnbindedInstance(inspectionClass);
 				SPELL_CHECK_TOOLS.put(tool.getShortName(), new LocalInspectionToolWrapper(tool));
 			}
 			catch(Throwable e)
@@ -108,7 +109,7 @@ public class SpellCheckingEditorCustomization extends SimpleEditorCustomization
 			return;
 		}
 
-		Function<InspectionProfileWrapper, InspectionProfileWrapper> strategy = file.getUserData(InspectionProfileWrapper.CUSTOMIZATION_KEY);
+		Function<InspectionProfile, InspectionProfileWrapper> strategy = file.getUserData(InspectionProfileWrapper.CUSTOMIZATION_KEY);
 		if(strategy == null)
 		{
 			file.putUserData(InspectionProfileWrapper.CUSTOMIZATION_KEY, strategy = new MyInspectionProfileStrategy());
@@ -131,22 +132,22 @@ public class SpellCheckingEditorCustomization extends SimpleEditorCustomization
 		analyzer.restart(file);
 	}
 
-	private static class MyInspectionProfileStrategy implements Function<InspectionProfileWrapper, InspectionProfileWrapper>
+	private static class MyInspectionProfileStrategy implements Function<InspectionProfile, InspectionProfileWrapper>
 	{
-		private final Map<InspectionProfileWrapper, MyInspectionProfileWrapper> myWrappers = Maps.newWeakHashMap();
+		private final Map<InspectionProfile, MyInspectionProfileWrapper> myWrappers = Maps.newWeakHashMap();
 		private boolean myUseSpellCheck;
 
 		@Override
-		public InspectionProfileWrapper fun(InspectionProfileWrapper inspectionProfileWrapper)
+		public InspectionProfileWrapper apply(InspectionProfile delegate)
 		{
 			if(!READY)
 			{
-				return inspectionProfileWrapper;
+				return new InspectionProfileWrapper(delegate);
 			}
-			MyInspectionProfileWrapper wrapper = myWrappers.get(inspectionProfileWrapper);
+			MyInspectionProfileWrapper wrapper = myWrappers.get(delegate);
 			if(wrapper == null)
 			{
-				myWrappers.put(inspectionProfileWrapper, wrapper = new MyInspectionProfileWrapper(inspectionProfileWrapper));
+				myWrappers.put(delegate, wrapper = new MyInspectionProfileWrapper(delegate));
 			}
 			wrapper.setUseSpellCheck(myUseSpellCheck);
 			return wrapper;
@@ -160,13 +161,11 @@ public class SpellCheckingEditorCustomization extends SimpleEditorCustomization
 
 	private static class MyInspectionProfileWrapper extends InspectionProfileWrapper
 	{
-		private final InspectionProfileWrapper myDelegate;
 		private boolean myUseSpellCheck;
 
-		MyInspectionProfileWrapper(InspectionProfileWrapper delegate)
+		MyInspectionProfileWrapper(InspectionProfile delegate)
 		{
-			super(new InspectionProfileImpl("CommitDialog"));
-			myDelegate = delegate;
+			super(delegate);
 		}
 
 		@Override

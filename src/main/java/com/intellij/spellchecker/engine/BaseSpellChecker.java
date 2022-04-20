@@ -15,44 +15,44 @@
  */
 package com.intellij.spellchecker.engine;
 
-import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer;
-import com.intellij.openapi.application.ApplicationManager;
-import consulo.logging.Logger;
-import com.intellij.openapi.progress.PerformInBackgroundOption;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.Task;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectManager;
-import com.intellij.openapi.startup.StartupManager;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.spellchecker.compress.CompressedDictionary;
 import com.intellij.spellchecker.dictionary.Dictionary;
 import com.intellij.spellchecker.dictionary.EditableDictionary;
 import com.intellij.spellchecker.dictionary.EditableDictionaryLoader;
 import com.intellij.spellchecker.dictionary.Loader;
-import com.intellij.util.Consumer;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.ui.UIUtil;
+import consulo.application.ApplicationManager;
+import consulo.application.progress.PerformInBackgroundOption;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.application.progress.Task;
+import consulo.language.editor.DaemonCodeAnalyzer;
+import consulo.logging.Logger;
+import consulo.project.Project;
+import consulo.project.ProjectManager;
+import consulo.project.startup.StartupManager;
+import consulo.ui.ex.awt.UIUtil;
+import consulo.util.collection.Lists;
+import consulo.util.lang.Pair;
+import consulo.util.lang.StringUtil;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 
 
 public class BaseSpellChecker implements SpellCheckerEngine {
-  static final Logger LOG = Logger.getInstance("#com.intellij.spellchecker.engine.BaseSpellChecker");
+  static final Logger LOG = Logger.getInstance(BaseSpellChecker.class);
 
   private final Transformation transform = new Transformation();
 
   private final Set<EditableDictionary> dictionaries = new HashSet<EditableDictionary>();
-  private final List<Dictionary> bundledDictionaries = ContainerUtil.createLockFreeCopyOnWriteList();
+  private final List<Dictionary> bundledDictionaries = Lists.newLockFreeCopyOnWriteList();
   private final Metrics metrics = new LevenshteinDistance();
 
   private final AtomicBoolean myLoadingDictionaries = new AtomicBoolean(false);
-  private final List<Pair<Loader, Consumer<Dictionary>>> myDictionariesToLoad = ContainerUtil.createLockFreeCopyOnWriteList();
+  private final List<Pair<Loader, Consumer<Dictionary>>> myDictionariesToLoad = Lists.newLockFreeCopyOnWriteList();
   private final Project myProject;
 
   public BaseSpellChecker(final Project project) {
@@ -81,7 +81,7 @@ public class BaseSpellChecker implements SpellCheckerEngine {
     else {
       loadDictionaryAsync(loader, new Consumer<Dictionary>() {
         @Override
-        public void consume(final Dictionary dictionary) {
+        public void accept(final Dictionary dictionary) {
           addCompressedFixedDictionary(dictionary);
         }
       });
@@ -121,7 +121,7 @@ public class BaseSpellChecker implements SpellCheckerEngine {
               indicator.setText(String.format("Loading %s...", loader.getName()));
               final CompressedDictionary dictionary = CompressedDictionary.create(loader, transform);
               LOG.debug(loader.getName() + " loaded!");
-              consumer.consume(dictionary);
+              consumer.accept(dictionary);
 
               while (!myDictionariesToLoad.isEmpty()) {
                 final Pair<Loader, Consumer<Dictionary>> nextDictionary = myDictionariesToLoad.remove(0);
@@ -129,7 +129,7 @@ public class BaseSpellChecker implements SpellCheckerEngine {
                 indicator.setText(String.format("Loading %s...", nextDictionaryLoader.getName()));
                 CompressedDictionary dictionary1 = CompressedDictionary.create(nextDictionaryLoader, transform);
                 LOG.debug(nextDictionaryLoader.getName() + " loaded!");
-                nextDictionary.getSecond().consume(dictionary1);
+                nextDictionary.getSecond().accept(dictionary1);
               }
 
               LOG.debug("Loading finished, restarting daemon...");
@@ -205,7 +205,7 @@ public class BaseSpellChecker implements SpellCheckerEngine {
     else {
       dictionary.traverse(new Consumer<String>() {
         @Override
-        public void consume(String s) {
+        public void accept(String s) {
           if (StringUtil.isEmpty(s)) {
             return;
           }

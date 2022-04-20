@@ -15,12 +15,12 @@
  */
 package com.intellij.spellchecker.inspections;
 
-import com.intellij.openapi.util.TextRange;
-import com.intellij.util.Consumer;
+import consulo.document.util.TextRange;
 import org.jetbrains.annotations.NonNls;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

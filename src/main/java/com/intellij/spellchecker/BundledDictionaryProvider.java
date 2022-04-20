@@ -15,7 +15,7 @@
  */
 package com.intellij.spellchecker;
 
-import com.intellij.openapi.extensions.ExtensionPointName;
+import consulo.component.extension.ExtensionPointName;
 
 public interface BundledDictionaryProvider {
   ExtensionPointName<BundledDictionaryProvider> EP_NAME = ExtensionPointName.create("com.intellij.spellchecker.bundledDictionaryProvider");

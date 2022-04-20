@@ -15,12 +15,12 @@
  */
 package com.intellij.spellchecker.tokenizer;
 
-import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiElement;
 import com.intellij.spellchecker.inspections.Splitter;
-import com.intellij.util.Consumer;
-import javax.annotation.Nonnull;
+import consulo.document.util.TextRange;
+import consulo.language.psi.PsiElement;
 
+import javax.annotation.Nonnull;
+import java.util.function.Consumer;
 
 public class Token<T extends PsiElement> {
 

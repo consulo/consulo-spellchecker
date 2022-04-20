@@ -15,9 +15,10 @@
  */
 package com.intellij.spellchecker.quickfixes;
 
-import com.intellij.codeInspection.LocalQuickFix;
-import com.intellij.openapi.util.Iconable;
+import consulo.component.util.Iconable;
+import consulo.language.editor.inspection.LocalQuickFix;
 
-public interface SpellCheckerQuickFix extends LocalQuickFix, Iconable {
+public interface SpellCheckerQuickFix extends LocalQuickFix, Iconable
+{
   SpellCheckerQuickFix[] EMPTY_ARRAY = new SpellCheckerQuickFix[0];
 }

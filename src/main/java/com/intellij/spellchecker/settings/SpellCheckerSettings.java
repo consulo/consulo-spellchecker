@@ -15,22 +15,17 @@
  */
 package com.intellij.spellchecker.settings;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import consulo.component.persist.PersistentStateComponent;
+import consulo.component.persist.State;
+import consulo.component.persist.Storage;
+import consulo.component.persist.StoragePathMacros;
+import consulo.ide.ServiceManager;
+import consulo.project.Project;
+import jakarta.inject.Singleton;
+import org.jdom.Element;
 
 import javax.annotation.Nonnull;
-import jakarta.inject.Singleton;
-
-import org.jdom.Element;
-import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.components.State;
-import com.intellij.openapi.components.Storage;
-import com.intellij.openapi.components.StoragePathMacros;
-import com.intellij.openapi.project.Project;
+import java.util.*;
 
 @Singleton
 @State( name = "SpellCheckerSettings", storages = @Storage(StoragePathMacros.WORKSPACE_FILE))

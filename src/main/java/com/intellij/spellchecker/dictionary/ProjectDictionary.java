@@ -15,7 +15,6 @@
  */
 package com.intellij.spellchecker.dictionary;
 
-import com.intellij.util.Consumer;
 import org.jetbrains.annotations.NonNls;
 
 import javax.annotation.Nonnull;
@@ -23,6 +22,7 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 
 public class ProjectDictionary implements EditableDictionary {
   @NonNls private static final String DEFAULT_CURRENT_USER_NAME = "default.user";

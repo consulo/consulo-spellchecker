@@ -15,18 +15,15 @@
  */
 package com.intellij.spellchecker.quickfixes;
 
-import java.util.List;
-
-import javax.swing.Icon;
-
-import javax.annotation.Nonnull;
-import com.intellij.codeInspection.LocalQuickFix;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Iconable;
 import com.intellij.spellchecker.SpellCheckerIcons;
 import com.intellij.spellchecker.SpellCheckerManager;
+import consulo.component.util.Iconable;
+import consulo.language.editor.inspection.LocalQuickFix;
+import consulo.project.Project;
 import consulo.ui.image.Image;
 
+import javax.annotation.Nonnull;
+import java.util.List;
 
 public abstract class ShowSuggestions implements LocalQuickFix, Iconable
 {

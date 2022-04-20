@@ -15,16 +15,17 @@
  */
 package com.intellij.spellchecker.tokenizer;
 
-import com.intellij.codeInspection.LocalQuickFix;
-import com.intellij.codeInspection.SuppressionUtil;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.*;
-import com.intellij.psi.impl.source.tree.injected.InjectedLanguageUtil;
 import com.intellij.spellchecker.inspections.PlainTextSplitter;
 import com.intellij.spellchecker.quickfixes.*;
 import consulo.annotation.access.RequiredReadAction;
-import javax.annotation.Nonnull;
+import consulo.document.util.TextRange;
+import consulo.language.editor.inspection.LocalQuickFix;
+import consulo.language.editor.inspection.SuppressionUtil;
+import consulo.language.inject.InjectedLanguageManager;
+import consulo.language.plain.psi.PsiPlainText;
+import consulo.language.psi.*;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 
@@ -54,7 +55,7 @@ public class SpellcheckingStrategy
 			return EMPTY_TOKENIZER;
 		}
 
-		if(element instanceof PsiLanguageInjectionHost && InjectedLanguageUtil.hasInjections((PsiLanguageInjectionHost) element))
+		if(element instanceof PsiLanguageInjectionHost && InjectedLanguageManager.getInstance(element.getProject()).getInjectedPsiFiles(element) != null)
 		{
 			return EMPTY_TOKENIZER;
 		}
