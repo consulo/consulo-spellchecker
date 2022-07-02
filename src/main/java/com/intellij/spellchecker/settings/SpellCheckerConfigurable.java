@@ -16,9 +16,8 @@
 package com.intellij.spellchecker.settings;
 
 import com.intellij.spellchecker.util.SpellCheckerBundle;
-import consulo.configurable.Configurable;
-import consulo.configurable.ConfigurationException;
-import consulo.configurable.SearchableConfigurable;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.configurable.*;
 import consulo.disposer.Disposable;
 import consulo.disposer.Disposer;
 import consulo.project.Project;
@@ -27,9 +26,11 @@ import jakarta.inject.Inject;
 import org.jetbrains.annotations.Nls;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 
-public class SpellCheckerConfigurable implements SearchableConfigurable, Configurable.NoScroll
+@ExtensionImpl
+public class SpellCheckerConfigurable implements SearchableConfigurable, Configurable.NoScroll, ProjectConfigurable
 {
 	private SpellCheckerSettingsPane myPanel;
 	private final SpellCheckerSettings mySpellCheckerSettings;
@@ -49,18 +50,18 @@ public class SpellCheckerConfigurable implements SearchableConfigurable, Configu
 		return SpellCheckerBundle.message("spelling");
 	}
 
+	@Nullable
 	@Override
-	@Nonnull
-	public String getHelpTopic()
+	public String getParentId()
 	{
-		return "reference.settings.ide.settings.spelling";
+		return StandardConfigurableIds.EDITOR_GROUP;
 	}
 
 	@Override
 	@Nonnull
 	public String getId()
 	{
-		return getHelpTopic();
+		return "reference.settings.ide.settings.spelling";
 	}
 
 	@Override

@@ -16,6 +16,9 @@
 package com.intellij.spellchecker;
 
 
+import consulo.annotation.component.ExtensionImpl;
+
+@ExtensionImpl
 public class DefaultBundledDictionariesProvider implements BundledDictionaryProvider
 {
 	@Override

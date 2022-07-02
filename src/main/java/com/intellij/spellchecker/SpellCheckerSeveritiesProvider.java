@@ -20,6 +20,7 @@
  */
 package com.intellij.spellchecker;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.application.AllIcons;
 import consulo.colorScheme.TextAttributes;
 import consulo.colorScheme.TextAttributesKey;
@@ -32,6 +33,7 @@ import consulo.ui.image.Image;
 import javax.annotation.Nonnull;
 import java.util.List;
 
+@ExtensionImpl
 public class SpellCheckerSeveritiesProvider extends SeveritiesProvider
 {
 	private static final TextAttributesKey TYPO_KEY = TextAttributesKey.createTextAttributesKey("TYPO");

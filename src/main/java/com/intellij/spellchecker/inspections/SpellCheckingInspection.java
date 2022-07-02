@@ -17,7 +17,10 @@ package com.intellij.spellchecker.inspections;
 
 import com.intellij.spellchecker.SpellCheckerManager;
 import com.intellij.spellchecker.quickfixes.SpellCheckerQuickFix;
-import com.intellij.spellchecker.tokenizer.*;
+import com.intellij.spellchecker.tokenizer.SpellcheckingStrategy;
+import com.intellij.spellchecker.tokenizer.SuppressibleSpellcheckingStrategy;
+import com.intellij.spellchecker.tokenizer.TokenConsumer;
+import com.intellij.spellchecker.tokenizer.Tokenizer;
 import com.intellij.spellchecker.util.SpellCheckerBundle;
 import consulo.annotation.access.RequiredReadAction;
 import consulo.document.util.TextRange;
@@ -29,7 +32,6 @@ import consulo.language.editor.inspection.ui.SingleCheckboxOptionsPanel;
 import consulo.language.editor.rawHighlight.HighlightDisplayLevel;
 import consulo.language.editor.refactoring.LanguageNamesValidation;
 import consulo.language.editor.refactoring.NamesValidator;
-import consulo.language.parser.LanguageParserDefinitions;
 import consulo.language.parser.ParserDefinition;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiElementVisitor;
@@ -82,7 +84,7 @@ public class SpellCheckingInspection extends LocalInspectionTool
 
 	private static SpellcheckingStrategy getSpellcheckingStrategy(@Nonnull PsiElement element, @Nonnull Language language)
 	{
-		for(SpellcheckingStrategy strategy : LanguageSpellchecking.INSTANCE.allForLanguage(language))
+		for(SpellcheckingStrategy strategy : SpellcheckingStrategy.forLanguage(language))
 		{
 			if(strategy.isMyContext(element))
 			{
@@ -145,7 +147,7 @@ public class SpellCheckingInspection extends LocalInspectionTool
 				// Extract parser definition from element
 				final Language language = element.getLanguage();
 				final IElementType elementType = node.getElementType();
-				final ParserDefinition parserDefinition = LanguageParserDefinitions.INSTANCE.forLanguage(language);
+				final ParserDefinition parserDefinition = ParserDefinition.forLanguage(language);
 
 				// Handle selected options
 				if(parserDefinition != null)

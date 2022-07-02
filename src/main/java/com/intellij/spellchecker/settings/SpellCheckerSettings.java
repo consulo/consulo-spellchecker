@@ -15,6 +15,9 @@
  */
 package com.intellij.spellchecker.settings;
 
+import consulo.annotation.component.ComponentScope;
+import consulo.annotation.component.ServiceAPI;
+import consulo.annotation.component.ServiceImpl;
 import consulo.component.persist.PersistentStateComponent;
 import consulo.component.persist.State;
 import consulo.component.persist.Storage;
@@ -28,111 +31,132 @@ import javax.annotation.Nonnull;
 import java.util.*;
 
 @Singleton
-@State( name = "SpellCheckerSettings", storages = @Storage(StoragePathMacros.WORKSPACE_FILE))
-public class SpellCheckerSettings implements PersistentStateComponent<Element> {
-  // For xml serialization
-  private static final String SPELLCHECKER_MANAGER_SETTINGS_TAG = "SpellCheckerSettings";
+@State(name = "SpellCheckerSettings", storages = @Storage(StoragePathMacros.WORKSPACE_FILE))
+@ServiceAPI(ComponentScope.PROJECT)
+@ServiceImpl
+public class SpellCheckerSettings implements PersistentStateComponent<Element>
+{
+	// For xml serialization
+	private static final String SPELLCHECKER_MANAGER_SETTINGS_TAG = "SpellCheckerSettings";
 
-  private static final String FOLDERS_ATTR_NAME = "Folders";
-  private static final String FOLDER_ATTR_NAME = "Folder";
-  private static final String DICTIONARIES_ATTR_NAME = "Dictionaries";
-  private static final String DICTIONARY_ATTR_NAME = "Dictionary";
+	private static final String FOLDERS_ATTR_NAME = "Folders";
+	private static final String FOLDER_ATTR_NAME = "Folder";
+	private static final String DICTIONARIES_ATTR_NAME = "Dictionaries";
+	private static final String DICTIONARY_ATTR_NAME = "Dictionary";
 
-  private static final String BUNDLED_DICTIONARIES_ATTR_NAME = "BundledDictionaries";
-  private static final String BUNDLED_DICTIONARY_ATTR_NAME = "BundledDictionary";
+	private static final String BUNDLED_DICTIONARIES_ATTR_NAME = "BundledDictionaries";
+	private static final String BUNDLED_DICTIONARY_ATTR_NAME = "BundledDictionary";
 
-  // Paths
-  private List<String> myDictionaryFoldersPaths = new ArrayList<String>();
-  private Set<String> myDisabledDictionariesPaths = new HashSet<String>();
+	// Paths
+	private List<String> myDictionaryFoldersPaths = new ArrayList<String>();
+	private Set<String> myDisabledDictionariesPaths = new HashSet<String>();
 
-  private Set<String> myBundledDisabledDictionariesPaths = new HashSet<String>();
+	private Set<String> myBundledDisabledDictionariesPaths = new HashSet<String>();
 
-  public static SpellCheckerSettings getInstance(Project project) {
-    return ServiceManager.getService(project, SpellCheckerSettings.class);
-  }
-
-
-  public List<String> getDictionaryFoldersPaths() {
-    return myDictionaryFoldersPaths;
-  }
-
-  public void setDictionaryFoldersPaths(List<String> dictionaryFoldersPaths) {
-    myDictionaryFoldersPaths = dictionaryFoldersPaths;
-  }
-
-  public Set<String> getDisabledDictionariesPaths() {
-    return myDisabledDictionariesPaths;
-  }
+	public static SpellCheckerSettings getInstance(Project project)
+	{
+		return ServiceManager.getService(project, SpellCheckerSettings.class);
+	}
 
 
-  public void setDisabledDictionariesPaths(Set<String> disabledDictionariesPaths) {
-    myDisabledDictionariesPaths = disabledDictionariesPaths;
-  }
+	public List<String> getDictionaryFoldersPaths()
+	{
+		return myDictionaryFoldersPaths;
+	}
+
+	public void setDictionaryFoldersPaths(List<String> dictionaryFoldersPaths)
+	{
+		myDictionaryFoldersPaths = dictionaryFoldersPaths;
+	}
+
+	public Set<String> getDisabledDictionariesPaths()
+	{
+		return myDisabledDictionariesPaths;
+	}
 
 
-  public Set<String> getBundledDisabledDictionariesPaths() {
-    return myBundledDisabledDictionariesPaths;
-  }
-
-  public void setBundledDisabledDictionariesPaths(Set<String> bundledDisabledDictionariesPaths) {
-    myBundledDisabledDictionariesPaths = bundledDisabledDictionariesPaths;
-  }
-
-  @SuppressWarnings({"ConstantConditions"})
-  public Element getState() {
-    if (myBundledDisabledDictionariesPaths.isEmpty() &&
-        myDictionaryFoldersPaths.isEmpty() &&
-        myDisabledDictionariesPaths.isEmpty()) {
-      return null;
-    }
-
-    final Element element = new Element(SPELLCHECKER_MANAGER_SETTINGS_TAG);
-    // bundled
-    element.setAttribute(BUNDLED_DICTIONARIES_ATTR_NAME, String.valueOf(myBundledDisabledDictionariesPaths.size()));
-    Iterator<String> iterator = myBundledDisabledDictionariesPaths.iterator();
-    int i = 0;
-    while (iterator.hasNext()) {
-      element.setAttribute(BUNDLED_DICTIONARY_ATTR_NAME + i, iterator.next());
-      i++;
-    }
-    // user
-    element.setAttribute(FOLDERS_ATTR_NAME, String.valueOf(myDictionaryFoldersPaths.size()));
-    for (int j = 0; j < myDictionaryFoldersPaths.size(); j++) {
-      element.setAttribute(FOLDER_ATTR_NAME + j, myDictionaryFoldersPaths.get(j));
-    }
-    element.setAttribute(DICTIONARIES_ATTR_NAME, String.valueOf(myDisabledDictionariesPaths.size()));
-    iterator = myDisabledDictionariesPaths.iterator();
-    i = 0;
-    while (iterator.hasNext()) {
-      element.setAttribute(DICTIONARY_ATTR_NAME + i, iterator.next());
-      i++;
-    }
-
-    return element;
-  }
+	public void setDisabledDictionariesPaths(Set<String> disabledDictionariesPaths)
+	{
+		myDisabledDictionariesPaths = disabledDictionariesPaths;
+	}
 
 
-  public void loadState(@Nonnull final Element element) {
-    myBundledDisabledDictionariesPaths.clear();
-    myDictionaryFoldersPaths.clear();
-    myDisabledDictionariesPaths.clear();
-    try {
-      // bundled
-      final int bundledDictionariesSize = Integer.valueOf(element.getAttributeValue(BUNDLED_DICTIONARIES_ATTR_NAME));
-      for (int i = 0; i < bundledDictionariesSize; i++) {
-        myBundledDisabledDictionariesPaths.add(element.getAttributeValue(BUNDLED_DICTIONARY_ATTR_NAME + i));
-      }
-      // user
-      final int foldersSize = Integer.valueOf(element.getAttributeValue(FOLDERS_ATTR_NAME));
-      for (int i = 0; i < foldersSize; i++) {
-        myDictionaryFoldersPaths.add(element.getAttributeValue(FOLDER_ATTR_NAME + i));
-      }
-      final int scriptsSize = Integer.valueOf(element.getAttributeValue(DICTIONARIES_ATTR_NAME));
-      for (int i = 0; i < scriptsSize; i++) {
-        myDisabledDictionariesPaths.add(element.getAttributeValue(DICTIONARY_ATTR_NAME + i));
-      }
-    }
-    catch (Exception ignored) {
-    }
-  }
+	public Set<String> getBundledDisabledDictionariesPaths()
+	{
+		return myBundledDisabledDictionariesPaths;
+	}
+
+	public void setBundledDisabledDictionariesPaths(Set<String> bundledDisabledDictionariesPaths)
+	{
+		myBundledDisabledDictionariesPaths = bundledDisabledDictionariesPaths;
+	}
+
+	@SuppressWarnings({"ConstantConditions"})
+	public Element getState()
+	{
+		if(myBundledDisabledDictionariesPaths.isEmpty() &&
+				myDictionaryFoldersPaths.isEmpty() &&
+				myDisabledDictionariesPaths.isEmpty())
+		{
+			return null;
+		}
+
+		final Element element = new Element(SPELLCHECKER_MANAGER_SETTINGS_TAG);
+		// bundled
+		element.setAttribute(BUNDLED_DICTIONARIES_ATTR_NAME, String.valueOf(myBundledDisabledDictionariesPaths.size()));
+		Iterator<String> iterator = myBundledDisabledDictionariesPaths.iterator();
+		int i = 0;
+		while(iterator.hasNext())
+		{
+			element.setAttribute(BUNDLED_DICTIONARY_ATTR_NAME + i, iterator.next());
+			i++;
+		}
+		// user
+		element.setAttribute(FOLDERS_ATTR_NAME, String.valueOf(myDictionaryFoldersPaths.size()));
+		for(int j = 0; j < myDictionaryFoldersPaths.size(); j++)
+		{
+			element.setAttribute(FOLDER_ATTR_NAME + j, myDictionaryFoldersPaths.get(j));
+		}
+		element.setAttribute(DICTIONARIES_ATTR_NAME, String.valueOf(myDisabledDictionariesPaths.size()));
+		iterator = myDisabledDictionariesPaths.iterator();
+		i = 0;
+		while(iterator.hasNext())
+		{
+			element.setAttribute(DICTIONARY_ATTR_NAME + i, iterator.next());
+			i++;
+		}
+
+		return element;
+	}
+
+
+	public void loadState(@Nonnull final Element element)
+	{
+		myBundledDisabledDictionariesPaths.clear();
+		myDictionaryFoldersPaths.clear();
+		myDisabledDictionariesPaths.clear();
+		try
+		{
+			// bundled
+			final int bundledDictionariesSize = Integer.valueOf(element.getAttributeValue(BUNDLED_DICTIONARIES_ATTR_NAME));
+			for(int i = 0; i < bundledDictionariesSize; i++)
+			{
+				myBundledDisabledDictionariesPaths.add(element.getAttributeValue(BUNDLED_DICTIONARY_ATTR_NAME + i));
+			}
+			// user
+			final int foldersSize = Integer.valueOf(element.getAttributeValue(FOLDERS_ATTR_NAME));
+			for(int i = 0; i < foldersSize; i++)
+			{
+				myDictionaryFoldersPaths.add(element.getAttributeValue(FOLDER_ATTR_NAME + i));
+			}
+			final int scriptsSize = Integer.valueOf(element.getAttributeValue(DICTIONARIES_ATTR_NAME));
+			for(int i = 0; i < scriptsSize; i++)
+			{
+				myDisabledDictionariesPaths.add(element.getAttributeValue(DICTIONARY_ATTR_NAME + i));
+			}
+		}
+		catch(Exception ignored)
+		{
+		}
+	}
 }

@@ -6,46 +6,10 @@
 		<tag>editor.spelling</tag>
 	</tags>
 
-	<extensionPoints>
-		<extensionPoint name="support" beanClass="consulo.language.LanguageExtensionPoint">
-			<with attribute="implementationClass" implements="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
-		</extensionPoint>
-		<extensionPoint name="bundledDictionaryProvider" interface="com.intellij.spellchecker.BundledDictionaryProvider"/>
-	</extensionPoints>
-
-	<extensions defaultExtensionNs="com.intellij.spellchecker">
-		<support language="TEXT" implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
-		<bundledDictionaryProvider implementation="com.intellij.spellchecker.DefaultBundledDictionariesProvider"/>
-	</extensions>
-
 	<extensions defaultExtensionNs="consulo">
-		<additionalTextAttributes scheme="Darcula" file="/colorScheme/SpellcheckerDarcula.xml"/>
-		<additionalTextAttributes scheme="Default" file="/colorScheme/SpellcheckerDefault.xml"/>
-		<additionalTextAttributes scheme="Consulo Light" file="/colorScheme/SpellcheckerDefault.xml"/>
-
-		<projectService serviceInterface="com.intellij.spellchecker.settings.SpellCheckerSettings"
-						serviceImplementation="com.intellij.spellchecker.settings.SpellCheckerSettings"/>
-		<projectService serviceInterface="com.intellij.spellchecker.SpellCheckerManager"
-						serviceImplementation="com.intellij.spellchecker.SpellCheckerManager"/>
-		<editorCustomization implementation="com.intellij.spellchecker.ui.SpellCheckingEditorCustomization"/>
-
-		<projectConfigurable instance="com.intellij.spellchecker.settings.SpellCheckerConfigurable"
-							 id="reference.settings.ide.settings.spelling"
-							 key="spelling"
-							 parentId="editor"
-							 bundle="com.intellij.spellchecker.util.SpellCheckerBundle"/>
-
 		<localInspection shortName="SpellCheckingInspection" bundle="com.intellij.spellchecker.util.SpellCheckerBundle"
 						 key="spellchecking.inspection.name" groupKey="spelling" enabledByDefault="true" level="TYPO"
 						 implementationClass="com.intellij.spellchecker.inspections.SpellCheckingInspection"/>
 
-		<nameSuggestionProvider id="DictionarySuggestionProvider"
-								implementation="com.intellij.spellchecker.quickfixes.DictionarySuggestionProvider" order="first"/>
-		<severitiesProvider implementation="com.intellij.spellchecker.SpellCheckerSeveritiesProvider"/>
-
-		<projectService serviceImplementation="com.intellij.spellchecker.state.ProjectDictionaryState"/>
-		<projectService serviceImplementation="com.intellij.spellchecker.state.AggregatedDictionaryState"/>
-		<applicationService serviceImplementation="com.intellij.spellchecker.state.CachedDictionaryState"/>
-		<applicationService serviceImplementation="com.intellij.spellchecker.vcs.SpellCheckerCustomizationImpl" lazy="false" />
 	</extensions>
 </consulo-plugin>

@@ -17,6 +17,9 @@ package com.intellij.spellchecker.state;
 
 import com.intellij.spellchecker.dictionary.EditableDictionary;
 import com.intellij.spellchecker.dictionary.ProjectDictionary;
+import consulo.annotation.component.ComponentScope;
+import consulo.annotation.component.ServiceAPI;
+import consulo.annotation.component.ServiceImpl;
 import consulo.component.persist.PersistentStateComponent;
 import consulo.component.persist.State;
 import consulo.component.persist.Storage;
@@ -34,6 +37,8 @@ import java.util.Set;
 
 @Singleton
 @State(name = "ProjectDictionaryState", storages = @Storage(file = StoragePathMacros.PROJECT_CONFIG_DIR + "/dictionaries/", stateSplitter = ProjectDictionarySplitter.class))
+@ServiceAPI(ComponentScope.PROJECT)
+@ServiceImpl
 public class ProjectDictionaryState implements PersistentStateComponent<ProjectDictionaryState>
 {
 	@Property(surroundWithTag = false)

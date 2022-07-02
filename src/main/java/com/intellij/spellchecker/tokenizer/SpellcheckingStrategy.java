@@ -18,9 +18,17 @@ package com.intellij.spellchecker.tokenizer;
 import com.intellij.spellchecker.inspections.PlainTextSplitter;
 import com.intellij.spellchecker.quickfixes.*;
 import consulo.annotation.access.RequiredReadAction;
+import consulo.annotation.component.ComponentScope;
+import consulo.annotation.component.ExtensionAPI;
+import consulo.application.Application;
+import consulo.component.extension.ExtensionPointCacheKey;
 import consulo.document.util.TextRange;
+import consulo.language.Language;
 import consulo.language.editor.inspection.LocalQuickFix;
 import consulo.language.editor.inspection.SuppressionUtil;
+import consulo.language.extension.ByLanguageValue;
+import consulo.language.extension.LanguageExtension;
+import consulo.language.extension.LanguageOneToMany;
 import consulo.language.inject.InjectedLanguageManager;
 import consulo.language.plain.psi.PsiPlainText;
 import consulo.language.psi.*;
@@ -28,9 +36,20 @@ import consulo.language.psi.*;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.List;
 
-public class SpellcheckingStrategy
+@ExtensionAPI(ComponentScope.APPLICATION)
+public abstract class SpellcheckingStrategy implements LanguageExtension
 {
+	private static final ExtensionPointCacheKey<SpellcheckingStrategy, ByLanguageValue<List<SpellcheckingStrategy>>> KEY = ExtensionPointCacheKey.create("SpellcheckingStrategy", LanguageOneToMany
+			.build(false));
+
+	@Nonnull
+	public static List<SpellcheckingStrategy> forLanguage(@Nonnull Language language)
+	{
+		return Application.get().getExtensionPoint(SpellcheckingStrategy.class).getOrBuildCache(KEY).requiredGet(language);
+	}
+
 	protected final Tokenizer<PsiComment> myCommentTokenizer = new CommentTokenizer();
 	protected final Tokenizer<PsiNameIdentifierOwner> myNameIdentifierOwnerTokenizer = new PsiIdentifierOwnerTokenizer();
 

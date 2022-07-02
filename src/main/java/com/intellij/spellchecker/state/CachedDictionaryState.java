@@ -15,6 +15,9 @@
  */
 package com.intellij.spellchecker.state;
 
+import consulo.annotation.component.ComponentScope;
+import consulo.annotation.component.ServiceAPI;
+import consulo.annotation.component.ServiceImpl;
 import consulo.component.persist.PersistentStateComponent;
 import consulo.component.persist.State;
 import consulo.component.persist.Storage;
@@ -23,6 +26,8 @@ import jakarta.inject.Singleton;
 
 @Singleton
 @State(name = "CachedDictionaryState", storages = @Storage("cachedDictionary.xml"))
+@ServiceAPI(ComponentScope.APPLICATION)
+@ServiceImpl
 public class CachedDictionaryState extends DictionaryState implements PersistentStateComponent<DictionaryState>
 {
 	public static final String DEFAULT_NAME = "cached";
