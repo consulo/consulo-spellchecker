@@ -24,7 +24,6 @@ import consulo.application.progress.ProgressIndicator;
 import consulo.application.progress.ProgressManager;
 import consulo.document.util.TextRange;
 import consulo.language.Language;
-import consulo.language.editor.refactoring.LanguageNamesValidation;
 import consulo.language.editor.refactoring.NamesValidator;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
@@ -205,7 +204,7 @@ public abstract class SpellCheckerDictionaryGenerator {
       return;
     }
 
-    final NamesValidator namesValidator = LanguageNamesValidation.INSTANCE.forLanguage(language);
+    final NamesValidator namesValidator = NamesValidator.forLanguage(language);
     if (namesValidator != null && namesValidator.isKeyword(word, myProject)) {
       return;
     }

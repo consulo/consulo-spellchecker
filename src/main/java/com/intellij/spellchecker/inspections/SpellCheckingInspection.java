@@ -31,7 +31,6 @@ import consulo.language.ast.IElementType;
 import consulo.language.editor.inspection.*;
 import consulo.language.editor.inspection.ui.SingleCheckboxOptionsPanel;
 import consulo.language.editor.rawHighlight.HighlightDisplayLevel;
-import consulo.language.editor.refactoring.LanguageNamesValidation;
 import consulo.language.editor.refactoring.NamesValidator;
 import consulo.language.parser.ParserDefinition;
 import consulo.language.psi.PsiElement;
@@ -172,7 +171,7 @@ public class SpellCheckingInspection extends LocalInspectionTool
 					}
 				}
 
-				tokenize(element, language, new MyTokenConsumer(manager, holder, LanguageNamesValidation.INSTANCE.forLanguage(language)));
+				tokenize(element, language, new MyTokenConsumer(manager, holder, NamesValidator.forLanguage(language)));
 			}
 		};
 	}
