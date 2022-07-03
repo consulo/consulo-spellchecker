@@ -23,6 +23,7 @@ import com.intellij.spellchecker.tokenizer.TokenConsumer;
 import com.intellij.spellchecker.tokenizer.Tokenizer;
 import com.intellij.spellchecker.util.SpellCheckerBundle;
 import consulo.annotation.access.RequiredReadAction;
+import consulo.annotation.component.ExtensionImpl;
 import consulo.document.util.TextRange;
 import consulo.language.Language;
 import consulo.language.ast.ASTNode;
@@ -36,7 +37,6 @@ import consulo.language.parser.ParserDefinition;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiElementVisitor;
 import org.jetbrains.annotations.Nls;
-import org.jetbrains.annotations.NonNls;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -46,6 +46,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
+@ExtensionImpl
 public class SpellCheckingInspection extends LocalInspectionTool
 {
 	public static final String SPELL_CHECKING_INSPECTION_TOOL_NAME = "SpellCheckingInspection";
@@ -107,7 +108,6 @@ public class SpellCheckingInspection extends LocalInspectionTool
 	}
 
 	@Override
-	@NonNls
 	@Nonnull
 	public String getShortName()
 	{

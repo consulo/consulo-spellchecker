@@ -5,11 +5,4 @@
 	<tags>
 		<tag>editor.spelling</tag>
 	</tags>
-
-	<extensions defaultExtensionNs="consulo">
-		<localInspection shortName="SpellCheckingInspection" bundle="com.intellij.spellchecker.util.SpellCheckerBundle"
-						 key="spellchecking.inspection.name" groupKey="spelling" enabledByDefault="true" level="TYPO"
-						 implementationClass="com.intellij.spellchecker.inspections.SpellCheckingInspection"/>
-
-	</extensions>
 </consulo-plugin>
