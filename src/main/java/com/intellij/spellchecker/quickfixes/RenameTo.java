@@ -108,7 +108,7 @@ public class RenameTo extends ShowSuggestions implements SpellCheckerQuickFix
 		{
 			editor.putUserData(RenameHandlerRegistry.SELECT_ALL, true);
 
-			builder.setParent(DataManager.getInstance().getDataContext(editor.getComponent()));
+			builder.parent(DataManager.getInstance().getDataContext(editor.getComponent()));
 
 			AnAction action = new RenameElementAction();
 			AnActionEvent event = new AnActionEvent(null, builder.build(), "", action.getTemplatePresentation(), ActionManager.getInstance(), 0);
