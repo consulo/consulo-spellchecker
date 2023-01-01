@@ -15,12 +15,12 @@
  */
 package com.intellij.spellchecker.state;
 
-import java.util.List;
-
+import consulo.component.persist.StateSplitterEx;
+import consulo.util.lang.Pair;
 import org.jdom.Element;
+
 import javax.annotation.Nonnull;
-import com.intellij.openapi.components.StateSplitterEx;
-import com.intellij.openapi.util.Pair;
+import java.util.List;
 
 /**
  * @author shkate@jetbrains.com

@@ -15,27 +15,27 @@
  */
 package com.intellij.spellchecker.inspections;
 
+import consulo.application.progress.ProgressIndicatorProvider;
+import consulo.application.util.BombedStringUtil;
+import consulo.component.ProcessCanceledException;
+import consulo.document.util.TextRange;
 import consulo.logging.Logger;
-import com.intellij.openapi.progress.ProcessCanceledException;
-import com.intellij.openapi.progress.ProgressIndicatorProvider;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.util.Consumer;
-import com.intellij.util.SmartList;
+import consulo.util.collection.SmartList;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
 public abstract class BaseSplitter implements Splitter {
 
-  static final Logger LOG = Logger.getInstance("#com.intellij.spellchecker.inspections.BaseSplitter");
+  static final Logger LOG = Logger.getInstance(BaseSplitter.class);
 
   public static final int MIN_RANGE_LENGTH = 3;
 
@@ -48,9 +48,8 @@ public abstract class BaseSplitter implements Splitter {
     if (tooShort) {
       return;
     }
-    consumer.consume(found);
+    consumer.accept(found);
   }
-
 
   protected static boolean isAllWordsAreUpperCased(@Nonnull String text, @Nonnull List<TextRange> words) {
     for (TextRange word : words) {
@@ -100,7 +99,7 @@ public abstract class BaseSplitter implements Splitter {
     int from = range.getStartOffset();
     int till;
     boolean addLast = true;
-    Matcher matcher = toExclude.matcher(StringUtil.newBombedCharSequence(range.substring(text), 500));
+    Matcher matcher = toExclude.matcher(BombedStringUtil.newBombedCharSequence(range.substring(text), 500));
     try {
       while (matcher.find()) {
         checkCancelled();

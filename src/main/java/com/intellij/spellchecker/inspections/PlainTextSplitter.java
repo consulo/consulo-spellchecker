@@ -15,16 +15,16 @@
  */
 package com.intellij.spellchecker.inspections;
 
-import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.util.Consumer;
+import consulo.document.util.TextRange;
+import consulo.util.lang.StringUtil;
 import org.jdom.Verifier;
 import org.jetbrains.annotations.NonNls;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

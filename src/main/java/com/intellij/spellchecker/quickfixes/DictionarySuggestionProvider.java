@@ -15,17 +15,17 @@
  */
 package com.intellij.spellchecker.quickfixes;
 
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiNamedElement;
-import com.intellij.psi.codeStyle.SuggestedNameInfo;
-import com.intellij.refactoring.rename.PreferrableNameSuggestionProvider;
 import com.intellij.spellchecker.SpellCheckerManager;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.language.editor.refactoring.rename.PreferrableNameSuggestionProvider;
+import consulo.language.editor.refactoring.rename.SuggestedNameInfo;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiNamedElement;
 
 import java.util.Set;
 
-
+@ExtensionImpl(id = "DictionarySuggestionProvider", order = "first")
 public class DictionarySuggestionProvider extends PreferrableNameSuggestionProvider {
-
   private boolean active;
 
   public void setActive(boolean active) {

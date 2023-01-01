@@ -15,18 +15,23 @@
  */
 package com.intellij.spellchecker.vcs;
 
-import javax.annotation.Nonnull;
+import com.intellij.spellchecker.ui.SpellCheckingEditorCustomization;
+import consulo.annotation.component.ComponentScope;
+import consulo.annotation.component.ServiceAPI;
+import consulo.annotation.component.ServiceImpl;
+import consulo.language.editor.ui.EditorCustomization;
+import consulo.language.editor.ui.SpellCheckerCustomization;
 import jakarta.inject.Singleton;
 
-import com.intellij.openapi.vcs.ui.SpellCheckerCustomization;
-import com.intellij.spellchecker.ui.SpellCheckingEditorCustomization;
-import com.intellij.ui.EditorCustomization;
+import javax.annotation.Nonnull;
 
 /**
  * @author VISTALL
  * @since 12:12/03.07.13
  */
 @Singleton
+@ServiceAPI(ComponentScope.APPLICATION)
+@ServiceImpl
 public class SpellCheckerCustomizationImpl extends SpellCheckerCustomization
 {
 	public SpellCheckerCustomizationImpl()

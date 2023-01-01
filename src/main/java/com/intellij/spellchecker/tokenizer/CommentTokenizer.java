@@ -15,10 +15,10 @@
  */
 package com.intellij.spellchecker.tokenizer;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.psi.PsiComment;
 import com.intellij.spellchecker.inspections.CommentSplitter;
+import consulo.language.psi.PsiComment;
+
+import javax.annotation.Nonnull;
 
 public class CommentTokenizer extends Tokenizer<PsiComment> {
 

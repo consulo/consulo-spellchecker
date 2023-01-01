@@ -15,10 +15,10 @@
  */
 package com.intellij.spellchecker.tokenizer;
 
-import javax.annotation.Nonnull;
+import consulo.language.editor.inspection.SuppressQuickFix;
+import consulo.language.psi.PsiElement;
 
-import com.intellij.codeInspection.SuppressQuickFix;
-import com.intellij.psi.PsiElement;
+import javax.annotation.Nonnull;
 
 /**
  * Base class to use to make spellchecking in your language suppressible.
@@ -26,12 +26,12 @@ import com.intellij.psi.PsiElement;
  */
 public abstract class SuppressibleSpellcheckingStrategy extends SpellcheckingStrategy {
   /**
-   * @see com.intellij.codeInspection.CustomSuppressableInspectionTool#isSuppressedFor(com.intellij.psi.PsiElement)
+   * @see CustomSuppressableInspectionTool#isSuppressedFor(PsiElement)
    */
   public abstract boolean isSuppressedFor(@Nonnull PsiElement element, @Nonnull String name);
 
   /**
-   * @see com.intellij.codeInspection.BatchSuppressableTool#getBatchSuppressActions(com.intellij.psi.PsiElement)
+   * @see consulo.language.editor.inspection.BatchSuppressableTool#getBatchSuppressActions(PsiElement)
    */
   public abstract SuppressQuickFix[] getSuppressActions(@Nonnull PsiElement element, @Nonnull String name);
 }

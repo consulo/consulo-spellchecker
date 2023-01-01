@@ -15,7 +15,6 @@
  */
 package com.intellij.spellchecker.dictionary;
 
-import com.intellij.util.Consumer;
 import org.jetbrains.annotations.NonNls;
 
 import javax.annotation.Nonnull;
@@ -23,6 +22,7 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 
 public class UserDictionary implements EditableDictionary {
   private final String name;
@@ -122,7 +122,7 @@ public class UserDictionary implements EditableDictionary {
   @Override
   public void traverse(@Nonnull final Consumer<String> consumer) {
     for (String word : words) {
-      consumer.consume(word);
+      consumer.accept(word);
     }
   }
 

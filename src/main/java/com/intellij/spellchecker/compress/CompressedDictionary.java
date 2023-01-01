@@ -18,8 +18,7 @@ package com.intellij.spellchecker.compress;
 import com.intellij.spellchecker.dictionary.Dictionary;
 import com.intellij.spellchecker.dictionary.Loader;
 import com.intellij.spellchecker.engine.Transformation;
-import com.intellij.util.ArrayUtil;
-import com.intellij.util.Consumer;
+import consulo.util.collection.ArrayUtil;
 import consulo.util.collection.primitive.ints.IntMaps;
 import consulo.util.collection.primitive.ints.IntObjectMap;
 import org.jetbrains.annotations.NonNls;
@@ -27,6 +26,7 @@ import org.jetbrains.annotations.NonNls;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.function.Consumer;
 
 public final class CompressedDictionary implements Dictionary
 {
@@ -207,7 +207,7 @@ public final class CompressedDictionary implements Dictionary
 		loader.load(new Consumer<String>()
 		{
 			@Override
-			public void consume(String s)
+			public void accept(String s)
 			{
 				String transformed = transform.transform(s);
 				if(transformed != null)

@@ -15,37 +15,37 @@
  */
 package com.intellij.spellchecker.generator;
 
-import com.intellij.lang.Language;
-import com.intellij.lang.LanguageNamesValidation;
-import com.intellij.lang.refactoring.NamesValidator;
-import consulo.logging.Logger;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vfs.VfsUtilCore;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileVisitor;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
-import com.intellij.psi.util.PsiTreeUtil;
+
 import com.intellij.spellchecker.SpellCheckerManager;
 import com.intellij.spellchecker.inspections.SpellCheckingInspection;
 import com.intellij.spellchecker.inspections.Splitter;
 import com.intellij.spellchecker.tokenizer.TokenConsumer;
-import com.intellij.util.Consumer;
-import com.intellij.util.containers.MultiMap;
-import javax.annotation.Nonnull;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.document.util.TextRange;
+import consulo.language.Language;
+import consulo.language.editor.refactoring.NamesValidator;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.PsiManager;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.logging.Logger;
+import consulo.project.Project;
+import consulo.util.collection.MultiMap;
+import consulo.util.io.FileUtil;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.virtualFileSystem.util.VirtualFileUtil;
+import consulo.virtualFileSystem.util.VirtualFileVisitor;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Consumer;
 
 public abstract class SpellCheckerDictionaryGenerator {
-  private static final Logger LOG = Logger.getInstance("#com.intellij.spellchecker.generator.SpellCheckerDictionaryGenerator");
+  private static final Logger LOG = Logger.getInstance(SpellCheckerDictionaryGenerator.class);
   private final Set<String> globalSeenNames = new HashSet<String>();
   protected final Project myProject;
   private final String myDefaultDictName;
@@ -141,7 +141,7 @@ public abstract class SpellCheckerDictionaryGenerator {
   }
 
   protected void processFolder(final HashSet<String> seenNames, final PsiManager manager, final VirtualFile folder) {
-    VfsUtilCore.visitChildrenRecursively(folder, new VirtualFileVisitor() {
+    VirtualFileUtil.visitChildrenRecursively(folder, new VirtualFileVisitor() {
       @Override
       public boolean visitFile(@Nonnull VirtualFile file) {
         if (myExcludedFolders.contains(file)) {
@@ -189,7 +189,7 @@ public abstract class SpellCheckerDictionaryGenerator {
       public void consumeToken(PsiElement element, final String text, boolean useRename, int offset, TextRange rangeToCheck, Splitter splitter) {
         splitter.split(text, rangeToCheck, new Consumer<TextRange>() {
           @Override
-          public void consume(TextRange textRange) {
+          public void accept(TextRange textRange) {
             final String word = textRange.substring(text);
             addSeenWord(seenNames, word, language);
           }
@@ -204,7 +204,7 @@ public abstract class SpellCheckerDictionaryGenerator {
       return;
     }
 
-    final NamesValidator namesValidator = LanguageNamesValidation.INSTANCE.forLanguage(language);
+    final NamesValidator namesValidator = NamesValidator.forLanguage(language);
     if (namesValidator != null && namesValidator.isKeyword(word, myProject)) {
       return;
     }

@@ -15,12 +15,12 @@
  */
 package com.intellij.spellchecker.tokenizer;
 
-import javax.annotation.Nonnull;
-
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiLanguageInjectionHost;
-import com.intellij.psi.impl.source.tree.injected.InjectedLanguageUtil;
 import com.intellij.spellchecker.inspections.Splitter;
+import consulo.language.inject.InjectedLanguageManager;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiLanguageInjectionHost;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author yole
@@ -38,7 +38,7 @@ public class TokenizerBase<T extends PsiElement> extends Tokenizer<T> {
 
   @Override
   public void tokenize(@Nonnull T element, TokenConsumer consumer) {
-    if (element instanceof PsiLanguageInjectionHost && InjectedLanguageUtil.hasInjections((PsiLanguageInjectionHost)element)) {
+    if (element instanceof PsiLanguageInjectionHost && InjectedLanguageManager.getInstance(element.getProject()).getInjectedPsiFiles(element) != null) {
       return;
     }
     consumer.consumeToken(element, mySplitter);

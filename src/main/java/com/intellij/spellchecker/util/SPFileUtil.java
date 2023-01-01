@@ -15,12 +15,11 @@
  */
 package com.intellij.spellchecker.util;
 
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.util.Consumer;
-import com.intellij.util.Processor;
+import consulo.application.util.function.Processor;
+import consulo.util.io.FileUtil;
 
 import java.io.File;
-
+import java.util.function.Consumer;
 
 @SuppressWarnings({"UtilityClassWithoutPrivateConstructor"})
 public class SPFileUtil {
@@ -33,7 +32,7 @@ public class SPFileUtil {
           if (!file.isDirectory()){
             final String path = file.getPath();
             if (path.endsWith(".dic")){
-              consumer.consume(path);
+              consumer.accept(path);
             }
           }
           return true;

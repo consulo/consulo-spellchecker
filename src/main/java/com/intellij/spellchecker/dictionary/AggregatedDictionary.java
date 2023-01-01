@@ -15,13 +15,13 @@
  */
 package com.intellij.spellchecker.dictionary;
 
-import com.intellij.util.Consumer;
 import org.jetbrains.annotations.NonNls;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import java.util.Collection;
 import java.util.Set;
+import java.util.function.Consumer;
 
 public class AggregatedDictionary implements EditableDictionary {
   @NonNls private static final String DICTIONARY_NAME = "common";

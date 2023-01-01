@@ -15,10 +15,10 @@
  */
 package com.intellij.spellchecker.util;
 
-import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.util.text.StringUtil;
-import javax.annotation.Nonnull;
+import consulo.document.util.TextRange;
+import consulo.util.lang.StringUtil;
 
+import javax.annotation.Nonnull;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.List;

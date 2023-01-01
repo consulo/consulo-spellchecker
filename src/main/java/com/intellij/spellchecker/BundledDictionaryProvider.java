@@ -15,10 +15,13 @@
  */
 package com.intellij.spellchecker;
 
-import com.intellij.openapi.extensions.ExtensionPointName;
+import consulo.annotation.component.ComponentScope;
+import consulo.annotation.component.ExtensionAPI;
+import consulo.component.extension.ExtensionPointName;
 
+@ExtensionAPI(ComponentScope.APPLICATION)
 public interface BundledDictionaryProvider {
-  ExtensionPointName<BundledDictionaryProvider> EP_NAME = ExtensionPointName.create("com.intellij.spellchecker.bundledDictionaryProvider");
+  ExtensionPointName<BundledDictionaryProvider> EP_NAME = ExtensionPointName.create(BundledDictionaryProvider.class);
   
   String[] getBundledDictionaries();
 }

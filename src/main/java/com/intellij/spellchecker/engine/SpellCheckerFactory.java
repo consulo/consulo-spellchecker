@@ -15,7 +15,7 @@
  */
 package com.intellij.spellchecker.engine;
 
-import com.intellij.openapi.project.Project;
+import consulo.project.Project;
 
 public final class SpellCheckerFactory {
   private SpellCheckerFactory() {
@@ -24,6 +24,4 @@ public final class SpellCheckerFactory {
   public static SpellCheckerEngine create(final Project project) {
     return new BaseSpellChecker(project);
   }
-
- 
 }

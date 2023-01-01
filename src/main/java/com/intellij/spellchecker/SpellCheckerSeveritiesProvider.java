@@ -20,18 +20,20 @@
  */
 package com.intellij.spellchecker;
 
-import com.intellij.codeInsight.daemon.impl.HighlightInfoType;
-import com.intellij.codeInsight.daemon.impl.SeveritiesProvider;
-import com.intellij.icons.AllIcons;
-import com.intellij.lang.annotation.HighlightSeverity;
-import com.intellij.openapi.editor.colors.TextAttributesKey;
-import com.intellij.openapi.editor.markup.TextAttributes;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.application.AllIcons;
+import consulo.colorScheme.TextAttributes;
+import consulo.colorScheme.TextAttributesKey;
+import consulo.language.editor.annotation.HighlightSeverity;
+import consulo.language.editor.rawHighlight.HighlightInfoType;
+import consulo.language.editor.rawHighlight.SeveritiesProvider;
 import consulo.ui.color.ColorValue;
 import consulo.ui.image.Image;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
+@ExtensionImpl
 public class SpellCheckerSeveritiesProvider extends SeveritiesProvider
 {
 	private static final TextAttributesKey TYPO_KEY = TextAttributesKey.createTextAttributesKey("TYPO");

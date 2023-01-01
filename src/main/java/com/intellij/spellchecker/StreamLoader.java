@@ -15,22 +15,17 @@
  */
 package com.intellij.spellchecker;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import com.intellij.spellchecker.dictionary.Loader;
+import consulo.logging.Logger;
 
 import javax.annotation.Nonnull;
-
-import com.intellij.spellchecker.dictionary.Loader;
-import com.intellij.util.Consumer;
-import consulo.logging.Logger;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.function.Consumer;
 
 public class StreamLoader implements Loader {
 
-  private static final Logger LOG = Logger.getInstance("#com.intellij.spellchecker.StreamLoader");
-  private static final String ENCODING = "UTF-8";
+  private static final Logger LOG = Logger.getInstance(StreamLoader.class);
 
   private final InputStream stream;
   private final String name;
@@ -51,10 +46,10 @@ public class StreamLoader implements Loader {
     BufferedReader br = null;
 
     try {
-      br = new BufferedReader(new InputStreamReader(in, ENCODING));
+      br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
       String strLine;
       while ((strLine = br.readLine()) != null) {
-        consumer.consume(strLine);
+        consumer.accept(strLine);
       }
     }
     catch (Exception e) {

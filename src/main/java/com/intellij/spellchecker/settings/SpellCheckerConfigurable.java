@@ -15,20 +15,22 @@
  */
 package com.intellij.spellchecker.settings;
 
-import javax.annotation.Nonnull;
+import com.intellij.spellchecker.util.SpellCheckerBundle;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.configurable.*;
+import consulo.disposer.Disposable;
+import consulo.disposer.Disposer;
+import consulo.project.Project;
+import consulo.ui.annotation.RequiredUIAccess;
 import jakarta.inject.Inject;
+import org.jetbrains.annotations.Nls;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 
-import org.jetbrains.annotations.Nls;
-import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.options.SearchableConfigurable;
-import com.intellij.openapi.project.Project;
-import com.intellij.spellchecker.util.SpellCheckerBundle;
-import consulo.disposer.Disposer;
-import consulo.ui.annotation.RequiredUIAccess;
-
-public class SpellCheckerConfigurable implements SearchableConfigurable, Configurable.NoScroll
+@ExtensionImpl
+public class SpellCheckerConfigurable implements SearchableConfigurable, Configurable.NoScroll, ProjectConfigurable
 {
 	private SpellCheckerSettingsPane myPanel;
 	private final SpellCheckerSettings mySpellCheckerSettings;
@@ -48,18 +50,18 @@ public class SpellCheckerConfigurable implements SearchableConfigurable, Configu
 		return SpellCheckerBundle.message("spelling");
 	}
 
+	@Nullable
 	@Override
-	@Nonnull
-	public String getHelpTopic()
+	public String getParentId()
 	{
-		return "reference.settings.ide.settings.spelling";
+		return StandardConfigurableIds.EDITOR_GROUP;
 	}
 
 	@Override
 	@Nonnull
 	public String getId()
 	{
-		return getHelpTopic();
+		return "reference.settings.ide.settings.spelling";
 	}
 
 	@Override
@@ -70,7 +72,7 @@ public class SpellCheckerConfigurable implements SearchableConfigurable, Configu
 
 	@RequiredUIAccess
 	@Override
-	public JComponent createComponent()
+	public JComponent createComponent(@Nonnull Disposable uiDisposable)
 	{
 		if(myPanel == null)
 		{

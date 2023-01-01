@@ -15,22 +15,23 @@
  */
 package com.intellij.spellchecker.quickfixes;
 
-import com.intellij.codeInsight.lookup.LookupElement;
-import com.intellij.codeInsight.lookup.LookupElementBuilder;
-import com.intellij.codeInsight.lookup.LookupManager;
-import com.intellij.codeInspection.LocalQuickFix;
-import com.intellij.codeInspection.ProblemDescriptor;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Iconable;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.SmartPointerManager;
-import com.intellij.psi.SmartPsiElementPointer;
-import com.intellij.psi.util.PsiUtilBase;
+
 import com.intellij.spellchecker.util.SpellCheckerBundle;
 import consulo.annotation.access.RequiredReadAction;
+import consulo.codeEditor.Editor;
+import consulo.component.util.Iconable;
+import consulo.document.util.TextRange;
+import consulo.language.editor.completion.lookup.LookupElement;
+import consulo.language.editor.completion.lookup.LookupElementBuilder;
+import consulo.language.editor.completion.lookup.LookupManager;
+import consulo.language.editor.inspection.LocalQuickFix;
+import consulo.language.editor.inspection.ProblemDescriptor;
+import consulo.language.editor.util.PsiEditorUtil;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.SmartPointerManager;
+import consulo.language.psi.SmartPsiElementPointer;
+import consulo.project.Project;
+import consulo.util.lang.StringUtil;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -69,7 +70,7 @@ public class ChangeTo extends ShowSuggestions implements LocalQuickFix, Iconable
 		{
 			return;
 		}
-		Editor editor = PsiUtilBase.findEditor(element);
+		Editor editor = PsiEditorUtil.findEditor(element);
 
 		if(editor == null)
 		{

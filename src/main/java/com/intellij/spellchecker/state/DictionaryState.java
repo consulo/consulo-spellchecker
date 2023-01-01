@@ -15,20 +15,21 @@
  */
 package com.intellij.spellchecker.state;
 
-import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.spellchecker.dictionary.EditableDictionary;
 import com.intellij.spellchecker.dictionary.UserDictionary;
-import com.intellij.util.xmlb.annotations.AbstractCollection;
-import com.intellij.util.xmlb.annotations.Attribute;
-import com.intellij.util.xmlb.annotations.Tag;
-import com.intellij.util.xmlb.annotations.Transient;
-import javax.annotation.Nonnull;
+import consulo.component.persist.PersistentStateComponent;
+import consulo.util.xml.serializer.annotation.AbstractCollection;
+import consulo.util.xml.serializer.annotation.Attribute;
+import consulo.util.xml.serializer.annotation.Tag;
+import consulo.util.xml.serializer.annotation.Transient;
 
+import javax.annotation.Nonnull;
 import java.util.HashSet;
 import java.util.Set;
 
 @Tag("dictionary")
-public class DictionaryState implements PersistentStateComponent<DictionaryState> {
+public class DictionaryState implements PersistentStateComponent<DictionaryState>
+{
 
   public static final String NAME_ATTRIBUTE = "name";
 

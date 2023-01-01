@@ -15,9 +15,9 @@
  */
 package com.intellij.spellchecker.tokenizer;
 
-import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiElement;
 import com.intellij.spellchecker.inspections.Splitter;
+import consulo.document.util.TextRange;
+import consulo.language.psi.PsiElement;
 
 /**
  * @author yole

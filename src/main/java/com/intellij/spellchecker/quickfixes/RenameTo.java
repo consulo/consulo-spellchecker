@@ -15,32 +15,27 @@
  */
 package com.intellij.spellchecker.quickfixes;
 
-import com.intellij.codeInspection.ProblemDescriptor;
-import com.intellij.ide.DataManager;
-import com.intellij.injected.editor.EditorWindow;
-import com.intellij.openapi.actionSystem.*;
-import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.editor.impl.EditorComponentImpl;
-import com.intellij.openapi.fileEditor.impl.text.TextEditorPsiDataProvider;
-import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.impl.source.tree.injected.InjectedLanguageUtil;
-import com.intellij.refactoring.actions.RenameElementAction;
-import com.intellij.refactoring.rename.NameSuggestionProvider;
-import com.intellij.refactoring.rename.RenameHandlerRegistry;
 import com.intellij.spellchecker.util.SpellCheckerBundle;
-import consulo.util.dataholder.Key;
+import consulo.codeEditor.Editor;
+import consulo.dataContext.DataContext;
+import consulo.dataContext.DataManager;
+import consulo.fileEditor.FileEditorManager;
+import consulo.language.editor.inject.EditorWindow;
+import consulo.language.editor.inject.InjectedEditorManager;
+import consulo.language.editor.inspection.ProblemDescriptor;
+import consulo.language.editor.refactoring.rename.NameSuggestionProvider;
+import consulo.language.editor.refactoring.rename.RenameElementAction;
+import consulo.language.editor.refactoring.rename.RenameHandlerRegistry;
+import consulo.language.inject.InjectedLanguageManagerUtil;
+import consulo.language.psi.PsiElement;
+import consulo.project.Project;
+import consulo.ui.ex.action.ActionManager;
+import consulo.ui.ex.action.AnAction;
+import consulo.ui.ex.action.AnActionEvent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.swing.*;
-import java.awt.*;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class RenameTo extends ShowSuggestions implements SpellCheckerQuickFix
 {
@@ -80,86 +75,60 @@ public class RenameTo extends ShowSuggestions implements SpellCheckerQuickFix
 	}
 
 	@Override
-	@SuppressWarnings({"SSBasedInspection"})
 	public void applyFix(@Nonnull final Project project, @Nonnull final ProblemDescriptor descriptor)
 	{
-		Runnable fix = new Runnable()
+		DictionarySuggestionProvider provider = findProvider();
+		if(provider != null)
 		{
-			@Override
-			public void run()
-			{
-				DictionarySuggestionProvider provider = findProvider();
-				if(provider != null)
-				{
-					provider.setActive(true);
-				}
-
-				Editor editor = getEditorFromFocus();
-				Map<Key, Object> map = new HashMap<>();
-				PsiElement psiElement = descriptor.getPsiElement();
-				if(psiElement == null)
-				{
-					return;
-				}
-				PsiFile containingFile = psiElement.getContainingFile();
-				if(editor == null)
-				{
-					editor = InjectedLanguageUtil.openEditorFor(containingFile, project);
-				}
-
-				if(editor == null)
-				{
-					return;
-				}
-
-				if(editor instanceof EditorWindow)
-				{
-					map.put(CommonDataKeys.EDITOR, editor);
-					map.put(CommonDataKeys.PSI_ELEMENT, psiElement);
-				}
-				else if(ApplicationManager.getApplication().isUnitTestMode())
-				{ // TextEditorComponent / FiledEditorManagerImpl give away the data in real life
-					map.put(CommonDataKeys.PSI_ELEMENT, new TextEditorPsiDataProvider().getData(CommonDataKeys.PSI_ELEMENT, editor, editor.getCaretModel().getCurrentCaret()));
-				}
-
-				final Boolean selectAll = editor.getUserData(RenameHandlerRegistry.SELECT_ALL);
-				try
-				{
-					editor.putUserData(RenameHandlerRegistry.SELECT_ALL, true);
-					DataContext dataContext = SimpleDataContext.getSimpleContext(map, DataManager.getInstance().getDataContext(editor.getComponent()));
-					AnAction action = new RenameElementAction();
-					AnActionEvent event = new AnActionEvent(null, dataContext, "", action.getTemplatePresentation(), ActionManager.getInstance(), 0);
-					action.actionPerformed(event);
-					if(provider != null)
-					{
-						provider.setActive(false);
-					}
-				}
-				finally
-				{
-					editor.putUserData(RenameHandlerRegistry.SELECT_ALL, selectAll);
-				}
-			}
-		};
-
-		if(ApplicationManager.getApplication().isUnitTestMode())
-		{
-			fix.run();
+			provider.setActive(true);
 		}
-		else
+
+		PsiElement psiElement = descriptor.getPsiElement();
+		if(psiElement == null)
 		{
-			SwingUtilities.invokeLater(fix); // TODO [shkate] this is hard to test!
+			return;
+		}
+
+		Editor editor = getEditor(psiElement, project);
+
+		if(editor == null)
+		{
+			return;
+		}
+
+		DataContext.Builder builder = DataContext.builder();
+		if(editor instanceof EditorWindow)
+		{
+			builder.add(Editor.KEY, editor);
+			builder.add(PsiElement.KEY, psiElement);
+		}
+
+		final Boolean selectAll = editor.getUserData(RenameHandlerRegistry.SELECT_ALL);
+		try
+		{
+			editor.putUserData(RenameHandlerRegistry.SELECT_ALL, true);
+
+			builder.parent(DataManager.getInstance().getDataContext(editor.getComponent()));
+
+			AnAction action = new RenameElementAction();
+			AnActionEvent event = new AnActionEvent(null, builder.build(), "", action.getTemplatePresentation(), ActionManager.getInstance(), 0);
+			action.actionPerformed(event);
+			if(provider != null)
+			{
+				provider.setActive(false);
+			}
+		}
+		finally
+		{
+			editor.putUserData(RenameHandlerRegistry.SELECT_ALL, selectAll);
 		}
 	}
 
 	@Nullable
-	private static Editor getEditorFromFocus()
+	protected Editor getEditor(PsiElement element, @Nonnull Project project)
 	{
-		final Component c = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-		if(c instanceof EditorComponentImpl)
-		{
-			return ((EditorComponentImpl) c).getEditor();
-		}
-		return null;
+		return InjectedLanguageManagerUtil.findInjectionHost(element) != null
+				? InjectedEditorManager.getInstance(project).openEditorFor(element.getContainingFile())
+				: FileEditorManager.getInstance(project).getSelectedTextEditor();
 	}
 }

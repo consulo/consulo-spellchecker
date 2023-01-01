@@ -15,8 +15,8 @@
  */
 package com.intellij.spellchecker.util;
 
+import consulo.component.util.localize.AbstractBundle;
 import org.jetbrains.annotations.PropertyKey;
-import com.intellij.AbstractBundle;
 
 public final class SpellCheckerBundle extends AbstractBundle
 {

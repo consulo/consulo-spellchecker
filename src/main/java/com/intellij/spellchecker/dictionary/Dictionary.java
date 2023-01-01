@@ -15,11 +15,10 @@
  */
 package com.intellij.spellchecker.dictionary;
 
-import com.intellij.util.Consumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import java.util.Set;
+import java.util.function.Consumer;
 
 public interface Dictionary {
   @Nonnull

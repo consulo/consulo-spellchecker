@@ -15,13 +15,13 @@
  */
 package com.intellij.spellchecker;
 
+import com.intellij.spellchecker.engine.SuggestionProvider;
+import consulo.application.util.matcher.NameUtil;
+
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Nonnull;
-import com.intellij.psi.codeStyle.NameUtil;
-import com.intellij.spellchecker.engine.SuggestionProvider;
 
 public class BaseSuggestionProvider implements SuggestionProvider {
 

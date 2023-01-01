@@ -15,31 +15,37 @@
  */
 package com.intellij.spellchecker.inspections;
 
-import com.intellij.codeHighlighting.HighlightDisplayLevel;
-import com.intellij.codeInspection.*;
-import com.intellij.codeInspection.ui.SingleCheckboxOptionsPanel;
-import com.intellij.lang.*;
-import com.intellij.lang.refactoring.NamesValidator;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.tree.IElementType;
 import com.intellij.spellchecker.SpellCheckerManager;
 import com.intellij.spellchecker.quickfixes.SpellCheckerQuickFix;
-import com.intellij.spellchecker.tokenizer.*;
+import com.intellij.spellchecker.tokenizer.SpellcheckingStrategy;
+import com.intellij.spellchecker.tokenizer.SuppressibleSpellcheckingStrategy;
+import com.intellij.spellchecker.tokenizer.TokenConsumer;
+import com.intellij.spellchecker.tokenizer.Tokenizer;
 import com.intellij.spellchecker.util.SpellCheckerBundle;
-import com.intellij.util.Consumer;
 import consulo.annotation.access.RequiredReadAction;
+import consulo.annotation.component.ExtensionImpl;
+import consulo.document.util.TextRange;
+import consulo.language.Language;
+import consulo.language.ast.ASTNode;
+import consulo.language.ast.IElementType;
+import consulo.language.editor.inspection.*;
+import consulo.language.editor.inspection.ui.SingleCheckboxOptionsPanel;
+import consulo.language.editor.rawHighlight.HighlightDisplayLevel;
+import consulo.language.editor.refactoring.NamesValidator;
+import consulo.language.parser.ParserDefinition;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiElementVisitor;
 import org.jetbrains.annotations.Nls;
-import org.jetbrains.annotations.NonNls;
-import javax.annotation.Nonnull;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 
+@ExtensionImpl
 public class SpellCheckingInspection extends LocalInspectionTool
 {
 	public static final String SPELL_CHECKING_INSPECTION_TOOL_NAME = "SpellCheckingInspection";
@@ -78,7 +84,7 @@ public class SpellCheckingInspection extends LocalInspectionTool
 
 	private static SpellcheckingStrategy getSpellcheckingStrategy(@Nonnull PsiElement element, @Nonnull Language language)
 	{
-		for(SpellcheckingStrategy strategy : LanguageSpellchecking.INSTANCE.allForLanguage(language))
+		for(SpellcheckingStrategy strategy : SpellcheckingStrategy.forLanguage(language))
 		{
 			if(strategy.isMyContext(element))
 			{
@@ -101,7 +107,6 @@ public class SpellCheckingInspection extends LocalInspectionTool
 	}
 
 	@Override
-	@NonNls
 	@Nonnull
 	public String getShortName()
 	{
@@ -141,7 +146,7 @@ public class SpellCheckingInspection extends LocalInspectionTool
 				// Extract parser definition from element
 				final Language language = element.getLanguage();
 				final IElementType elementType = node.getElementType();
-				final ParserDefinition parserDefinition = LanguageParserDefinitions.INSTANCE.forLanguage(language);
+				final ParserDefinition parserDefinition = ParserDefinition.forLanguage(language);
 
 				// Handle selected options
 				if(parserDefinition != null)
@@ -166,7 +171,7 @@ public class SpellCheckingInspection extends LocalInspectionTool
 					}
 				}
 
-				tokenize(element, language, new MyTokenConsumer(manager, holder, LanguageNamesValidation.INSTANCE.forLanguage(language)));
+				tokenize(element, language, new MyTokenConsumer(manager, holder, NamesValidator.forLanguage(language)));
 			}
 		};
 	}
@@ -282,7 +287,7 @@ public class SpellCheckingInspection extends LocalInspectionTool
 
 		@Override
 		@RequiredReadAction
-		public void consume(TextRange range)
+		public void accept(TextRange range)
 		{
 			String word = range.substring(myText);
 			if(!myHolder.isOnTheFly() && myAlreadyChecked.contains(word))
