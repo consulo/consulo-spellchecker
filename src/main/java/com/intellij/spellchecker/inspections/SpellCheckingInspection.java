@@ -29,7 +29,6 @@ import consulo.language.Language;
 import consulo.language.ast.ASTNode;
 import consulo.language.ast.IElementType;
 import consulo.language.editor.inspection.*;
-import consulo.language.editor.inspection.ui.SingleCheckboxOptionsPanel;
 import consulo.language.editor.rawHighlight.HighlightDisplayLevel;
 import consulo.language.editor.refactoring.NamesValidator;
 import consulo.language.parser.ParserDefinition;
@@ -39,8 +38,6 @@ import org.jetbrains.annotations.Nls;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.swing.*;
-import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -128,8 +125,10 @@ public class SpellCheckingInspection extends LocalInspectionTool
 
 	@Override
 	@Nonnull
-	public PsiElementVisitor buildVisitor(@Nonnull final ProblemsHolder holder, final boolean isOnTheFly)
+	public PsiElementVisitor buildVisitor(@Nonnull final ProblemsHolder holder, final boolean isOnTheFly, LocalInspectionToolSession session, Object state)
 	{
+		SpellCheckingInspectionState localState = (SpellCheckingInspectionState) state;
+
 		final SpellCheckerManager manager = SpellCheckerManager.getInstance(holder.getProject());
 
 		return new PsiElementVisitor()
@@ -153,19 +152,19 @@ public class SpellCheckingInspection extends LocalInspectionTool
 				{
 					if(parserDefinition.getStringLiteralElements(element.getLanguageVersion()).contains(elementType))
 					{
-						if(!processLiterals)
+						if(!localState.processLiterals)
 						{
 							return;
 						}
 					}
 					else if(parserDefinition.getCommentTokens(element.getLanguageVersion()).contains(elementType))
 					{
-						if(!processComments)
+						if(!localState.processComments)
 						{
 							return;
 						}
 					}
-					else if(!processCode)
+					else if(!localState.processCode)
 					{
 						return;
 					}
@@ -224,36 +223,6 @@ public class SpellCheckingInspection extends LocalInspectionTool
 	{
 		final String description = SpellCheckerBundle.message("typo.in.word.ref");
 		return new ProblemDescriptorBase(element, element, description, fixes, ProblemHighlightType.GENERIC_ERROR_OR_WARNING, false, textRange, onTheFly, onTheFly);
-	}
-
-	@SuppressWarnings({"PublicField"})
-	public boolean processCode = true;
-	public boolean processLiterals = true;
-	public boolean processComments = true;
-
-	@Override
-	public JComponent createOptionsPanel()
-	{
-		final Box verticalBox = Box.createVerticalBox();
-		verticalBox.add(new SingleCheckboxOptionsPanel(SpellCheckerBundle.message("process.code"), this, "processCode"));
-		verticalBox.add(new SingleCheckboxOptionsPanel(SpellCheckerBundle.message("process.literals"), this, "processLiterals"));
-		verticalBox.add(new SingleCheckboxOptionsPanel(SpellCheckerBundle.message("process.comments"), this, "processComments"));
-	/*HyperlinkLabel linkToSettings = new HyperlinkLabel(SpellCheckerBundle.message("link.to.settings"));
-	linkToSettings.addHyperlinkListener(new HyperlinkListener() {
-      public void hyperlinkUpdate(final HyperlinkEvent e) {
-        if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-          final OptionsEditor optionsEditor = OptionsEditor.KEY.getData(DataManager.getInstance().getDataContext());
-          // ??project?
-
-        }
-      }
-    });
-
-    verticalBox.add(linkToSettings);*/
-		final JPanel panel = new JPanel(new BorderLayout());
-		panel.add(verticalBox, BorderLayout.NORTH);
-		return panel;
-
 	}
 
 	private static class MyTokenConsumer extends TokenConsumer implements Consumer<TextRange>

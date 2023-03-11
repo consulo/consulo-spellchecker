@@ -35,6 +35,6 @@ public abstract class SpellcheckerInspectionTestCase extends LightPlatformCodeIn
   }
 
   public static LocalInspectionTool[] getInspectionTools() {
-    return new LocalInspectionTool[]{new SpellCheckingInspection()};
+    return new LocalInspectionTool[]{new SpellCheckingInspection(mySpellCheckerManager)};
   }
 }
