@@ -123,6 +123,13 @@ public class SpellCheckingInspection extends LocalInspectionTool
 		return SpellCheckerManager.getHighlightDisplayLevel();
 	}
 
+	@Nonnull
+	@Override
+	public InspectionToolState<?> createStateProvider()
+	{
+		return new SpellCheckingInspectionState();
+	}
+
 	@Override
 	@Nonnull
 	public PsiElementVisitor buildVisitor(@Nonnull final ProblemsHolder holder, final boolean isOnTheFly, LocalInspectionToolSession session, Object state)
