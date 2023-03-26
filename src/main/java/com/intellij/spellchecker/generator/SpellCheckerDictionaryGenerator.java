@@ -18,8 +18,6 @@ package com.intellij.spellchecker.generator;
 
 import com.intellij.spellchecker.SpellCheckerManager;
 import com.intellij.spellchecker.inspections.SpellCheckingInspection;
-import com.intellij.spellchecker.inspections.Splitter;
-import com.intellij.spellchecker.tokenizer.TokenConsumer;
 import consulo.application.progress.ProgressIndicator;
 import consulo.application.progress.ProgressManager;
 import consulo.document.util.TextRange;
@@ -29,6 +27,8 @@ import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
 import consulo.language.psi.PsiManager;
 import consulo.language.psi.util.PsiTreeUtil;
+import consulo.language.spellcheker.tokenizer.TokenConsumer;
+import consulo.language.spellcheker.tokenizer.splitter.TokenSplitter;
 import consulo.logging.Logger;
 import consulo.project.Project;
 import consulo.util.collection.MultiMap;
@@ -186,7 +186,7 @@ public abstract class SpellCheckerDictionaryGenerator {
     final Language language = leafElement.getLanguage();
     SpellCheckingInspection.tokenize(leafElement, language, new TokenConsumer() {
       @Override
-      public void consumeToken(PsiElement element, final String text, boolean useRename, int offset, TextRange rangeToCheck, Splitter splitter) {
+      public void consumeToken(PsiElement element, final String text, boolean useRename, int offset, TextRange rangeToCheck, TokenSplitter splitter) {
         splitter.split(text, rangeToCheck, new Consumer<TextRange>() {
           @Override
           public void accept(TextRange textRange) {

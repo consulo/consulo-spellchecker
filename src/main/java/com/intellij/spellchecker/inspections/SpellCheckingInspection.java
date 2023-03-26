@@ -15,12 +15,9 @@
  */
 package com.intellij.spellchecker.inspections;
 
+import com.intellij.spellchecker.SimpleSpellcheckerEngine;
 import com.intellij.spellchecker.SpellCheckerManager;
 import com.intellij.spellchecker.quickfixes.SpellCheckerQuickFix;
-import com.intellij.spellchecker.tokenizer.SpellcheckingStrategy;
-import com.intellij.spellchecker.tokenizer.SuppressibleSpellcheckingStrategy;
-import com.intellij.spellchecker.tokenizer.TokenConsumer;
-import com.intellij.spellchecker.tokenizer.Tokenizer;
 import com.intellij.spellchecker.util.SpellCheckerBundle;
 import consulo.annotation.access.RequiredReadAction;
 import consulo.annotation.component.ExtensionImpl;
@@ -29,23 +26,34 @@ import consulo.language.Language;
 import consulo.language.ast.ASTNode;
 import consulo.language.ast.IElementType;
 import consulo.language.editor.inspection.*;
-import consulo.language.editor.rawHighlight.HighlightDisplayLevel;
 import consulo.language.editor.refactoring.NamesValidator;
 import consulo.language.parser.ParserDefinition;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiElementVisitor;
+import consulo.language.spellchecker.editor.SpellcheckerEngineManager;
+import consulo.language.spellchecker.editor.inspection.SpellcheckerInspection;
+import consulo.language.spellcheker.SpellcheckingStrategy;
+import consulo.language.spellcheker.tokenizer.TokenConsumer;
+import consulo.language.spellcheker.tokenizer.Tokenizer;
+import consulo.language.spellcheker.tokenizer.splitter.TokenSplitter;
+import jakarta.inject.Inject;
 import org.jetbrains.annotations.Nls;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
 @ExtensionImpl
-public class SpellCheckingInspection extends LocalInspectionTool
+public class SpellCheckingInspection extends SpellcheckerInspection
 {
 	public static final String SPELL_CHECKING_INSPECTION_TOOL_NAME = "SpellCheckingInspection";
+
+	@Inject
+	protected SpellCheckingInspection(SpellcheckerEngineManager spellcheckerEngineManager)
+	{
+		super(spellcheckerEngineManager, SimpleSpellcheckerEngine.ID);
+	}
 
 	@Override
 	@Nls
@@ -63,64 +71,11 @@ public class SpellCheckingInspection extends LocalInspectionTool
 		return SpellCheckerBundle.message("spellchecking.inspection.name");
 	}
 
-	@Nonnull
-	@Override
-	public SuppressQuickFix[] getBatchSuppressActions(@Nullable PsiElement element)
-	{
-		if(element != null)
-		{
-			final Language language = element.getLanguage();
-			SpellcheckingStrategy strategy = getSpellcheckingStrategy(element, language);
-			if(strategy instanceof SuppressibleSpellcheckingStrategy)
-			{
-				return ((SuppressibleSpellcheckingStrategy) strategy).getSuppressActions(element, getShortName());
-			}
-		}
-		return super.getBatchSuppressActions(element);
-	}
-
-	private static SpellcheckingStrategy getSpellcheckingStrategy(@Nonnull PsiElement element, @Nonnull Language language)
-	{
-		for(SpellcheckingStrategy strategy : SpellcheckingStrategy.forLanguage(language))
-		{
-			if(strategy.isMyContext(element))
-			{
-				return strategy;
-			}
-		}
-		return null;
-	}
-
-	@Override
-	public boolean isSuppressedFor(@Nonnull PsiElement element)
-	{
-		final Language language = element.getLanguage();
-		SpellcheckingStrategy strategy = getSpellcheckingStrategy(element, language);
-		if(strategy instanceof SuppressibleSpellcheckingStrategy)
-		{
-			return ((SuppressibleSpellcheckingStrategy) strategy).isSuppressedFor(element, getShortName());
-		}
-		return super.isSuppressedFor(element);
-	}
-
 	@Override
 	@Nonnull
 	public String getShortName()
 	{
 		return SPELL_CHECKING_INSPECTION_TOOL_NAME;
-	}
-
-	@Override
-	public boolean isEnabledByDefault()
-	{
-		return true;
-	}
-
-	@Override
-	@Nonnull
-	public HighlightDisplayLevel getDefaultLevel()
-	{
-		return SpellCheckerManager.getHighlightDisplayLevel();
 	}
 
 	@Nonnull
@@ -132,7 +87,7 @@ public class SpellCheckingInspection extends LocalInspectionTool
 
 	@Override
 	@Nonnull
-	public PsiElementVisitor buildVisitor(@Nonnull final ProblemsHolder holder, final boolean isOnTheFly, LocalInspectionToolSession session, Object state)
+	public PsiElementVisitor buildVisitorImpl(@Nonnull final ProblemsHolder holder, final boolean isOnTheFly, LocalInspectionToolSession session, Object state)
 	{
 		SpellCheckingInspectionState localState = (SpellCheckingInspectionState) state;
 
@@ -206,7 +161,7 @@ public class SpellCheckingInspection extends LocalInspectionTool
 										   @Nonnull TextRange textRange,
 										   @Nonnull ProblemsHolder holder)
 	{
-		SpellCheckerQuickFix[] fixes = SpellcheckingStrategy.getDefaultBatchFixes();
+		SpellCheckerQuickFix[] fixes = SpellcheckerQuickFixes.getDefaultBatchFixes();
 		ProblemDescriptor problemDescriptor = createProblemDescriptor(element, textRange, fixes, false);
 		holder.registerProblem(problemDescriptor);
 	}
@@ -217,8 +172,8 @@ public class SpellCheckingInspection extends LocalInspectionTool
 		SpellcheckingStrategy strategy = getSpellcheckingStrategy(element, element.getLanguage());
 
 		LocalQuickFix[] fixes = strategy != null
-				? strategy.getRegularFixes(element, textRange, useRename, wordWithTypo)
-				: SpellcheckingStrategy.getDefaultRegularFixes(useRename, wordWithTypo, element, textRange);
+				? SpellcheckerQuickFixes.getRegularFixes(element, textRange, useRename, wordWithTypo)
+				: SpellcheckerQuickFixes.getDefaultRegularFixes(useRename, wordWithTypo, element, textRange);
 
 		final ProblemDescriptor problemDescriptor = createProblemDescriptor(element, textRange, fixes, true);
 		holder.registerProblem(problemDescriptor);
@@ -252,7 +207,7 @@ public class SpellCheckingInspection extends LocalInspectionTool
 
 		@Override
 		public void consumeToken(final PsiElement element, final String text, final boolean useRename, final int offset, TextRange rangeToCheck,
-								 Splitter splitter)
+								 TokenSplitter splitter)
 		{
 			myElement = element;
 			myText = text;

@@ -33,6 +33,7 @@ import consulo.language.editor.DaemonCodeAnalyzer;
 import consulo.language.editor.rawHighlight.HighlightDisplayLevel;
 import consulo.language.psi.PsiManager;
 import consulo.language.psi.PsiModificationTracker;
+import consulo.language.spellchecker.editor.SpellcheckerSeverities;
 import consulo.logging.Logger;
 import consulo.project.Project;
 import consulo.project.ProjectManager;
@@ -262,7 +263,7 @@ public class SpellCheckerManager
 	@Nonnull
 	public static HighlightDisplayLevel getHighlightDisplayLevel()
 	{
-		return HighlightDisplayLevel.find(SpellCheckerSeveritiesProvider.TYPO);
+		return HighlightDisplayLevel.find(SpellcheckerSeverities.TYPO);
 	}
 
 	@Nonnull

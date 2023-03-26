@@ -17,9 +17,7 @@ open module com.intellij.spellchecker {
 	exports com.intellij.spellchecker.quickfixes;
 	exports com.intellij.spellchecker.settings;
 	exports com.intellij.spellchecker.state;
-	exports com.intellij.spellchecker.tokenizer;
 	exports com.intellij.spellchecker.ui;
 	exports com.intellij.spellchecker.util;
-	exports com.intellij.spellchecker.vcs;
 	exports consulo.spellchecker.icon;
 }
