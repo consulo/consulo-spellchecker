@@ -16,13 +16,10 @@
 package com.intellij.spellchecker.ui;
 
 import com.intellij.spellchecker.inspections.SpellCheckingInspection;
-import consulo.application.Application;
 import consulo.codeEditor.EditorEx;
 import consulo.language.editor.DaemonCodeAnalyzer;
-import consulo.language.editor.inspection.LocalInspectionTool;
 import consulo.language.editor.inspection.scheme.InspectionProfile;
 import consulo.language.editor.inspection.scheme.InspectionProfileWrapper;
-import consulo.language.editor.inspection.scheme.LocalInspectionToolWrapper;
 import consulo.language.editor.intention.IntentionManager;
 import consulo.language.editor.rawHighlight.HighlightDisplayKey;
 import consulo.language.editor.ui.SimpleEditorCustomization;
@@ -33,7 +30,6 @@ import consulo.project.Project;
 import consulo.util.collection.Maps;
 
 import javax.annotation.Nonnull;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -47,12 +43,8 @@ import java.util.function.Function;
  */
 public class SpellCheckingEditorCustomization extends SimpleEditorCustomization
 {
-
 	public static final SpellCheckingEditorCustomization ENABLED = new SpellCheckingEditorCustomization(true);
 	public static final SpellCheckingEditorCustomization DISABLED = new SpellCheckingEditorCustomization(false);
-
-	private static final Map<String, LocalInspectionToolWrapper> SPELL_CHECK_TOOLS = new HashMap<String, LocalInspectionToolWrapper>();
-	private static final boolean READY = init();
 
 	@Nonnull
 	public static SpellCheckingEditorCustomization getInstance(boolean enabled)
@@ -65,37 +57,10 @@ public class SpellCheckingEditorCustomization extends SimpleEditorCustomization
 		super(enabled);
 	}
 
-	@SuppressWarnings({"unchecked"})
-	private static boolean init()
-	{
-		// It's assumed that default spell checking inspection settings are just fine for processing all types of data.
-		// Please perform corresponding settings tuning if that assumption is broken at future.
-
-		Class<LocalInspectionTool>[] inspectionClasses = (Class<LocalInspectionTool>[]) new Class<?>[]{SpellCheckingInspection.class};
-		for(Class<LocalInspectionTool> inspectionClass : inspectionClasses)
-		{
-			try
-			{
-				LocalInspectionTool tool = Application.get().getUnbindedInstance(inspectionClass);
-				SPELL_CHECK_TOOLS.put(tool.getShortName(), new LocalInspectionToolWrapper(tool));
-			}
-			catch(Throwable e)
-			{
-				return false;
-			}
-		}
-		return true;
-	}
-
 	@Override
 	public void customize(@Nonnull EditorEx editor)
 	{
 		boolean apply = isEnabled();
-
-		if(!READY)
-		{
-			return;
-		}
 
 		Project project = editor.getProject();
 		if(project == null)
@@ -140,10 +105,6 @@ public class SpellCheckingEditorCustomization extends SimpleEditorCustomization
 		@Override
 		public InspectionProfileWrapper apply(InspectionProfile delegate)
 		{
-			if(!READY)
-			{
-				return new InspectionProfileWrapper(delegate);
-			}
 			MyInspectionProfileWrapper wrapper = myWrappers.get(delegate);
 			if(wrapper == null)
 			{
@@ -171,7 +132,7 @@ public class SpellCheckingEditorCustomization extends SimpleEditorCustomization
 		@Override
 		public boolean isToolEnabled(HighlightDisplayKey key, PsiElement element)
 		{
-			return SPELL_CHECK_TOOLS.containsKey(key.toString()) && myUseSpellCheck;
+			return SpellCheckingInspection.SPELL_CHECKING_INSPECTION_TOOL_NAME.equals(key.toString()) && myUseSpellCheck;
 		}
 
 		public void setUseSpellCheck(boolean useSpellCheck)
