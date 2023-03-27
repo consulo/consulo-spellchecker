@@ -272,7 +272,6 @@ public class SpellCheckerManager
 		return suggestionProvider.getSuggestions(text);
 	}
 
-
 	@Nonnull
 	protected List<String> getRawSuggestions(@Nonnull String word)
 	{

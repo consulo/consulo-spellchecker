@@ -2,8 +2,11 @@ package com.intellij.spellchecker;
 
 import consulo.annotation.component.ExtensionImpl;
 import consulo.language.spellchecker.editor.SpellcheckerEngine;
+import consulo.localize.LocalizeValue;
+import consulo.project.Project;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 /**
  * @author VISTALL
@@ -23,8 +26,33 @@ public class SimpleSpellcheckerEngine implements SpellcheckerEngine
 
 	@Nonnull
 	@Override
-	public String getDisplayName()
+	public LocalizeValue getDisplayName()
 	{
-		return "Simple Spellchecker";
+		return LocalizeValue.localizeTODO("Simple Spellchecker");
+	}
+
+	@Nonnull
+	@Override
+	public List<String> getSuggestions(@Nonnull Project project, @Nonnull String text)
+	{
+		return SpellCheckerManager.getInstance(project).getSuggestions(text);
+	}
+
+	@Override
+	public boolean hasProblem(@Nonnull Project project, @Nonnull String text)
+	{
+		return SpellCheckerManager.getInstance(project).hasProblem(text);
+	}
+
+	@Override
+	public boolean canSaveUserWords(@Nonnull Project project)
+	{
+		return true;
+	}
+
+	@Override
+	public void acceptWordAsCorrect(@Nonnull Project project, @Nonnull String word)
+	{
+		SpellCheckerManager.getInstance(project).acceptWordAsCorrect(word, project);
 	}
 }
