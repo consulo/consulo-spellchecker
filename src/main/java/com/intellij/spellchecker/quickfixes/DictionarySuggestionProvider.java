@@ -24,7 +24,7 @@ import consulo.language.psi.PsiNamedElement;
 
 import java.util.Set;
 
-@ExtensionImpl(id = "DictionarySuggestionProvider", order = "first")
+@ExtensionImpl(id = "DictionarySuggestionProvider")
 public class DictionarySuggestionProvider extends PreferrableNameSuggestionProvider {
   private boolean active;
 
