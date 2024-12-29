@@ -15,7 +15,7 @@
  */
 package com.intellij.spellchecker.dictionary;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import java.util.function.Consumer;
 
 public interface Loader {

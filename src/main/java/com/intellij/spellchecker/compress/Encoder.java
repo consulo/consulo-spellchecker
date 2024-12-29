@@ -15,11 +15,11 @@
  */
 package com.intellij.spellchecker.compress;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 import consulo.logging.Logger;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 public final class Encoder {
 

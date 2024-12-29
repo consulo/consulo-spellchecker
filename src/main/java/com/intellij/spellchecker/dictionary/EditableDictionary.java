@@ -15,7 +15,7 @@
  */
 package com.intellij.spellchecker.dictionary;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 import java.util.Collection;
 import java.util.Set;

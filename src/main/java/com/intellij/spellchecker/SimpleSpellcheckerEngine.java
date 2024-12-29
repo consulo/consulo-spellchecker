@@ -5,7 +5,7 @@ import consulo.language.spellchecker.editor.SpellcheckerEngine;
 import consulo.localize.LocalizeValue;
 import consulo.project.Project;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import java.util.List;
 
 /**

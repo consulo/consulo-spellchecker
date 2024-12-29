@@ -18,7 +18,7 @@ package com.intellij.spellchecker;
 import com.intellij.spellchecker.dictionary.Loader;
 import consulo.logging.Logger;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.function.Consumer;

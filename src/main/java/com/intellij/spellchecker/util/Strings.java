@@ -18,7 +18,7 @@ package com.intellij.spellchecker.util;
 import consulo.document.util.TextRange;
 import consulo.util.lang.StringUtil;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.List;

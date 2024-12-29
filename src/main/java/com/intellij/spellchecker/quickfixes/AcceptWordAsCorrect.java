@@ -23,7 +23,7 @@ import consulo.language.editor.inspection.ProblemDescriptorUtil;
 import consulo.project.Project;
 import consulo.ui.image.Image;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 public class AcceptWordAsCorrect implements SpellCheckerQuickFix
 {

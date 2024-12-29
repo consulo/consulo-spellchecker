@@ -16,7 +16,7 @@
 package com.intellij.spellchecker.engine;
 
 import com.intellij.spellchecker.dictionary.Loader;
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 import java.util.List;
 
