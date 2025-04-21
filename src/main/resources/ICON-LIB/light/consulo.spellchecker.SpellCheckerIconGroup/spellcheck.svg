@@ -1,9 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-  <g fill="none" fill-rule="evenodd">
-    <g fill="#6E6E6E" transform="translate(1 2)">
-      <path d="M3.15,3 L2.49612121,1.4 L1.85,3 L3.15,3 Z M2.109,0 L2.89,0 L5,5 L3.9,5 L3.4,4 L1.6,4 L1.1,5 L0,5 L2.109,0 Z"/>
-      <polygon points="5.494 5 5.494 4.214 8.382 .938 5.598 .938 5.598 0 9.841 0 9.841 .786 6.952 4.063 9.841 4.063 9.841 5"/>
+<svg version="1.1" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(1.5,1.5)" fill="#6C707E" fill-rule="evenodd">
+        <path d="m3.15 3-0.654-1.6-0.646 1.6zm-1.04-3h0.781l2.11 5h-1.1l-0.5-1h-1.8l-0.5 1h-1.1z"/>
+        <polygon points="9.84 0 9.84 0.786 6.95 4.06 9.84 4.06 9.84 5 5.49 5 5.49 4.21 8.38 0.938 5.6 0.938 5.6 0"/>
     </g>
-    <polygon fill="#59A869" points="13.148 14.285 13.148 4.285 10.42 4.285 10.42 11.558 6.784 11.558 6.784 14.285" transform="rotate(45 9.966 9.285)"/>
-  </g>
+    <path d="m4.5 10.5 3 3 6.5-6.5" fill="none" stroke="#55a76a" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
 </svg>
