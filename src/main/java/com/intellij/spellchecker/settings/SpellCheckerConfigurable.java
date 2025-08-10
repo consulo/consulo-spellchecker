@@ -15,18 +15,18 @@
  */
 package com.intellij.spellchecker.settings;
 
-import com.intellij.spellchecker.util.SpellCheckerBundle;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.configurable.*;
 import consulo.disposer.Disposable;
 import consulo.disposer.Disposer;
+import consulo.localize.LocalizeValue;
 import consulo.project.Project;
+import consulo.spellchecker.localize.SpellCheckerLocalize;
 import consulo.ui.annotation.RequiredUIAccess;
-import jakarta.inject.Inject;
-import org.jetbrains.annotations.Nls;
-
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
+import jakarta.inject.Inject;
+
 import javax.swing.*;
 
 @ExtensionImpl
@@ -44,10 +44,9 @@ public class SpellCheckerConfigurable implements SearchableConfigurable, Configu
 	}
 
 	@Override
-	@Nls
-	public String getDisplayName()
+	public LocalizeValue getDisplayName()
 	{
-		return SpellCheckerBundle.message("spelling");
+		return SpellCheckerLocalize.spelling();
 	}
 
 	@Nullable

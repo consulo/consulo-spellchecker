@@ -1,0 +1,78 @@
+add.0.to.dictionary:
+    text: 'Typo: Save ''''{0}'''' to dictionary'
+add.directory.description:
+    text: Add folders to load dictionaries (plaintext word lists) from
+add.directory.title:
+    text: Custom Dictionaries Folder
+add.new.word:
+    text: Add New Word
+add.to.dictionary:
+    text: Save to dictionary
+change.to:
+    text: 'Typo: Change to...'
+change.to.0:
+    text: 'Typo: Change to ''''{0}'''''
+class.name.with.mistakes:
+    text: Class name with mistakes
+comments.with.mistakes:
+    text: Comments with mistakes
+dictionaries.panel.description:
+    text: Enable/disable dictionaries for your project
+dictionaries.panel.title:
+    text: Dictionaries
+directory.is.already.included:
+    text: Directory is already included
+doccomment.with.mistakes:
+    text: Doc comment with mistake
+enter.simple.word:
+    text: 'Enter word:'
+entered.word.0.is.correct.you.no.need.to.add.this.in.list:
+    text: The word ''{0}'' is already in the dictionary.
+entered.word.0.is.mixed.cased.you.must.enter.simple.word:
+    text: The word ''{0}'' is mixed cased. Split it to simple words
+exact.rename.to:
+    text: 'Typo: Rename to ''''{0}'''''
+field.name.with.mistakes:
+    text: Field name with mistakes
+ignored.words:
+    text: Ignored Words
+link.to.inspection.settings:
+    text: Configure 'Spelling' inspection
+link.to.settings:
+    text: Manage Dictionaries
+local.variable.name.with.mistakes:
+    text: Local variable name with mistakes
+method.name.with.mistakes:
+    text: Method name with mistakes
+no.custom.folders:
+    text: No custom folders
+no.dictionaries:
+    text: No dictionaries found
+no.suggestions:
+    text: <no suggestion>
+no.words:
+    text: No additional words
+process.code:
+    text: Process code
+process.comments:
+    text: Process comments
+process.literals:
+    text: Process literals
+property.value.with.mistakes:
+    text: Property value with mistakes
+rename.to:
+    text: 'Typo: Rename to...'
+rename.to.0:
+    text: 'Typo: Rename to ''''{0}'''''
+spellchecking.inspection.name:
+    text: Typo
+spelling:
+    text: Spelling
+string.value.with.mistakes:
+    text: Literal expression with mistakes
+typo.in.word.ref:
+    text: 'Typo: In word ''#ref'''
+user.dictionary:
+    text: User Dictionary
+xml.with.mistakes:
+    text: XML with mistakes
