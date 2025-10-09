@@ -15,9 +15,6 @@
  */
 package com.intellij.spellchecker.quickfixes;
 
-
-import com.intellij.spellchecker.util.SpellCheckerBundle;
-import consulo.annotation.access.RequiredReadAction;
 import consulo.codeEditor.Editor;
 import consulo.component.util.Iconable;
 import consulo.document.util.TextRange;
@@ -30,71 +27,61 @@ import consulo.language.editor.util.PsiEditorUtil;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.SmartPointerManager;
 import consulo.language.psi.SmartPsiElementPointer;
+import consulo.localize.LocalizeValue;
 import consulo.project.Project;
+import consulo.spellchecker.localize.SpellCheckerLocalize;
+import consulo.ui.annotation.RequiredUIAccess;
 import consulo.util.lang.StringUtil;
-
 import jakarta.annotation.Nonnull;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChangeTo extends ShowSuggestions implements LocalQuickFix, Iconable
-{
-	private final TextRange myRange;
-	private final SmartPsiElementPointer<PsiElement> myElementPointer;
+public class ChangeTo extends ShowSuggestions implements LocalQuickFix, Iconable {
+    private final TextRange myRange;
+    private final SmartPsiElementPointer<PsiElement> myElementPointer;
 
-	public ChangeTo(String wordWithTypo, PsiElement element, TextRange range)
-	{
-		super(wordWithTypo);
-		myRange = range;
-		myElementPointer = SmartPointerManager.createPointer(element);
-	}
+    public ChangeTo(String wordWithTypo, PsiElement element, TextRange range) {
+        super(wordWithTypo);
+        myRange = range;
+        myElementPointer = SmartPointerManager.createPointer(element);
+    }
 
-	@Nonnull
-	public String getName()
-	{
-		return SpellCheckerBundle.message("change.to");
-	}
+    @Nonnull
+    @Override
+    public LocalizeValue getName() {
+        return SpellCheckerLocalize.changeTo();
+    }
 
-	@Nonnull
-	public String getFamilyName()
-	{
-		return SpellCheckerBundle.message("change.to");
-	}
+    @Override
+    @RequiredUIAccess
+    public void applyFix(@Nonnull Project project, @Nonnull ProblemDescriptor descriptor) {
+        PsiElement element = myElementPointer.getElement();
+        if (element == null) {
+            return;
+        }
+        Editor editor = PsiEditorUtil.findEditor(element);
 
-	@Override
-	@RequiredReadAction
-	public void applyFix(@Nonnull Project project, @Nonnull ProblemDescriptor descriptor)
-	{
-		PsiElement element = myElementPointer.getElement();
-		if(element == null)
-		{
-			return;
-		}
-		Editor editor = PsiEditorUtil.findEditor(element);
+        if (editor == null) {
+            return;
+        }
 
-		if(editor == null)
-		{
-			return;
-		}
+        TextRange textRange = myRange;
+        editor.getSelectionModel().setSelection(textRange.getStartOffset(), textRange.getEndOffset());
 
-		TextRange textRange = myRange;
-		editor.getSelectionModel().setSelection(textRange.getStartOffset(), textRange.getEndOffset());
+        String word = editor.getSelectionModel().getSelectedText();
 
-		String word = editor.getSelectionModel().getSelectedText();
+        if (word == null || StringUtil.isEmpty(word)) {
+            return;
+        }
 
-		if(word == null || StringUtil.isEmpty(word))
-		{
-			return;
-		}
-
-		List<LookupElement> lookupItems = new ArrayList<>();
-		for(String variant : getSuggestions(project))
-		{
-			lookupItems.add(LookupElementBuilder.create(variant));
-		}
-		LookupElement[] items = new LookupElement[lookupItems.size()];
-		items = lookupItems.toArray(items);
-		LookupManager lookupManager = LookupManager.getInstance(project);
-		lookupManager.showLookup(editor, items);
-	}
+        List<LookupElement> lookupItems = new ArrayList<>();
+        for (String variant : getSuggestions(project)) {
+            lookupItems.add(LookupElementBuilder.create(variant));
+        }
+        LookupElement[] items = new LookupElement[lookupItems.size()];
+        items = lookupItems.toArray(items);
+        LookupManager lookupManager = LookupManager.getInstance(project);
+        lookupManager.showLookup(editor, items);
+    }
 }
