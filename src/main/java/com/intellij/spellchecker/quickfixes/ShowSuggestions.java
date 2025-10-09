@@ -15,41 +15,37 @@
  */
 package com.intellij.spellchecker.quickfixes;
 
-import com.intellij.spellchecker.SpellCheckerIcons;
 import com.intellij.spellchecker.SpellCheckerManager;
 import consulo.component.util.Iconable;
 import consulo.language.editor.inspection.LocalQuickFix;
 import consulo.project.Project;
+import consulo.spellchecker.icon.SpellCheckerIconGroup;
 import consulo.ui.image.Image;
 
 import jakarta.annotation.Nonnull;
+
 import java.util.List;
 
-public abstract class ShowSuggestions implements LocalQuickFix, Iconable
-{
-	private List<String> suggestions;
-	private boolean processed;
-	private final String myWordWithTypo;
+public abstract class ShowSuggestions implements LocalQuickFix, Iconable {
+    private List<String> suggestions;
+    private boolean processed;
+    private final String myWordWithTypo;
 
-	public ShowSuggestions(String wordWithTypo)
-	{
-		myWordWithTypo = wordWithTypo;
-	}
+    public ShowSuggestions(String wordWithTypo) {
+        myWordWithTypo = wordWithTypo;
+    }
 
-	@Nonnull
-	public List<String> getSuggestions(Project project)
-	{
-		if(!processed)
-		{
-			suggestions = SpellCheckerManager.getInstance(project).getSuggestions(myWordWithTypo);
-			processed = true;
-		}
-		return suggestions;
-	}
+    @Nonnull
+    public List<String> getSuggestions(Project project) {
+        if (!processed) {
+            suggestions = SpellCheckerManager.getInstance(project).getSuggestions(myWordWithTypo);
+            processed = true;
+        }
+        return suggestions;
+    }
 
-	@Override
-	public Image getIcon(int flags)
-	{
-		return SpellCheckerIcons.Spellcheck;
-	}
+    @Override
+    public Image getIcon(int flags) {
+        return SpellCheckerIconGroup.spellcheck();
+    }
 }

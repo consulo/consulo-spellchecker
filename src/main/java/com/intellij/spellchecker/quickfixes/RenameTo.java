@@ -15,7 +15,7 @@
  */
 package com.intellij.spellchecker.quickfixes;
 
-import com.intellij.spellchecker.util.SpellCheckerBundle;
+import consulo.annotation.access.RequiredReadAction;
 import consulo.codeEditor.Editor;
 import consulo.dataContext.DataContext;
 import consulo.dataContext.DataManager;
@@ -28,107 +28,77 @@ import consulo.language.editor.refactoring.rename.RenameElementAction;
 import consulo.language.editor.refactoring.rename.RenameHandlerRegistry;
 import consulo.language.inject.InjectedLanguageManagerUtil;
 import consulo.language.psi.PsiElement;
+import consulo.localize.LocalizeValue;
 import consulo.project.Project;
+import consulo.spellchecker.localize.SpellCheckerLocalize;
+import consulo.ui.annotation.RequiredUIAccess;
 import consulo.ui.ex.action.ActionManager;
 import consulo.ui.ex.action.AnAction;
 import consulo.ui.ex.action.AnActionEvent;
-
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
-import java.util.List;
 
-public class RenameTo extends ShowSuggestions implements SpellCheckerQuickFix
-{
-	public RenameTo(String wordWithTypo)
-	{
-		super(wordWithTypo);
-	}
+public class RenameTo extends ShowSuggestions implements SpellCheckerQuickFix {
+    public RenameTo(String wordWithTypo) {
+        super(wordWithTypo);
+    }
 
-	@Override
-	@Nonnull
-	public String getName()
-	{
-		return SpellCheckerBundle.message("rename.to");
-	}
+    @Override
+    @Nonnull
+    public LocalizeValue getName() {
+        return SpellCheckerLocalize.renameTo();
+    }
 
-	@Override
-	@Nonnull
-	public String getFamilyName()
-	{
-		return SpellCheckerBundle.message("rename.to");
-	}
+    @Override
+    @RequiredUIAccess
+    public void applyFix(@Nonnull Project project, @Nonnull ProblemDescriptor descriptor) {
+        DictionarySuggestionProvider provider = project.getApplication().getExtensionPoint(NameSuggestionProvider.class)
+            .findExtension(DictionarySuggestionProvider.class);
+        if (provider != null) {
+            provider.setActive(true);
+        }
 
+        PsiElement psiElement = descriptor.getPsiElement();
+        if (psiElement == null) {
+            return;
+        }
 
-	@Nullable
-	private static DictionarySuggestionProvider findProvider()
-	{
-		List<NameSuggestionProvider> extensions = NameSuggestionProvider.EP_NAME.getExtensionList();
+        Editor editor = getEditor(psiElement, project);
 
-		for(NameSuggestionProvider extension : extensions)
-		{
-			if(extension instanceof DictionarySuggestionProvider)
-			{
-				return (DictionarySuggestionProvider) extension;
-			}
-		}
-		return null;
-	}
+        if (editor == null) {
+            return;
+        }
 
-	@Override
-	public void applyFix(@Nonnull final Project project, @Nonnull final ProblemDescriptor descriptor)
-	{
-		DictionarySuggestionProvider provider = findProvider();
-		if(provider != null)
-		{
-			provider.setActive(true);
-		}
+        DataContext.Builder builder = DataContext.builder();
+        if (editor instanceof EditorWindow) {
+            builder.add(Editor.KEY, editor);
+            builder.add(PsiElement.KEY, psiElement);
+        }
 
-		PsiElement psiElement = descriptor.getPsiElement();
-		if(psiElement == null)
-		{
-			return;
-		}
+        Boolean selectAll = editor.getUserData(RenameHandlerRegistry.SELECT_ALL);
+        try {
+            editor.putUserData(RenameHandlerRegistry.SELECT_ALL, true);
 
-		Editor editor = getEditor(psiElement, project);
+            builder.parent(DataManager.getInstance().getDataContext(editor.getComponent()));
 
-		if(editor == null)
-		{
-			return;
-		}
+            AnAction action = new RenameElementAction();
+            AnActionEvent event =
+                new AnActionEvent(null, builder.build(), "", action.getTemplatePresentation(), ActionManager.getInstance(), 0);
+            action.actionPerformed(event);
+            if (provider != null) {
+                provider.setActive(false);
+            }
+        }
+        finally {
+            editor.putUserData(RenameHandlerRegistry.SELECT_ALL, selectAll);
+        }
+    }
 
-		DataContext.Builder builder = DataContext.builder();
-		if(editor instanceof EditorWindow)
-		{
-			builder.add(Editor.KEY, editor);
-			builder.add(PsiElement.KEY, psiElement);
-		}
-
-		final Boolean selectAll = editor.getUserData(RenameHandlerRegistry.SELECT_ALL);
-		try
-		{
-			editor.putUserData(RenameHandlerRegistry.SELECT_ALL, true);
-
-			builder.parent(DataManager.getInstance().getDataContext(editor.getComponent()));
-
-			AnAction action = new RenameElementAction();
-			AnActionEvent event = new AnActionEvent(null, builder.build(), "", action.getTemplatePresentation(), ActionManager.getInstance(), 0);
-			action.actionPerformed(event);
-			if(provider != null)
-			{
-				provider.setActive(false);
-			}
-		}
-		finally
-		{
-			editor.putUserData(RenameHandlerRegistry.SELECT_ALL, selectAll);
-		}
-	}
-
-	@Nullable
-	protected Editor getEditor(PsiElement element, @Nonnull Project project)
-	{
-		return InjectedLanguageManagerUtil.findInjectionHost(element) != null
-				? InjectedEditorManager.getInstance(project).openEditorFor(element.getContainingFile())
-				: FileEditorManager.getInstance(project).getSelectedTextEditor();
-	}
+    @Nullable
+    @RequiredReadAction
+    protected Editor getEditor(PsiElement element, @Nonnull Project project) {
+        return InjectedLanguageManagerUtil.findInjectionHost(element) != null
+            ? InjectedEditorManager.getInstance(project).openEditorFor(element.getContainingFile())
+            : FileEditorManager.getInstance(project).getSelectedTextEditor();
+    }
 }

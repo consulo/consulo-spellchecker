@@ -18,7 +18,6 @@ package com.intellij.spellchecker.inspections;
 import com.intellij.spellchecker.SimpleSpellcheckerEngine;
 import com.intellij.spellchecker.SpellCheckerManager;
 import com.intellij.spellchecker.quickfixes.SpellCheckerQuickFix;
-import com.intellij.spellchecker.util.SpellCheckerBundle;
 import consulo.annotation.access.RequiredReadAction;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.document.util.TextRange;
@@ -36,224 +35,225 @@ import consulo.language.spellcheker.SpellcheckingStrategy;
 import consulo.language.spellcheker.tokenizer.TokenConsumer;
 import consulo.language.spellcheker.tokenizer.Tokenizer;
 import consulo.language.spellcheker.tokenizer.splitter.TokenSplitter;
-import jakarta.inject.Inject;
-import org.jetbrains.annotations.Nls;
-
+import consulo.localize.LocalizeValue;
+import consulo.spellchecker.localize.SpellCheckerLocalize;
 import jakarta.annotation.Nonnull;
+import jakarta.inject.Inject;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
 @ExtensionImpl
-public class SpellCheckingInspection extends SpellcheckerInspection
-{
-	public static final String SPELL_CHECKING_INSPECTION_TOOL_NAME = "SpellCheckingInspection";
+public class SpellCheckingInspection extends SpellcheckerInspection {
+    public static final String SPELL_CHECKING_INSPECTION_TOOL_NAME = "SpellCheckingInspection";
 
-	@Inject
-	protected SpellCheckingInspection(SpellcheckerEngineManager spellcheckerEngineManager)
-	{
-		super(spellcheckerEngineManager, SimpleSpellcheckerEngine.ID);
-	}
+    @Inject
+    protected SpellCheckingInspection(SpellcheckerEngineManager spellcheckerEngineManager) {
+        super(spellcheckerEngineManager, SimpleSpellcheckerEngine.ID);
+    }
 
-	@Override
-	@Nls
-	@Nonnull
-	public String getGroupDisplayName()
-	{
-		return SpellCheckerBundle.message("spelling");
-	}
+    @Nonnull
+    @Override
+    public LocalizeValue getGroupDisplayName() {
+        return SpellCheckerLocalize.spelling();
+    }
 
-	@Override
-	@Nls
-	@Nonnull
-	public String getDisplayName()
-	{
-		return SpellCheckerBundle.message("spellchecking.inspection.name");
-	}
+    @Nonnull
+    @Override
+    public LocalizeValue getDisplayName() {
+        return SpellCheckerLocalize.spellcheckingInspectionName();
+    }
 
-	@Override
-	@Nonnull
-	public String getShortName()
-	{
-		return SPELL_CHECKING_INSPECTION_TOOL_NAME;
-	}
+    @Nonnull
+    @Override
+    public String getShortName() {
+        return SPELL_CHECKING_INSPECTION_TOOL_NAME;
+    }
 
-	@Nonnull
-	@Override
-	public InspectionToolState<?> createStateProvider()
-	{
-		return new SpellCheckingInspectionState();
-	}
+    @Nonnull
+    @Override
+    public InspectionToolState<?> createStateProvider() {
+        return new SpellCheckingInspectionState();
+    }
 
-	@Override
-	@Nonnull
-	public PsiElementVisitor buildVisitorImpl(@Nonnull final ProblemsHolder holder, final boolean isOnTheFly, LocalInspectionToolSession session, Object state)
-	{
-		SpellCheckingInspectionState localState = (SpellCheckingInspectionState) state;
+    @Nonnull
+    @Override
+    public PsiElementVisitor buildVisitorImpl(
+        @Nonnull final ProblemsHolder holder,
+        boolean isOnTheFly,
+        @Nonnull LocalInspectionToolSession session,
+        @Nonnull Object state
+    ) {
+        SpellCheckingInspectionState localState = (SpellCheckingInspectionState) state;
 
-		final SpellCheckerManager manager = SpellCheckerManager.getInstance(holder.getProject());
+        final SpellCheckerManager manager = SpellCheckerManager.getInstance(holder.getProject());
 
-		return new PsiElementVisitor()
-		{
-			@Override
-			public void visitElement(final PsiElement element)
-			{
+        return new PsiElementVisitor() {
+            @Override
+            @RequiredReadAction
+            public void visitElement(PsiElement element) {
+                ASTNode node = element.getNode();
+                if (node == null) {
+                    return;
+                }
+                // Extract parser definition from element
+                Language language = element.getLanguage();
+                IElementType elementType = node.getElementType();
+                ParserDefinition parserDefinition = ParserDefinition.forLanguage(language);
 
-				final ASTNode node = element.getNode();
-				if(node == null)
-				{
-					return;
-				}
-				// Extract parser definition from element
-				final Language language = element.getLanguage();
-				final IElementType elementType = node.getElementType();
-				final ParserDefinition parserDefinition = ParserDefinition.forLanguage(language);
+                // Handle selected options
+                if (parserDefinition != null) {
+                    if (parserDefinition.getStringLiteralElements(element.getLanguageVersion()).contains(elementType)) {
+                        if (!localState.processLiterals) {
+                            return;
+                        }
+                    }
+                    else if (parserDefinition.getCommentTokens(element.getLanguageVersion()).contains(elementType)) {
+                        if (!localState.processComments) {
+                            return;
+                        }
+                    }
+                    else if (!localState.processCode) {
+                        return;
+                    }
+                }
 
-				// Handle selected options
-				if(parserDefinition != null)
-				{
-					if(parserDefinition.getStringLiteralElements(element.getLanguageVersion()).contains(elementType))
-					{
-						if(!localState.processLiterals)
-						{
-							return;
-						}
-					}
-					else if(parserDefinition.getCommentTokens(element.getLanguageVersion()).contains(elementType))
-					{
-						if(!localState.processComments)
-						{
-							return;
-						}
-					}
-					else if(!localState.processCode)
-					{
-						return;
-					}
-				}
+                tokenize(element, language, new MyTokenConsumer(manager, holder, NamesValidator.forLanguage(language)));
+            }
+        };
+    }
 
-				tokenize(element, language, new MyTokenConsumer(manager, holder, NamesValidator.forLanguage(language)));
-			}
-		};
-	}
+    /**
+     * Splits element text in tokens according to spell checker strategy of given language
+     *
+     * @param element  Psi element
+     * @param language Usually element.getLanguage()
+     * @param consumer the consumer of tokens
+     */
+    @RequiredReadAction
+    public static void tokenize(@Nonnull PsiElement element, @Nonnull Language language, TokenConsumer consumer) {
+        SpellcheckingStrategy factoryByLanguage = getSpellcheckingStrategy(element, language);
+        if (factoryByLanguage == null) {
+            return;
+        }
+        Tokenizer tokenizer = factoryByLanguage.getTokenizer(element);
+        //noinspection unchecked
+        tokenizer.tokenize(element, consumer);
+    }
 
-	/**
-	 * Splits element text in tokens according to spell checker strategy of given language
-	 *
-	 * @param element  Psi element
-	 * @param language Usually element.getLanguage()
-	 * @param consumer the consumer of tokens
-	 */
-	public static void tokenize(@Nonnull final PsiElement element, @Nonnull final Language language, TokenConsumer consumer)
-	{
-		final SpellcheckingStrategy factoryByLanguage = getSpellcheckingStrategy(element, language);
-		if(factoryByLanguage == null)
-		{
-			return;
-		}
-		Tokenizer tokenizer = factoryByLanguage.getTokenizer(element);
-		//noinspection unchecked
-		tokenizer.tokenize(element, consumer);
-	}
+    @RequiredReadAction
+    private static void addBatchDescriptor(
+        PsiElement element,
+        @Nonnull TextRange textRange,
+        @Nonnull ProblemsHolder holder
+    ) {
+        SpellCheckerQuickFix[] fixes = SpellcheckerQuickFixes.getDefaultBatchFixes();
+        ProblemDescriptor problemDescriptor = createProblemDescriptor(element, textRange, fixes, false);
+        holder.registerProblem(problemDescriptor);
+    }
 
+    @RequiredReadAction
+    private static void addRegularDescriptor(
+        PsiElement element,
+        @Nonnull TextRange textRange,
+        @Nonnull ProblemsHolder holder,
+        boolean useRename,
+        String wordWithTypo
+    ) {
+        SpellcheckingStrategy strategy = getSpellcheckingStrategy(element, element.getLanguage());
 
-	private static void addBatchDescriptor(PsiElement element,
-										   @Nonnull TextRange textRange,
-										   @Nonnull ProblemsHolder holder)
-	{
-		SpellCheckerQuickFix[] fixes = SpellcheckerQuickFixes.getDefaultBatchFixes();
-		ProblemDescriptor problemDescriptor = createProblemDescriptor(element, textRange, fixes, false);
-		holder.registerProblem(problemDescriptor);
-	}
+        LocalQuickFix[] fixes = strategy != null
+            ? SpellcheckerQuickFixes.getRegularFixes(element, textRange, useRename, wordWithTypo)
+            : SpellcheckerQuickFixes.getDefaultRegularFixes(useRename, wordWithTypo, element, textRange);
 
-	private static void addRegularDescriptor(PsiElement element, @Nonnull TextRange textRange, @Nonnull ProblemsHolder holder,
-											 boolean useRename, String wordWithTypo)
-	{
-		SpellcheckingStrategy strategy = getSpellcheckingStrategy(element, element.getLanguage());
+        ProblemDescriptor problemDescriptor = createProblemDescriptor(element, textRange, fixes, true);
+        holder.registerProblem(problemDescriptor);
+    }
 
-		LocalQuickFix[] fixes = strategy != null
-				? SpellcheckerQuickFixes.getRegularFixes(element, textRange, useRename, wordWithTypo)
-				: SpellcheckerQuickFixes.getDefaultRegularFixes(useRename, wordWithTypo, element, textRange);
+    private static ProblemDescriptor createProblemDescriptor(
+        PsiElement element, TextRange textRange,
+        LocalQuickFix[] fixes,
+        boolean onTheFly
+    ) {
+        LocalizeValue description = SpellCheckerLocalize.typoInWordRef();
+        return new ProblemDescriptorBase(
+            element,
+            element,
+            description.get(),
+            fixes,
+            ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
+            false,
+            textRange,
+            onTheFly,
+            onTheFly
+        );
+    }
 
-		final ProblemDescriptor problemDescriptor = createProblemDescriptor(element, textRange, fixes, true);
-		holder.registerProblem(problemDescriptor);
-	}
+    private static class MyTokenConsumer extends TokenConsumer implements Consumer<TextRange> {
+        private final Set<String> myAlreadyChecked = new HashSet<>();
+        private final SpellCheckerManager myManager;
+        private final ProblemsHolder myHolder;
+        private final NamesValidator myNamesValidator;
+        private PsiElement myElement;
+        private String myText;
+        private boolean myUseRename;
+        private int myOffset;
 
-	private static ProblemDescriptor createProblemDescriptor(PsiElement element, TextRange textRange,
-															 LocalQuickFix[] fixes,
-															 boolean onTheFly)
-	{
-		final String description = SpellCheckerBundle.message("typo.in.word.ref");
-		return new ProblemDescriptorBase(element, element, description, fixes, ProblemHighlightType.GENERIC_ERROR_OR_WARNING, false, textRange, onTheFly, onTheFly);
-	}
+        public MyTokenConsumer(SpellCheckerManager manager, ProblemsHolder holder, NamesValidator namesValidator) {
+            myManager = manager;
+            myHolder = holder;
+            myNamesValidator = namesValidator;
+        }
 
-	private static class MyTokenConsumer extends TokenConsumer implements Consumer<TextRange>
-	{
-		private final Set<String> myAlreadyChecked = new HashSet<>();
-		private final SpellCheckerManager myManager;
-		private final ProblemsHolder myHolder;
-		private final NamesValidator myNamesValidator;
-		private PsiElement myElement;
-		private String myText;
-		private boolean myUseRename;
-		private int myOffset;
+        @Override
+        @RequiredReadAction
+        public void consumeToken(
+            PsiElement element,
+            String text,
+            boolean useRename,
+            int offset,
+            TextRange rangeToCheck,
+            TokenSplitter splitter
+        ) {
+            myElement = element;
+            myText = text;
+            myUseRename = useRename;
+            myOffset = offset;
+            splitter.split(text, rangeToCheck, this);
+        }
 
-		public MyTokenConsumer(SpellCheckerManager manager, ProblemsHolder holder, NamesValidator namesValidator)
-		{
-			myManager = manager;
-			myHolder = holder;
-			myNamesValidator = namesValidator;
-		}
+        @Override
+        @RequiredReadAction
+        public void accept(TextRange range) {
+            String word = range.substring(myText);
+            if (!myHolder.isOnTheFly() && myAlreadyChecked.contains(word)) {
+                return;
+            }
 
-		@Override
-		public void consumeToken(final PsiElement element, final String text, final boolean useRename, final int offset, TextRange rangeToCheck,
-								 TokenSplitter splitter)
-		{
-			myElement = element;
-			myText = text;
-			myUseRename = useRename;
-			myOffset = offset;
-			splitter.split(text, rangeToCheck, this);
-		}
+            boolean keyword = myNamesValidator.isKeyword(word, myElement.getProject());
+            if (keyword) {
+                return;
+            }
 
-		@Override
-		@RequiredReadAction
-		public void accept(TextRange range)
-		{
-			String word = range.substring(myText);
-			if(!myHolder.isOnTheFly() && myAlreadyChecked.contains(word))
-			{
-				return;
-			}
+            if (myManager.hasProblem(word)) {
+                //Use tokenizer to generate accurate range in element (e.g. in case of escape sequences in element)
+                SpellcheckingStrategy strategy = getSpellcheckingStrategy(myElement, myElement.getLanguage());
 
-			boolean keyword = myNamesValidator.isKeyword(word, myElement.getProject());
-			if(keyword)
-			{
-				return;
-			}
+                Tokenizer tokenizer = strategy != null ? strategy.getTokenizer(myElement) : null;
+                if (tokenizer != null) {
+                    range = tokenizer.getHighlightingRange(myElement, myOffset, range);
+                }
+                assert range.getStartOffset() >= 0;
 
-			if(myManager.hasProblem(word))
-			{
-				//Use tokenizer to generate accurate range in element (e.g. in case of escape sequences in element)
-				SpellcheckingStrategy strategy = getSpellcheckingStrategy(myElement, myElement.getLanguage());
-
-				final Tokenizer tokenizer = strategy != null ? strategy.getTokenizer(myElement) : null;
-				if(tokenizer != null)
-				{
-					range = tokenizer.getHighlightingRange(myElement, myOffset, range);
-				}
-				assert range.getStartOffset() >= 0;
-
-				if(myHolder.isOnTheFly())
-				{
-					addRegularDescriptor(myElement, range, myHolder, myUseRename, word);
-				}
-				else
-				{
-					myAlreadyChecked.add(word);
-					addBatchDescriptor(myElement, range, myHolder);
-				}
-			}
-		}
-	}
+                if (myHolder.isOnTheFly()) {
+                    addRegularDescriptor(myElement, range, myHolder, myUseRename, word);
+                }
+                else {
+                    myAlreadyChecked.add(word);
+                    addBatchDescriptor(myElement, range, myHolder);
+                }
+            }
+        }
+    }
 }
