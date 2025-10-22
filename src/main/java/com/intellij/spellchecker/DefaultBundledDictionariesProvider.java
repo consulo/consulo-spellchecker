@@ -23,7 +23,7 @@ public class DefaultBundledDictionariesProvider implements BundledDictionaryProv
     public String[] getBundledDictionaries() {
         return new String[]{
             "english.dic",
-            "jetbrains.dic",
+            "programming.dic",
             "must-be.dic",
             "names.dic"
         };

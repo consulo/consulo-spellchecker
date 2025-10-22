@@ -36,163 +36,164 @@ import java.util.*;
 
 @SuppressWarnings({"JUnitTestCaseWithNonTrivialConstructors"})
 public class DictionaryTest extends TestCase {
+    private Dictionary dictionary;
 
-  private Dictionary dictionary;
+    private final Map<String, Integer> sizes = Map.of(
+        JETBRAINS_DIC, 1000,
+        ENGLISH_DIC, 140000
+    );
+    private final Map<String, Integer> times = Map.of(
+        JETBRAINS_DIC, 1000,
+        ENGLISH_DIC, 50000
+    );
 
-  private final Map<String, Integer> sizes = new HashMap<String, Integer>();
-  private final Map<String, Integer> times = new HashMap<String, Integer>();
-  private static final String JETBRAINS_DIC = "jetbrains.dic";
-  private static final String ENGLISH_DIC = "english.dic";
+    private static final String JETBRAINS_DIC = "programming.dic";
+    private static final String ENGLISH_DIC = "english.dic";
 
-  {
-    sizes.put(JETBRAINS_DIC, 1000);
-    sizes.put(ENGLISH_DIC, 140000);
-  }
-
-  {
-    times.put(JETBRAINS_DIC, 1000);
-    times.put(ENGLISH_DIC, 50000);
-  }
-
-  public void testDictionary() throws IOException {
-    final String[] names = {JETBRAINS_DIC, ENGLISH_DIC};
-    for (String name : names) {
-      loadDictionaryTest(name, sizes.get(name));
-      loadHalfDictionaryTest(name, 50000);
+    public void testDictionary() throws IOException {
+        String[] names = {JETBRAINS_DIC, ENGLISH_DIC};
+        for (String name : names) {
+            loadDictionaryTest(name, sizes.get(name));
+            loadHalfDictionaryTest(name, 50000);
+        }
     }
-  }
 
-  public void testDictionaryLoadedFully() {
-    //cleanupDictionary();
-    final Transformation transform = new Transformation();
-    CompressedDictionary dictionary = CompressedDictionary.create(englishLoader(), transform);
+    public void testDictionaryLoadedFully() {
+        //cleanupDictionary();
+        final Transformation transform = new Transformation();
+        CompressedDictionary dictionary = CompressedDictionary.create(englishLoader(), transform);
 
-    final Set<String> onDisk = new HashSet<String>();
-    englishLoader().load(new Consumer<String>() {
-      @Override
-      public void consume(String s) {
-        assert s != null;
-        String t = transform.transform(s);
-        if (t == null) {
-          return;
-        }
-        onDisk.add(t);
-      }
-    });
+        final Set<String> onDisk = new HashSet<>();
+        englishLoader().load(new Consumer<String>() {
+            @Override
+            public void consume(String s) {
+                assert s != null;
+                String t = transform.transform(s);
+                if (t == null) {
+                    return;
+                }
+                onDisk.add(t);
+            }
+        });
 
-    List<String> odList = new ArrayList<String>(onDisk);
-    Collections.sort(odList);
-    List<String> loaded = new ArrayList<String>(dictionary.getWords());
-    Collections.sort(loaded);
+        List<String> odList = new ArrayList<>(onDisk);
+        Collections.sort(odList);
+        List<String> loaded = new ArrayList<>(dictionary.getWords());
+        Collections.sort(loaded);
 
-    assertEquals(odList, loaded);
-  }
-
-  public void cleanupDictionary() {
-    final Set<String> onDisk = Sets.newHashSet(FileUtil.PATH_HASHING_STRATEGY);
-    englishLoader().load(new Consumer<String>() {
-      @Override
-      public void consume(String s) {
-        assert s != null;
-        onDisk.add(s);
-      }
-    });
-
-    List<String> odList = new ArrayList<String>(onDisk);
-    Collections.sort(odList);
-
-    File file = new File("C:\\Work\\Idea\\community\\spellchecker\\src\\com\\intellij\\spellchecker\\english.2");
-    try {
-      FileUtil.writeToFile(file, StringUtil.join(odList, "\n"));
+        assertEquals(odList, loaded);
     }
-    catch (IOException e) {
-      throw new RuntimeException(e);
+
+    public void cleanupDictionary() {
+        final Set<String> onDisk = Sets.newHashSet(FileUtil.PATH_HASHING_STRATEGY);
+        englishLoader().load(new Consumer<String>() {
+            @Override
+            public void consume(String s) {
+                assert s != null;
+                onDisk.add(s);
+            }
+        });
+
+        List<String> odList = new ArrayList<>(onDisk);
+        Collections.sort(odList);
+
+        File file = new File("C:\\Work\\Idea\\community\\spellchecker\\src\\com\\intellij\\spellchecker\\english.2");
+        try {
+            FileUtil.writeToFile(file, StringUtil.join(odList, "\n"));
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
-  }
 
-  private static StreamLoader englishLoader() {
-    return new StreamLoader(DefaultBundledDictionariesProvider.class.getResourceAsStream(ENGLISH_DIC), ENGLISH_DIC);
-  }
-
-  public void loadDictionaryTest(@Nonnull final String name, int wordCount) throws IOException {
-    final Transformation transform = new Transformation();
-    PlatformTestUtil.startPerformanceTest("load dictionary", times.get(name), new ThrowableRunnable() {
-      @Override
-      public void run() throws Exception {
-        dictionary = CompressedDictionary
-          .create(new StreamLoader(DefaultBundledDictionariesProvider.class.getResourceAsStream(name), name), transform);
-      }
-    }).cpuBound().assertTiming();
-
-    final Set<String> wordsToStoreAndCheck = createWordSets(name, 50000, 1).getFirst();
-    PlatformTestUtil.startPerformanceTest("words contain",2000, new ThrowableRunnable() {
-      @Override
-      public void run() throws Exception {
-        for (String s : wordsToStoreAndCheck) {
-          assertTrue(dictionary.contains(s));
-        }
-      }
-    }).cpuBound().assertTiming();
-  }
-
-  private static Loader createLoader(final Set<String> words) {
-    return new Loader() {
-      @Override
-      public void load(@Nonnull Consumer<String> consumer) {
-        for (String word : words) {
-          consumer.consume(word);
-        }
-      }
-
-      @Override
-      public String getName() {
-        return "test";
-      }
-    };
-  }
-
-  @SuppressWarnings({"unchecked"})
-  private static Pair<Set<String>, Set<String>> createWordSets(String name, final int maxCount, final int mod) {
-    Loader loader = new StreamLoader(DefaultBundledDictionariesProvider.class.getResourceAsStream(name), name);
-    final Set<String> wordsToStore = new HashSet<String>();
-    final Set<String> wordsToCheck = new HashSet<String>();
-    final Transformation transform = new Transformation();
-    loader.load(new Consumer<String>() {
-      private int counter = 0;
-
-      @Override
-      public void consume(String s) {
-        if (counter > maxCount) {
-          return;
-        }
-        String transformed = transform.transform(s);
-        if (transformed != null) {
-
-          if (counter % mod == 0) {
-            wordsToStore.add(transformed);
-          }
-          else {
-            wordsToCheck.add(transformed);
-          }
-          counter++;
-        }
-      }
-    });
-
-    return new Pair(wordsToStore, wordsToCheck);
-  }
-
-
-  public static void loadHalfDictionaryTest(final String name, final int maxCount) {
-    final Pair<Set<String>, Set<String>> sets = createWordSets(name, maxCount, 2);
-    final Loader loader = createLoader(sets.getFirst());
-    CompressedDictionary dictionary = CompressedDictionary.create(loader, new Transformation());
-    for (String s : sets.getSecond()) {
-      if (!sets.getFirst().contains(s)) {
-        assertFalse(s, dictionary.contains(s));
-      }
+    private static StreamLoader englishLoader() {
+        return new StreamLoader(DefaultBundledDictionariesProvider.class.getResourceAsStream(ENGLISH_DIC), ENGLISH_DIC);
     }
-  }
 
+    public void loadDictionaryTest(@Nonnull final String name, int wordCount) throws IOException {
+        final Transformation transform = new Transformation();
+        PlatformTestUtil.startPerformanceTest(
+            "load dictionary",
+            times.get(name),
+            new ThrowableRunnable() {
+                @Override
+                public void run() throws Exception {
+                    dictionary = CompressedDictionary
+                        .create(new StreamLoader(DefaultBundledDictionariesProvider.class.getResourceAsStream(name), name), transform);
+                }
+            }
+        ).cpuBound().assertTiming();
 
+        final Set<String> wordsToStoreAndCheck = createWordSets(name, 50000, 1).getFirst();
+        PlatformTestUtil.startPerformanceTest(
+            "words contain",
+            2000,
+            new ThrowableRunnable() {
+                @Override
+                public void run() throws Exception {
+                    for (String s : wordsToStoreAndCheck) {
+                        assertTrue(dictionary.contains(s));
+                    }
+                }
+            }
+        ).cpuBound().assertTiming();
+    }
+
+    private static Loader createLoader(final Set<String> words) {
+        return new Loader() {
+            @Override
+            public void load(@Nonnull Consumer<String> consumer) {
+                for (String word : words) {
+                    consumer.consume(word);
+                }
+            }
+
+            @Override
+            public String getName() {
+                return "test";
+            }
+        };
+    }
+
+    @SuppressWarnings({"unchecked"})
+    private static Pair<Set<String>, Set<String>> createWordSets(String name, final int maxCount, final int mod) {
+        Loader loader = new StreamLoader(DefaultBundledDictionariesProvider.class.getResourceAsStream(name), name);
+        final Set<String> wordsToStore = new HashSet<>();
+        final Set<String> wordsToCheck = new HashSet<>();
+        final Transformation transform = new Transformation();
+        loader.load(new Consumer<String>() {
+            private int counter = 0;
+
+            @Override
+            public void consume(String s) {
+                if (counter > maxCount) {
+                    return;
+                }
+                String transformed = transform.transform(s);
+                if (transformed != null) {
+
+                    if (counter % mod == 0) {
+                        wordsToStore.add(transformed);
+                    }
+                    else {
+                        wordsToCheck.add(transformed);
+                    }
+                    counter++;
+                }
+            }
+        });
+
+        return new Pair(wordsToStore, wordsToCheck);
+    }
+
+    public static void loadHalfDictionaryTest(String name, int maxCount) {
+        Pair<Set<String>, Set<String>> sets = createWordSets(name, maxCount, 2);
+        Loader loader = createLoader(sets.getFirst());
+        CompressedDictionary dictionary = CompressedDictionary.create(loader, new Transformation());
+        for (String s : sets.getSecond()) {
+            if (!sets.getFirst().contains(s)) {
+                assertFalse(s, dictionary.contains(s));
+            }
+        }
+    }
 }
