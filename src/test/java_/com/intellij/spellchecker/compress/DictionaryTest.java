@@ -39,19 +39,19 @@ public class DictionaryTest extends TestCase {
     private Dictionary dictionary;
 
     private final Map<String, Integer> sizes = Map.of(
-        JETBRAINS_DIC, 1000,
+        PROGRAMMING_DIC, 1000,
         ENGLISH_DIC, 140000
     );
     private final Map<String, Integer> times = Map.of(
-        JETBRAINS_DIC, 1000,
+        PROGRAMMING_DIC, 1000,
         ENGLISH_DIC, 50000
     );
 
-    private static final String JETBRAINS_DIC = "programming.dic";
+    private static final String PROGRAMMING_DIC = "programming.dic";
     private static final String ENGLISH_DIC = "english.dic";
 
     public void testDictionary() throws IOException {
-        String[] names = {JETBRAINS_DIC, ENGLISH_DIC};
+        String[] names = {PROGRAMMING_DIC, ENGLISH_DIC};
         for (String name : names) {
             loadDictionaryTest(name, sizes.get(name));
             loadHalfDictionaryTest(name, 50000);
