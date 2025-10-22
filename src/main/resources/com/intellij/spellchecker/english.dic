@@ -12125,6 +12125,9 @@ callable
 callback
 callbacks
 called
+callee
+callee's
+callees
 caller
 caller's
 callers
@@ -12157,6 +12160,9 @@ callousing
 callously
 callousness
 callousness's
+callout
+callout's
+callouts
 callow
 callower
 callowest
@@ -17726,6 +17732,7 @@ composing
 composite
 compositely
 composites
+compositing
 composition
 composition's
 compositional
@@ -21444,6 +21451,7 @@ cryptanalyst's
 cryptanalytic
 cryptic
 cryptically
+crypto
 cryptogram
 cryptogram's
 cryptograms
@@ -24401,6 +24409,7 @@ derisiveness
 derisiveness's
 derisory
 derivable
+derivables
 derivation
 derivation's
 derivations
@@ -29953,6 +29962,9 @@ emitter
 emitter's
 emitters
 emitting
+emoji
+emoji's
+emojis
 emollient
 emollients
 emolument
@@ -32419,6 +32431,8 @@ expiating
 expiation
 expiation's
 expiatory
+expirable
+expirables
 expiration
 expiration's
 expiratory
@@ -52030,6 +52044,9 @@ licensee's
 licensees
 licenses
 licensing
+licensor
+licensor's
+licensors
 licentiate
 licentiate's
 licentiates
@@ -60553,6 +60570,7 @@ noninfectious
 noninflammatory
 noninflationary
 noninflected
+noninfringement
 nonintellectual
 nonintellectuals
 noninterchangeable
@@ -75414,6 +75432,9 @@ regeneration
 regeneration's
 regenerations
 regenerative
+regenerator
+regenerator's
+regenerators
 regent
 regent's
 regents
@@ -76906,6 +76927,9 @@ resiting
 resits
 resitting
 resized
+resizer
+resizer's
+resizers
 resizing
 resold
 resole
@@ -86353,8 +86377,11 @@ spellbinders
 spellbinding
 spellbinds
 spellbound
+spellcheck
 spellchecker
+spellchecker's
 spellcheckers
+spellchecking
 spelldown
 spelldown's
 spelldowns
@@ -89200,6 +89227,9 @@ subleasing
 sublet
 sublets
 subletting
+sublicense
+sublicensed
+sublicenses
 sublieutenant
 sublieutenant's
 sublieutenants
@@ -93463,6 +93493,8 @@ timekeeping's
 timeless
 timelessly
 timelessness
+timeline
+timelines
 timelier
 timeliest
 timeliness
