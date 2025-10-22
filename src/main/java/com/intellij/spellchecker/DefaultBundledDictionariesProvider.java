@@ -15,19 +15,17 @@
  */
 package com.intellij.spellchecker;
 
-
 import consulo.annotation.component.ExtensionImpl;
 
 @ExtensionImpl
-public class DefaultBundledDictionariesProvider implements BundledDictionaryProvider
-{
-	@Override
-	public String[] getBundledDictionaries()
-	{
-		return new String[]{
-				"english.dic",
-				"jetbrains.dic",
-				"must-be.dic"
-		};
-	}
+public class DefaultBundledDictionariesProvider implements BundledDictionaryProvider {
+    @Override
+    public String[] getBundledDictionaries() {
+        return new String[]{
+            "english.dic",
+            "programming.dic",
+            "must-be.dic",
+            "names.dic"
+        };
+    }
 }
