@@ -44,6 +44,7 @@ APO
 APR
 AR
 ARC
+ARGB
 ASAP
 ASCII
 ASCIIs
@@ -754,6 +755,8 @@ Alexandro's
 Alexandros
 Alexei
 Alexei's
+Alexey
+Alexey's
 Alexi
 Alexi's
 Alexia
@@ -6227,6 +6230,8 @@ Cirilo
 Cirilo's
 Ciro
 Ciro's
+Cisco
+Cisco's
 Cissiee
 Cissiee's
 Cissy
@@ -7285,6 +7290,8 @@ Cyclops
 Cyclops's
 Cygnus
 Cygnus's
+Cygwin
+Cygwin's
 Cymbre
 Cymbre's
 Cynde
@@ -8094,6 +8101,8 @@ Desmund
 Desmund's
 Detroit
 Detroit's
+Deutsch
+Deutsch's
 Deuteronomy
 Deuteronomy's
 Dev
@@ -8324,8 +8333,11 @@ Dixon's
 Djakarta's
 Djibouti
 Djibouti's
+DjVu
 Dmitri
 Dmitri's
+Dmitry
+Dmitry's
 Dnepr's
 Dnepropetrovsk
 Dnepropetrovsk's
@@ -8890,6 +8902,7 @@ EOE
 EPA
 ER
 ERA
+ESBuild
 ESE
 ESL
 ESLint
@@ -9642,6 +9655,8 @@ Epistle's
 Epistles
 Epsom
 Epsom's
+Epson
+Epson's
 Epstein
 Epstein's
 Equuleus
@@ -9684,7 +9699,9 @@ Ericka
 Ericka's
 Erickson
 Erickson's
+Ericson
 Ericson's
+Ericsson
 Ericsson's
 Eridanus
 Eridanus's
@@ -10034,6 +10051,8 @@ Evert
 Evert's
 Evey
 Evey's
+Evgeny
+Evgeny's
 Evian
 Evian's
 Evie
@@ -13461,6 +13480,8 @@ Hiram
 Hiram's
 Hirobumi
 Hirobumi's
+Hiragana
+Hiragana's
 Hirohito
 Hirohito's
 Hiroshima
@@ -14175,6 +14196,8 @@ Inna's
 Inness
 Innis
 Innis's
+Inkscape
+Inkscape's
 Innocent
 Innocent's
 InnoDB
@@ -14432,6 +14455,8 @@ Iva
 Iva's
 Ivan
 Ivan's
+Ivanov
+Ivanov's
 Ivanhoe
 Ivanhoe's
 Ivar
@@ -15905,6 +15930,8 @@ Kat
 Kat's
 Kata
 Kata's
+Katakana
+Katakana's
 Katalin
 Katalin's
 Kate
@@ -16879,6 +16906,7 @@ LCM
 LDC
 LED
 LIFO
+LGPL
 LGTM
 LL
 LLB
@@ -18007,6 +18035,9 @@ Lonnie
 Lonnie's
 Lonny
 Lonny's
+LoongArch
+LoongArch's
+Loongson
 Lopez
 Lopez's
 Lora
@@ -19507,6 +19538,8 @@ Mathe
 Mathe's
 Mather
 Mather's
+Mathematica
+Mathematica's
 Mathew
 Mathew's
 Mathews
@@ -20282,6 +20315,8 @@ Micropost
 Microposts
 Microsoft
 Microsoft's
+Microsystems
+Microsystems's
 Midas
 Midas's
 Middleton
@@ -20970,6 +21005,8 @@ Mozelle
 Mozelle's
 Mozes
 Mozes's
+Mozilla
+Mozilla's
 Mr
 Mr's
 Mrs
@@ -21180,6 +21217,7 @@ NB
 NBA
 NBC
 NBS
+NBSP
 NC
 NCAA
 NCO
@@ -21208,6 +21246,7 @@ NS
 NSC
 NSF
 NT
+NTFS
 NV
 NW
 NWT
@@ -21827,6 +21866,8 @@ Nikola
 Nikola's
 Nikolai
 Nikolai's
+Nikolay
+Nikolay's
 Nikolaos
 Nikolaos's
 Nikolas
@@ -22742,6 +22783,7 @@ PMS
 PMed
 PMing
 PO
+POJO
 POW
 PP
 PPS
@@ -23023,6 +23065,8 @@ Patna
 Patna's
 Paton
 Paton's
+Patreon
+Patreon's
 Patric
 Patric's
 Patrica
@@ -23468,6 +23512,8 @@ Phoenician's
 Phoenicians
 Phoenix
 Phoenix's
+Photoshop
+Photoshop's
 Photostat
 Photostat's
 Photostats
@@ -23925,6 +23971,8 @@ Protestantisms
 Protestants
 Proteus
 Proteus's
+Protobuf
+Protobuf's
 Proudhon
 Proudhon's
 Proust
@@ -24105,6 +24153,8 @@ Quaker's
 Quakerism
 Quakerisms
 Quakers
+Qualcomm
+Qualcomm's
 Quasimodo
 Quasimodo's
 Quaternary
@@ -24197,9 +24247,11 @@ RF
 RFC
 RFCs
 RFD
+RGBA
 RI
 RIF
 RIP
+RISCV
 RN
 RNA
 ROFL
@@ -29636,6 +29688,8 @@ VJ
 VLF
 VOA
 VP
+VSCode
+VSCode's
 VT
 VTOL
 Va's
@@ -30076,10 +30130,14 @@ Vishnu's
 Visigoth
 Visigoth's
 Visigoths
+Visio
+Visio's
 Vistula
 Vistula's
 Vita
 Vita's
+Vitaly
+Vitaly's
 Vite
 Vite's
 Vitia
@@ -30169,6 +30227,7 @@ Vonnie
 Vonnie's
 Vonny
 Vonny's
+Vorbis
 Voronezh
 Voronezh's
 Vorster
@@ -30192,6 +30251,8 @@ WAC
 WASP
 WATS
 WC
+WHATWG
+WHATWG's
 WHO
 WI
 WNW
@@ -30403,6 +30464,8 @@ Webern
 Webern's
 Webkit
 Webkit's
+Webpack
+Webpack's
 Webster
 Webster's
 Websters
@@ -31051,6 +31114,8 @@ Yancey
 Yancey's
 Yancy
 Yancy's
+Yandex
+Yandex's
 Yang
 Yang's
 Yangon
