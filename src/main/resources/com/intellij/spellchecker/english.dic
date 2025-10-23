@@ -11146,6 +11146,7 @@ bugles
 bugling
 bugs
 build
+buildable
 builder
 builder's
 builders
@@ -12349,6 +12350,7 @@ canceler
 canceler's
 cancelers
 canceling
+cancellability
 cancellation
 cancellation's
 cancellations
@@ -18831,6 +18833,7 @@ construable
 construct
 constructable
 constructed
+constructible
 constructing
 construction
 construction's
@@ -22785,6 +22788,9 @@ decanter's
 decanters
 decanting
 decants
+decapitalize
+decapitalized
+decapitalizing
 decapitate
 decapitated
 decapitates
@@ -23030,6 +23036,7 @@ decongestant
 decongestants
 deconstruct
 deconstructed
+deconstructible
 deconstructing
 deconstruction
 deconstructionism
@@ -24385,6 +24392,8 @@ derangement
 derangement's
 deranges
 deranging
+deregister
+deregistered
 deregulate
 deregulated
 deregulates
@@ -35633,6 +35642,7 @@ folder
 folder's
 folders
 folding
+foldings
 foldout
 foldout's
 foldouts
@@ -36679,6 +36689,7 @@ freewheels
 freewill
 freezable
 freeze
+freezed
 freezer
 freezer's
 freezers
@@ -47233,6 +47244,7 @@ inorganically
 inpatient
 inpatient's
 inpatients
+inplace
 input
 input's
 inputs
@@ -52036,6 +52048,7 @@ licence's
 licenced
 licences
 licencing
+licensable
 license
 license's
 licensed
@@ -57520,6 +57533,9 @@ modifiable
 modification
 modification's
 modifications
+modificator
+modificator's
+modificators
 modified
 modifier
 modifier's
@@ -64669,6 +64685,7 @@ parametrization
 parametrize
 parametrized
 parametrizes
+parametrizing
 paramilitaries
 paramilitary
 paramountcy
@@ -71791,6 +71808,7 @@ pubic
 pubis
 pubis's
 public
+publically
 publican
 publican's
 publicans
@@ -74588,6 +74606,7 @@ reconstitution
 reconstitution's
 reconstruct
 reconstructed
+reconstructible
 reconstructing
 reconstructions
 reconstructive
@@ -75484,6 +75503,9 @@ registrars
 registration
 registration's
 registrations
+registrator
+registrator's
+registrators
 registries
 registry
 registry's
@@ -76684,6 +76706,9 @@ request
 requested
 requester
 requesting
+requestor
+requestor's
+requestors
 requests
 require
 required
@@ -82114,6 +82139,7 @@ severeness's
 severer
 severest
 severing
+severities
 severity
 severity's
 severs
@@ -89228,6 +89254,7 @@ sublet
 sublets
 subletting
 sublicense
+sublicenseable
 sublicensed
 sublicenses
 sublieutenant
@@ -89424,6 +89451,9 @@ substituting
 substitution
 substitution's
 substitutions
+substitutor
+substitutor's
+substitutors
 substrata
 substrate
 substrate's
@@ -90992,6 +91022,9 @@ synchronisation's
 synchronisations
 synchronise
 synchronised
+synchroniser
+synchroniser's
+synchronisers
 synchronises
 synchronising
 synchronization
@@ -90999,6 +91032,9 @@ synchronization's
 synchronizations
 synchronize
 synchronized
+synchronizer
+synchronizer's
+synchronizers
 synchronizes
 synchronizing
 synchronous
@@ -95097,6 +95133,8 @@ traversal's
 traversals
 traverse
 traversed
+traverser
+traversers
 traverses
 traversing
 travestied
@@ -98161,6 +98199,7 @@ unmap
 unmaps
 unmapped
 unmapping
+unmark
 unmarked
 unmarketable
 unmarred
@@ -98611,6 +98650,7 @@ unseen
 unseens
 unsegmented
 unsegregated
+unselect
 unselected
 unselfconscious
 unselfconsciously
@@ -103339,6 +103379,9 @@ workbenches
 workbook
 workbook's
 workbooks
+workbox
+workbox's
+workboxes
 workday
 workday's
 workdays
