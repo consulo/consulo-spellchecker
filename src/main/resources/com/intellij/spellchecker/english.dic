@@ -9838,6 +9838,7 @@ bordering
 borderland
 borderland's
 borderlands
+borderless
 borderline
 borderline's
 borderlines
@@ -14535,6 +14536,7 @@ checkerboards
 checkered
 checkering
 checkers
+checkin
 checking
 checklist
 checklists
@@ -32642,6 +32644,7 @@ extemporizing
 extend
 extendability
 extendability's
+extendable
 extended
 extender
 extender's
@@ -39974,6 +39977,7 @@ greying
 greyness
 greyness's
 greys
+greyscale
 gribble
 gribbles
 grid
@@ -40894,6 +40898,7 @@ hacksawed
 hacksawing
 hacksaws
 hackwork
+hacky
 haddock
 haddock's
 haddocks
@@ -47154,6 +47159,7 @@ inky
 inlaid
 inland
 inlay
+inlay's
 inlaying
 inlays
 inlet
@@ -50713,6 +50719,7 @@ laggards
 lagged
 lagging
 lagging's
+laggy
 lagniappe
 lagniappe's
 lagniappes
@@ -52384,7 +52391,6 @@ linebacker's
 linebackers
 linebreak
 lined
-linefeed
 lineman
 lineman's
 linemen
@@ -74782,6 +74788,7 @@ recyclable
 recyclables
 recycle
 recycled
+recycler
 recyclers
 recycles
 recycling
@@ -76703,6 +76710,7 @@ reputedly
 reputes
 reputing
 request
+request's
 requested
 requester
 requesting
@@ -82603,6 +82611,7 @@ shier
 shies
 shiest
 shift
+shiftable
 shifted
 shifter
 shifters
@@ -88419,7 +88428,9 @@ stopwatch's
 stopwatches
 storage
 storage's
+storages
 store
+storable
 store's
 stored
 storefront
@@ -88817,6 +88828,9 @@ striping
 stripling
 stripling's
 striplings
+strippable
+strippable's
+strippables
 stripped
 stripper
 stripper's
@@ -90763,6 +90777,9 @@ swilled
 swilling
 swills
 swim
+swimlane
+swimlane's
+swimlanes
 swimmer
 swimmers
 swimming
@@ -91723,6 +91740,8 @@ tarts
 tarty
 task
 task's
+taskbar
+taskbars
 tasked
 tasking
 taskmaster
@@ -96934,6 +96953,7 @@ uncharted
 unchaste
 unchaster
 unchastest
+uncheck
 uncheckable
 unchecked
 unchristened
