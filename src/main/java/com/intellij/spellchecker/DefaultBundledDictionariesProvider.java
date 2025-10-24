@@ -24,6 +24,7 @@ public class DefaultBundledDictionariesProvider implements BundledDictionaryProv
         return new String[]{
             "english.dic",
             "programming.dic",
+            "programming-misc.dic",
             "must-be.dic",
             "names.dic"
         };
