@@ -26,7 +26,8 @@ public class DefaultBundledDictionariesProvider implements BundledDictionaryProv
             "programming.dic",
             "programming-misc.dic",
             "must-be.dic",
-            "names.dic"
+            "names.dic",
+            "names-misc.dic"
         };
     }
 }
