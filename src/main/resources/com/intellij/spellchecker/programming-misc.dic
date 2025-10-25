@@ -9,6 +9,7 @@ archivelog
 args
 arraycopy
 asensitive
+async
 atob
 attr
 attrs
@@ -57,6 +58,7 @@ clazz
 clob
 cmake
 cmdline
+codegen
 codeinsight
 codesign
 codestyle
@@ -96,6 +98,7 @@ darkslategray
 darkslategrey
 darkturquoise
 darkviolet
+databind
 datetime
 dealloc
 decl
@@ -114,6 +117,7 @@ dest
 ddos
 dimgray
 dimgrey
+dirname
 dirs
 django
 doctype
@@ -140,8 +144,10 @@ expr
 exprs
 favicon
 favicons
+fasterxml
 filename
 filenames
+filepath
 fileset
 filesets
 filesize
@@ -171,18 +177,23 @@ geometrycollection
 ghostwhite
 giud
 greenyellow
+groovyc
+groovydoc
+gstring
 gzip
 gzipped
 hardlink
 hardlinks
 hashtable
 haxe
+hgap
 hostname
 hostnames
 hotpink
 hotswap
 hprof
 href
+hsize
 hspace
 html
 htmls
@@ -206,6 +217,7 @@ intra
 ints
 iostream
 isnull
+jacksonized
 javac
 javabean
 javabeans
@@ -239,6 +251,7 @@ lawngreen
 lbrace
 ldap
 lemonchiffon
+lexstate
 libxml
 lightblue
 lightcoral
@@ -257,6 +270,7 @@ lightsteelblue
 lightyellow
 likec
 limegreen
+linebreaks
 linestring
 linkplain
 linter
@@ -268,9 +282,11 @@ localtime
 localtimestamp
 lockfile
 lockfiles
+lodash
 logfile
 longblob
 longtext
+lookahead
 lparen
 lval
 lvalue
@@ -315,7 +331,8 @@ minvalue
 miny
 mistyrose
 mlslabel
-MMMM
+mmmm
+msguid
 multi
 multilinestring
 multipolygon
@@ -364,10 +381,12 @@ objc
 oidindex
 oldlace
 olivedrab
+omni
 onchange
 onclick
 onerror
 onload
+openapitools
 openid
 openssl
 orangered
@@ -399,6 +418,7 @@ printf
 println
 proc
 processlist
+projectlombok
 progressbar
 proto
 punycode
@@ -429,6 +449,7 @@ sandybrown
 sdks
 seagreen
 securefile
+semver
 sizeof
 skyblue
 slateblue
@@ -440,6 +461,7 @@ smth
 soname
 sourcecode
 sourcepath
+springframework
 springgreen
 sprintf
 sqlcode
@@ -516,8 +538,10 @@ varchar
 varcharacter
 varray
 vars
+vgap
 vert
 verts
+vsize
 vspace
 vtlvariable
 watchlist
@@ -542,6 +566,7 @@ xslt
 xslx
 yellowgreen
 yyyy
+yyinitial
 zend
 zerofill
 zlib

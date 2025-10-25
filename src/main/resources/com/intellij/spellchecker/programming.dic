@@ -14,6 +14,7 @@ antialiasing
 appender
 appenders
 arity
+assignability
 assistive
 autoboxing
 autocommit
@@ -33,10 +34,13 @@ backgroundable
 backport
 backports
 backtrace
+balancer
+balancers
 barcode
 bicubic
 bijective
 bilinear
+birthdate
 breakpoint
 breakpoints
 buffered
@@ -47,6 +51,8 @@ bundler
 bundlers
 bytecode
 bytecodes
+cacher
+cachers
 callee
 cancelable
 cancellable
@@ -96,6 +102,7 @@ covariant
 coverable
 customizer
 customizers
+cyclomatic
 datafile
 datafiles
 dataflow
@@ -142,6 +149,9 @@ enumerable
 enumerables
 escaper
 escapers
+etalon
+etalon's
+etalons
 externalizer
 externalizers
 fallbacks
@@ -154,6 +164,7 @@ formatter
 formatters
 frontend
 frontends
+fullname
 fullscreen
 fulltext
 generify
@@ -185,6 +196,8 @@ initializers
 injectable
 inline
 inlined
+inliner
+inliners
 inlining
 instantiable
 intranet
@@ -377,10 +390,17 @@ rethrow
 rethrowing
 rethrown
 rethrows
+retryable
+retryable's
+retryables
+retryer
+retryers
 revalidate
 revalidated
 revalidation
 revalidations
+rewriter
+rewriters
 rollup
 runnables
 runtime
@@ -405,6 +425,8 @@ servlet
 servlets
 shader
 shaders
+shortener
+shorteners
 significand
 significands
 stacktrace
@@ -504,6 +526,8 @@ unparse
 unparsed
 unpivot
 unprotect
+unroller
+unrollers
 unscoped
 unselect
 unselected
@@ -520,6 +544,8 @@ unwatch
 uploader
 uppercased
 uptime
+upsert
+upserts
 validator
 validators
 variadic
