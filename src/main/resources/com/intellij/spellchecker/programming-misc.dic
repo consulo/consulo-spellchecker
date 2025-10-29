@@ -9,6 +9,7 @@ archivelog
 args
 arraycopy
 asensitive
+aspectj
 async
 atob
 attr
@@ -52,6 +53,7 @@ ccflags
 cdata
 cellpadding
 cellspacing
+checkstyle
 chmod
 classloader
 clazz
@@ -99,6 +101,8 @@ darkslategrey
 darkturquoise
 darkviolet
 databind
+datasource
+datasources
 datetime
 dealloc
 decl
@@ -142,6 +146,7 @@ evex
 exif
 expr
 exprs
+fallthrough
 favicon
 favicons
 fasterxml
@@ -180,13 +185,16 @@ greenyellow
 groovyc
 groovydoc
 gstring
+guice
 gzip
 gzipped
+hamcrest
 hardlink
 hardlinks
 hashtable
 haxe
 hgap
+hikari
 hostname
 hostnames
 hotpink
@@ -226,6 +234,7 @@ javadocs
 javaee
 javafx
 javax
+jdbc
 jndi
 jnilib
 jpeg
@@ -332,6 +341,7 @@ miny
 mistyrose
 mlslabel
 mmmm
+mockito
 msguid
 multi
 multilinestring
@@ -461,6 +471,9 @@ smth
 soname
 sourcecode
 sourcepath
+spliterator
+spliterator's
+spliterators
 springframework
 springgreen
 sprintf
@@ -511,6 +524,8 @@ tinyint
 tinytext
 todo
 todos
+toolchain
+toolchains
 toolwindow
 toolwindows
 trunc
