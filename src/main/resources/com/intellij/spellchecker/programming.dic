@@ -200,6 +200,8 @@ inliner
 inliners
 inlining
 instantiable
+interner
+interners
 intranet
 intranets
 intrinsics
@@ -341,6 +343,8 @@ punctuator
 punctuators
 quickfix
 quickfixes
+randomizer
+randomizers
 rasterization
 rearranger
 rearrangers
@@ -525,6 +529,7 @@ unmuted
 unparse
 unparsed
 unpivot
+unprocessable
 unprotect
 unroller
 unrollers
