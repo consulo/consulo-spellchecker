@@ -16,59 +16,62 @@
 package com.intellij.spellchecker.engine;
 
 import consulo.util.lang.StringUtil;
+import jakarta.annotation.Nonnull;
 
-public class Suggestion implements Comparable{
-  private final String word;
-  private final int metrics;
+import java.util.Objects;
 
-  public Suggestion(String word, int metrics) {
-    this.word = word;
-    this.metrics = metrics;
-  }
+public class Suggestion implements Comparable<Suggestion> {
+    private final String word;
+    private final int metrics;
 
-  public String getWord() {
-    return word;
-  }
+    public Suggestion(String word, int metrics) {
+        this.word = word;
+        this.metrics = metrics;
+    }
 
-
-  public int getMetrics() {
-    return metrics;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-
-    Suggestion result = (Suggestion)o;
-
-    if (metrics != result.metrics) return false;
-    if (word != null ? !word.equals(result.word) : result.word != null) return false;
-
-    return true;
-  }
-
-  @Override
-  public int hashCode() {
-    int result = word != null ? word.hashCode() : 0;
-    result = 31 * result + metrics;
-    return result;
-  }
+    public String getWord() {
+        return word;
+    }
 
 
-  @Override
-  public int compareTo(Object o) {
-    if (!(o instanceof Suggestion)) throw new IllegalArgumentException();
-    Suggestion r = (Suggestion)o;
-    int c = Integer.valueOf(getMetrics()).compareTo(r.getMetrics());
-    if (c !=0) return c;
-    return StringUtil.compare(word, r.word, true);
-  }
+    public int getMetrics() {
+        return metrics;
+    }
 
-  @Override
-  public String toString() {
-    return word + " : " + metrics;
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Suggestion that = (Suggestion) o;
+
+        return metrics == that.metrics && Objects.equals(word, that.word);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = word != null ? word.hashCode() : 0;
+        result = 31 * result + metrics;
+        return result;
+    }
+
+    @Override
+    public int compareTo(@Nonnull Suggestion that) {
+        int c = Integer.valueOf(getMetrics()).compareTo(that.getMetrics());
+        if (c != 0) {
+            return c;
+        }
+        return StringUtil.compare(word, that.word, true);
+    }
+
+    @Override
+    public String toString() {
+        return word + " : " + metrics;
+    }
 }
 
 

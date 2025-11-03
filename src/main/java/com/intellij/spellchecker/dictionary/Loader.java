@@ -16,11 +16,11 @@
 package com.intellij.spellchecker.dictionary;
 
 import jakarta.annotation.Nonnull;
+
 import java.util.function.Consumer;
 
 public interface Loader {
+    void load(@Nonnull Consumer<String> consumer);
 
-  void load(@Nonnull Consumer<String> consumer);
-
-  String getName();
+    String getName();
 }

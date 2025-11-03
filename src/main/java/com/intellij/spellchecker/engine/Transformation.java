@@ -16,33 +16,32 @@
 package com.intellij.spellchecker.engine;
 
 import jakarta.annotation.Nullable;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-@SuppressWarnings({"ALL"})
 public class Transformation {
-  
-  @Nullable
-  public  String transform(@Nullable String word) {
-    if (word == null || word.trim().length() < 3) {
-      return null;
+    @Nullable
+    public String transform(@Nullable String word) {
+        if (word == null || word.trim().length() < 3) {
+            return null;
+        }
+        return word.trim().toLowerCase();
     }
-    return word.trim().toLowerCase();
-  }
 
-  @Nullable
-  public  Set<String> transform(@Nullable Collection<String> words) {
-    if (words == null || words.isEmpty()) {
-      return null;
+    @Nullable
+    public Set<String> transform(@Nullable Collection<String> words) {
+        if (words == null || words.isEmpty()) {
+            return null;
+        }
+        Set<String> result = new HashSet<>();
+        for (String word : words) {
+            String transformed = transform(word);
+            if (transformed != null) {
+                result.add(transformed);
+            }
+        }
+        return result;
     }
-    Set<String> result = new HashSet<String>();
-    for (String word : words) {
-      String transformed = transform(word);
-      if (transformed != null) {
-        result.add(transformed);
-      }
-    }
-    return result;
-  }
 }

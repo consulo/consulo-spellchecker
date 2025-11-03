@@ -17,22 +17,23 @@ package com.intellij.spellchecker.dictionary;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
+
 import java.util.Set;
 import java.util.function.Consumer;
 
 public interface Dictionary {
-  @Nonnull
-  String getName();
+    @Nonnull
+    String getName();
 
-  @Nullable
-  Boolean contains(@Nonnull String word);
+    @Nullable
+    Boolean contains(@Nonnull String word);
 
-  boolean isEmpty();
+    boolean isEmpty();
 
-  void traverse(@Nonnull Consumer<String> action);
+    void traverse(@Nonnull Consumer<String> action);
 
-  @Nullable
-  Set<String> getWords();
+    @Nullable
+    Set<String> getWords();
 
-  int size();
+    int size();
 }

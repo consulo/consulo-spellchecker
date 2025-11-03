@@ -18,7 +18,6 @@ package com.intellij.spellchecker.quickfixes;
 import consulo.component.util.Iconable;
 import consulo.language.editor.inspection.LocalQuickFix;
 
-public interface SpellCheckerQuickFix extends LocalQuickFix, Iconable
-{
-  SpellCheckerQuickFix[] EMPTY_ARRAY = new SpellCheckerQuickFix[0];
+public interface SpellCheckerQuickFix extends LocalQuickFix, Iconable {
+    SpellCheckerQuickFix[] EMPTY_ARRAY = new SpellCheckerQuickFix[0];
 }

@@ -43,8 +43,8 @@ public class RenameTo extends ShowSuggestions implements SpellCheckerQuickFix {
         super(wordWithTypo);
     }
 
-    @Override
     @Nonnull
+    @Override
     public LocalizeValue getName() {
         return SpellCheckerLocalize.renameTo();
     }

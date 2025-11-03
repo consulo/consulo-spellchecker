@@ -16,6 +16,7 @@
 package com.intellij.spellchecker.quickfixes;
 
 import com.intellij.spellchecker.SpellCheckerManager;
+import consulo.annotation.access.RequiredReadAction;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.refactoring.rename.PreferrableNameSuggestionProvider;
 import consulo.language.editor.refactoring.rename.SuggestedNameInfo;
@@ -26,35 +27,35 @@ import java.util.Set;
 
 @ExtensionImpl(id = "DictionarySuggestionProvider")
 public class DictionarySuggestionProvider extends PreferrableNameSuggestionProvider {
-  private boolean active;
+    private boolean active;
 
-  public void setActive(boolean active) {
-    this.active = active;
-  }
-
-  @Override
-  public boolean shouldCheckOthers() {
-    return !active;
-  }
-
-  @Override
-  public SuggestedNameInfo getSuggestedNames(PsiElement element, PsiElement nameSuggestionContext, Set<String> result) {
-    assert result != null;
-    if (!active || nameSuggestionContext==null) {
-      return null;
-    }
-    String text = nameSuggestionContext.getText();
-    if (nameSuggestionContext instanceof PsiNamedElement) {
-      //noinspection ConstantConditions
-      text = ((PsiNamedElement)element).getName();
-    }
-    if (text == null) {
-      return null;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
-    SpellCheckerManager manager = SpellCheckerManager.getInstance(element.getProject());
+    @Override
+    public boolean shouldCheckOthers() {
+        return !active;
+    }
 
-    result.addAll(manager.getSuggestions(text));
-    return SuggestedNameInfo.NULL_INFO;
-  }
+    @Override
+    @RequiredReadAction
+    public SuggestedNameInfo getSuggestedNames(PsiElement element, PsiElement nameSuggestionContext, Set<String> result) {
+        assert result != null;
+        if (!active || nameSuggestionContext == null) {
+            return null;
+        }
+        String text = nameSuggestionContext.getText();
+        if (nameSuggestionContext instanceof PsiNamedElement namedElem) {
+            text = namedElem.getName();
+        }
+        if (text == null) {
+            return null;
+        }
+
+        SpellCheckerManager manager = SpellCheckerManager.getInstance(element.getProject());
+
+        result.addAll(manager.getSuggestions(text));
+        return SuggestedNameInfo.NULL_INFO;
+    }
 }

@@ -18,10 +18,10 @@ package com.intellij.spellchecker.engine;
 import consulo.project.Project;
 
 public final class SpellCheckerFactory {
-  private SpellCheckerFactory() {
-  }
+    private SpellCheckerFactory() {
+    }
 
-  public static SpellCheckerEngine create(final Project project) {
-    return new BaseSpellChecker(project);
-  }
+    public static SpellCheckerEngine create(Project project) {
+        return new BaseSpellChecker(project);
+    }
 }

@@ -20,7 +20,6 @@ import jakarta.annotation.Nonnull;
 import java.util.List;
 
 public interface SuggestionProvider {
-
-  @Nonnull
-  List<String> getSuggestions(@Nonnull String text);
+    @Nonnull
+    List<String> getSuggestions(@Nonnull String text);
 }

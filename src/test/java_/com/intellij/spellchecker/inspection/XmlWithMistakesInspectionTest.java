@@ -22,12 +22,12 @@ import org.junit.Ignore;
  */
 @Ignore("until consulo test driver fixed")
 public class XmlWithMistakesInspectionTest extends SpellcheckerInspectionTestCase {
-  @Override
-  protected String getBasePath() {
-    return SpellcheckerInspectionTestCase.getSpellcheckerTestDataPath() + "inspection/xmlWithMistakes";
-  }
+    @Override
+    protected String getBasePath() {
+        return SpellcheckerInspectionTestCase.getSpellcheckerTestDataPath() + "inspection/xmlWithMistakes";
+    }
 
-  public void testXml() {
-    doTest("test.xml");
-  }
+    public void testXml() {
+        doTest("test.xml");
+    }
 }

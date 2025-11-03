@@ -24,11 +24,11 @@ import com.intellij.spellchecker.settings.SpellCheckerSettings;
 import com.intellij.spellchecker.state.StateLoader;
 import com.intellij.spellchecker.util.SPFileUtil;
 import com.intellij.spellchecker.util.Strings;
+import consulo.annotation.access.RequiredWriteAction;
 import consulo.annotation.component.ComponentScope;
 import consulo.annotation.component.ServiceAPI;
 import consulo.annotation.component.ServiceImpl;
-import consulo.application.ApplicationManager;
-import consulo.ide.ServiceManager;
+import consulo.application.Application;
 import consulo.language.editor.DaemonCodeAnalyzer;
 import consulo.language.editor.rawHighlight.HighlightDisplayLevel;
 import consulo.language.psi.PsiManager;
@@ -38,283 +38,209 @@ import consulo.logging.Logger;
 import consulo.project.Project;
 import consulo.project.ProjectManager;
 import consulo.util.collection.ContainerUtil;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import java.io.InputStream;
 import java.util.*;
-import java.util.function.Consumer;
 
 @Singleton
 @ServiceAPI(ComponentScope.PROJECT)
 @ServiceImpl
-public class SpellCheckerManager
-{
-	private static final Logger LOG = Logger.getInstance(SpellCheckerManager.class);
+public class SpellCheckerManager {
+    private static final Logger LOG = Logger.getInstance(SpellCheckerManager.class);
 
-	private static final int MAX_SUGGESTIONS_THRESHOLD = 5;
-	private static final int MAX_METRICS = 1;
+    private static final int MAX_SUGGESTIONS_THRESHOLD = 5;
+    private static final int MAX_METRICS = 1;
 
-	private final Project project;
+    private final Project myProject;
+    private SpellCheckerEngine mySpellChecker;
+    private EditableDictionary myUserDictionary;
 
-	private SpellCheckerEngine spellChecker;
+    @Nonnull
+    private final SuggestionProvider suggestionProvider = new BaseSuggestionProvider(this);
 
-	private EditableDictionary userDictionary;
+    private final SpellCheckerSettings settings;
 
+    @Deprecated
+    public static SpellCheckerManager getInstance(@Nonnull Project project) {
+        return project.getInstance(SpellCheckerManager.class);
+    }
 
-	@Nonnull
-	private final SuggestionProvider suggestionProvider = new BaseSuggestionProvider(this);
+    @Inject
+    public SpellCheckerManager(@Nonnull Project project, SpellCheckerSettings settings) {
+        this.myProject = project;
+        this.settings = settings;
+        fullConfigurationReload();
+    }
 
-	private final SpellCheckerSettings settings;
+    public void fullConfigurationReload() {
+        mySpellChecker = SpellCheckerFactory.create(myProject);
+        fillEngineDictionary();
+    }
 
-	public static SpellCheckerManager getInstance(Project project)
-	{
-		return ServiceManager.getService(project, SpellCheckerManager.class);
-	}
+    public void updateBundledDictionaries(List<String> removedDictionaries) {
+        myProject.getApplication().getExtensionPoint(BundledDictionaryProvider.class).forEach(provider -> {
+            for (String dictionary : provider.getBundledDictionaries()) {
+                boolean dictionaryShouldBeLoad = settings == null || !settings.getBundledDisabledDictionariesPaths().contains(dictionary);
+                boolean dictionaryIsLoad = mySpellChecker.isDictionaryLoad(dictionary);
+                if (dictionaryIsLoad && !dictionaryShouldBeLoad) {
+                    mySpellChecker.removeDictionary(dictionary);
+                }
+                else if (!dictionaryIsLoad && dictionaryShouldBeLoad) {
+                    Class<? extends BundledDictionaryProvider> loaderClass = provider.getClass();
+                    InputStream stream = loaderClass.getResourceAsStream(dictionary);
+                    if (stream != null) {
+                        mySpellChecker.loadDictionary(new StreamLoader(stream, dictionary));
+                    }
+                    else {
+                        LOG.warn("Couldn't load dictionary '" + dictionary + "' with loader '" + loaderClass + "'");
+                    }
+                }
+            }
+        });
+        if (settings != null && settings.getDictionaryFoldersPaths() != null) {
+            Set<String> disabledDictionaries = settings.getDisabledDictionariesPaths();
+            for (String folder : settings.getDictionaryFoldersPaths()) {
+                SPFileUtil.processFilesRecursively(
+                    folder,
+                    s -> {
+                        boolean dictionaryShouldBeLoad = !disabledDictionaries.contains(s);
+                        boolean dictionaryIsLoad = mySpellChecker.isDictionaryLoad(s);
+                        if (dictionaryIsLoad && !dictionaryShouldBeLoad) {
+                            mySpellChecker.removeDictionary(s);
+                        }
+                        else if (!dictionaryIsLoad && dictionaryShouldBeLoad) {
+                            mySpellChecker.loadDictionary(new FileLoader(s, s));
+                        }
+                    }
+                );
+            }
+        }
 
-	@Inject
-	public SpellCheckerManager(Project project, SpellCheckerSettings settings)
-	{
-		this.project = project;
-		this.settings = settings;
-		fullConfigurationReload();
-	}
+        if (removedDictionaries != null && !removedDictionaries.isEmpty()) {
+            for (String name : removedDictionaries) {
+                mySpellChecker.removeDictionary(name);
+            }
+        }
 
-	public void fullConfigurationReload()
-	{
-		spellChecker = SpellCheckerFactory.create(project);
-		fillEngineDictionary();
-	}
+        restartInspections();
+    }
 
+    public Project getProject() {
+        return myProject;
+    }
 
-	public void updateBundledDictionaries(final List<String> removedDictionaries)
-	{
-		for(BundledDictionaryProvider provider : BundledDictionaryProvider.EP_NAME.getExtensionList())
-		{
-			for(String dictionary : provider.getBundledDictionaries())
-			{
-				boolean dictionaryShouldBeLoad = settings == null || !settings.getBundledDisabledDictionariesPaths().contains(dictionary);
-				boolean dictionaryIsLoad = spellChecker.isDictionaryLoad(dictionary);
-				if(dictionaryIsLoad && !dictionaryShouldBeLoad)
-				{
-					spellChecker.removeDictionary(dictionary);
-				}
-				else if(!dictionaryIsLoad && dictionaryShouldBeLoad)
-				{
-					final Class<? extends BundledDictionaryProvider> loaderClass = provider.getClass();
-					final InputStream stream = loaderClass.getResourceAsStream(dictionary);
-					if(stream != null)
-					{
-						spellChecker.loadDictionary(new StreamLoader(stream, dictionary));
-					}
-					else
-					{
-						LOG.warn("Couldn't load dictionary '" + dictionary + "' with loader '" + loaderClass + "'");
-					}
-				}
-			}
-		}
-		if(settings != null && settings.getDictionaryFoldersPaths() != null)
-		{
-			final Set<String> disabledDictionaries = settings.getDisabledDictionariesPaths();
-			for(String folder : settings.getDictionaryFoldersPaths())
-			{
-				SPFileUtil.processFilesRecursively(folder, new Consumer<String>()
-				{
-					@Override
-					public void accept(final String s)
-					{
-						boolean dictionaryShouldBeLoad = !disabledDictionaries.contains(s);
-						boolean dictionaryIsLoad = spellChecker.isDictionaryLoad(s);
-						if(dictionaryIsLoad && !dictionaryShouldBeLoad)
-						{
-							spellChecker.removeDictionary(s);
-						}
-						else if(!dictionaryIsLoad && dictionaryShouldBeLoad)
-						{
-							spellChecker.loadDictionary(new FileLoader(s, s));
-						}
+    public EditableDictionary getUserDictionary() {
+        return myUserDictionary;
+    }
 
-					}
-				});
+    private void fillEngineDictionary() {
+        mySpellChecker.reset();
+        StateLoader stateLoader = new StateLoader(myProject);
+        stateLoader.load(s -> {
+            //do nothing - in this loader we don't worry about word list itself - the whole dictionary will be restored
+        });
+        List<Loader> loaders = new ArrayList<>();
+        // Load bundled dictionaries from corresponding jars
+        myProject.getApplication().getExtensionPoint(BundledDictionaryProvider.class).forEach(provider -> {
+            for (String dictionary : provider.getBundledDictionaries()) {
+                if (settings == null || !settings.getBundledDisabledDictionariesPaths().contains(dictionary)) {
+                    Class<? extends BundledDictionaryProvider> loaderClass = provider.getClass();
+                    InputStream stream = loaderClass.getResourceAsStream(dictionary);
+                    if (stream != null) {
+                        loaders.add(new StreamLoader(stream, dictionary));
+                    }
+                    else {
+                        LOG.warn("Couldn't load dictionary '" + dictionary + "' with loader '" + loaderClass + "'");
+                    }
+                }
+            }
+        });
+        if (settings != null && settings.getDictionaryFoldersPaths() != null) {
+            Set<String> disabledDictionaries = settings.getDisabledDictionariesPaths();
+            for (String folder : settings.getDictionaryFoldersPaths()) {
+                SPFileUtil.processFilesRecursively(folder, s -> {
+                    if (!disabledDictionaries.contains(s)) {
+                        loaders.add(new FileLoader(s, s));
+                    }
+                });
+            }
+        }
+        loaders.add(stateLoader);
+        for (Loader loader : loaders) {
+            mySpellChecker.loadDictionary(loader);
+        }
+        myUserDictionary = stateLoader.getDictionary();
 
-			}
-		}
+    }
 
-		if(removedDictionaries != null && !removedDictionaries.isEmpty())
-		{
-			for(final String name : removedDictionaries)
-			{
-				spellChecker.removeDictionary(name);
-			}
-		}
+    public boolean hasProblem(@Nonnull String word) {
+        return !mySpellChecker.isCorrect(word);
+    }
 
-		restartInspections();
-	}
+    @RequiredWriteAction
+    public void acceptWordAsCorrect(@Nonnull String word, Project project) {
+        String transformed = mySpellChecker.getTransformation().transform(word);
+        if (transformed != null) {
+            myUserDictionary.addToDictionary(transformed);
+            PsiModificationTracker modificationTracker = PsiManager.getInstance(project).getModificationTracker();
+            modificationTracker.incCounter();
+        }
+    }
 
-	public Project getProject()
-	{
-		return project;
-	}
+    public void updateUserDictionary(@Nullable Collection<String> words) {
+        myUserDictionary.replaceAll(words);
+        restartInspections();
+    }
 
-	public EditableDictionary getUserDictionary()
-	{
-		return userDictionary;
-	}
+    @Nonnull
+    public static List<String> getBundledDictionaries() {
+        List<String> dictionaries = new ArrayList<>();
+        Application.get().getExtensionPoint(BundledDictionaryProvider.class)
+            .forEach(provider -> ContainerUtil.addAll(dictionaries, provider.getBundledDictionaries()));
+        return dictionaries;
+    }
 
-	private void fillEngineDictionary()
-	{
-		spellChecker.reset();
-		final StateLoader stateLoader = new StateLoader(project);
-		stateLoader.load(new Consumer<String>()
-		{
-			@Override
-			public void accept(String s)
-			{
-				//do nothing - in this loader we don't worry about word list itself - the whole dictionary will be restored
-			}
-		});
-		final List<Loader> loaders = new ArrayList<Loader>();
-		// Load bundled dictionaries from corresponding jars
-		for(BundledDictionaryProvider provider : BundledDictionaryProvider.EP_NAME.getExtensionList())
-		{
-			for(String dictionary : provider.getBundledDictionaries())
-			{
-				if(settings == null || !settings.getBundledDisabledDictionariesPaths().contains(dictionary))
-				{
-					final Class<? extends BundledDictionaryProvider> loaderClass = provider.getClass();
-					final InputStream stream = loaderClass.getResourceAsStream(dictionary);
-					if(stream != null)
-					{
-						loaders.add(new StreamLoader(stream, dictionary));
-					}
-					else
-					{
-						LOG.warn("Couldn't load dictionary '" + dictionary + "' with loader '" + loaderClass + "'");
-					}
-				}
-			}
-		}
-		if(settings != null && settings.getDictionaryFoldersPaths() != null)
-		{
-			final Set<String> disabledDictionaries = settings.getDisabledDictionariesPaths();
-			for(String folder : settings.getDictionaryFoldersPaths())
-			{
-				SPFileUtil.processFilesRecursively(folder, new Consumer<String>()
-				{
-					@Override
-					public void accept(final String s)
-					{
-						if(!disabledDictionaries.contains(s))
-						{
-							loaders.add(new FileLoader(s, s));
-						}
-					}
-				});
+    @Nonnull
+    public static HighlightDisplayLevel getHighlightDisplayLevel() {
+        return HighlightDisplayLevel.find(SpellcheckerSeverities.TYPO);
+    }
 
-			}
-		}
-		loaders.add(stateLoader);
-		for(Loader loader : loaders)
-		{
-			spellChecker.loadDictionary(loader);
-		}
-		userDictionary = stateLoader.getDictionary();
+    @Nonnull
+    public List<String> getSuggestions(@Nonnull String text) {
+        return suggestionProvider.getSuggestions(text);
+    }
 
-	}
+    @Nonnull
+    protected List<String> getRawSuggestions(@Nonnull String word) {
+        if (!mySpellChecker.isCorrect(word)) {
+            List<String> suggestions = mySpellChecker.getSuggestions(word, MAX_SUGGESTIONS_THRESHOLD, MAX_METRICS);
+            if (!suggestions.isEmpty()) {
+                boolean capitalized = Strings.isCapitalized(word);
+                boolean upperCases = Strings.isUpperCase(word);
+                if (capitalized) {
+                    Strings.capitalize(suggestions);
+                }
+                else if (upperCases) {
+                    Strings.upperCase(suggestions);
+                }
+            }
+            return new ArrayList<>(new LinkedHashSet<>(suggestions));
+        }
+        return Collections.emptyList();
+    }
 
-
-	public boolean hasProblem(@Nonnull String word)
-	{
-		return !spellChecker.isCorrect(word);
-	}
-
-	public void acceptWordAsCorrect(@Nonnull String word, Project project)
-	{
-		final String transformed = spellChecker.getTransformation().transform(word);
-		if(transformed != null)
-		{
-			userDictionary.addToDictionary(transformed);
-			final PsiModificationTracker modificationTracker = PsiManager.getInstance(project).getModificationTracker();
-			modificationTracker.incCounter();
-		}
-	}
-
-	public void updateUserDictionary(@Nullable Collection<String> words)
-	{
-		userDictionary.replaceAll(words);
-		restartInspections();
-	}
-
-
-	@Nonnull
-	public static List<String> getBundledDictionaries()
-	{
-		final ArrayList<String> dictionaries = new ArrayList<String>();
-		for(BundledDictionaryProvider provider : BundledDictionaryProvider.EP_NAME.getExtensionList())
-		{
-			ContainerUtil.addAll(dictionaries, provider.getBundledDictionaries());
-		}
-		return dictionaries;
-	}
-
-	@Nonnull
-	public static HighlightDisplayLevel getHighlightDisplayLevel()
-	{
-		return HighlightDisplayLevel.find(SpellcheckerSeverities.TYPO);
-	}
-
-	@Nonnull
-	public List<String> getSuggestions(@Nonnull String text)
-	{
-		return suggestionProvider.getSuggestions(text);
-	}
-
-	@Nonnull
-	protected List<String> getRawSuggestions(@Nonnull String word)
-	{
-		if(!spellChecker.isCorrect(word))
-		{
-			List<String> suggestions = spellChecker.getSuggestions(word, MAX_SUGGESTIONS_THRESHOLD, MAX_METRICS);
-			if(!suggestions.isEmpty())
-			{
-				boolean capitalized = Strings.isCapitalized(word);
-				boolean upperCases = Strings.isUpperCase(word);
-				if(capitalized)
-				{
-					Strings.capitalize(suggestions);
-				}
-				else if(upperCases)
-				{
-					Strings.upperCase(suggestions);
-				}
-			}
-			return new ArrayList<String>(new LinkedHashSet<String>(suggestions));
-		}
-		return Collections.emptyList();
-	}
-
-
-	public static void restartInspections()
-	{
-		ApplicationManager.getApplication().invokeLater(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				Project[] projects = ProjectManager.getInstance().getOpenProjects();
-				for(Project project : projects)
-				{
-					if(project.isInitialized() && project.isOpen() && !project.isDefault())
-					{
-						DaemonCodeAnalyzer.getInstance(project).restart();
-					}
-				}
-			}
-		});
-	}
-
-
+    public static void restartInspections() {
+        Application.get().invokeLater(() -> {
+            Project[] projects = ProjectManager.getInstance().getOpenProjects();
+            for (Project project : projects) {
+                if (project.isInitialized() && project.isOpen() && !project.isDefault()) {
+                    DaemonCodeAnalyzer.getInstance(project).restart();
+                }
+            }
+        });
+    }
 }

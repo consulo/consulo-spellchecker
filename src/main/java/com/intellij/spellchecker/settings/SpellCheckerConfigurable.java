@@ -30,91 +30,77 @@ import jakarta.inject.Inject;
 import javax.swing.*;
 
 @ExtensionImpl
-public class SpellCheckerConfigurable implements SearchableConfigurable, Configurable.NoScroll, ProjectConfigurable
-{
-	private SpellCheckerSettingsPane myPanel;
-	private final SpellCheckerSettings mySpellCheckerSettings;
-	private final Project myProject;
+public class SpellCheckerConfigurable implements SearchableConfigurable, Configurable.NoScroll, ProjectConfigurable {
+    private SpellCheckerSettingsPane myPanel;
+    private final SpellCheckerSettings mySpellCheckerSettings;
+    private final Project myProject;
 
-	@Inject
-	public SpellCheckerConfigurable(Project project, SpellCheckerSettings spellCheckerSettings)
-	{
-		myProject = project;
-		mySpellCheckerSettings = spellCheckerSettings;
-	}
+    @Inject
+    public SpellCheckerConfigurable(Project project, SpellCheckerSettings spellCheckerSettings) {
+        myProject = project;
+        mySpellCheckerSettings = spellCheckerSettings;
+    }
 
-	@Override
-	public LocalizeValue getDisplayName()
-	{
-		return SpellCheckerLocalize.spelling();
-	}
+    @Nonnull
+    @Override
+    public LocalizeValue getDisplayName() {
+        return SpellCheckerLocalize.spelling();
+    }
 
-	@Nullable
-	@Override
-	public String getParentId()
-	{
-		return StandardConfigurableIds.EDITOR_GROUP;
-	}
+    @Nullable
+    @Override
+    public String getParentId() {
+        return StandardConfigurableIds.EDITOR_GROUP;
+    }
 
-	@Override
-	@Nonnull
-	public String getId()
-	{
-		return "reference.settings.ide.settings.spelling";
-	}
+    @Nonnull
+    @Override
+    public String getId() {
+        return "reference.settings.ide.settings.spelling";
+    }
 
-	@Override
-	public Runnable enableSearch(String option)
-	{
-		return null;
-	}
+    @Override
+    public Runnable enableSearch(String option) {
+        return null;
+    }
 
-	@RequiredUIAccess
-	@Override
-	public JComponent createComponent(@Nonnull Disposable uiDisposable)
-	{
-		if(myPanel == null)
-		{
-			myPanel = new SpellCheckerSettingsPane(mySpellCheckerSettings, myProject);
-		}
-		return myPanel;
-	}
+    @Override
+    @RequiredUIAccess
+    public JComponent createComponent(@Nonnull Disposable uiDisposable) {
+        if (myPanel == null) {
+            myPanel = new SpellCheckerSettingsPane(mySpellCheckerSettings, myProject);
+        }
+        return myPanel;
+    }
 
-	@RequiredUIAccess
-	@Override
-	public boolean isModified()
-	{
-		return myPanel == null || myPanel.isModified();
-	}
+    @Override
+    @RequiredUIAccess
+    public boolean isModified() {
+        return myPanel == null || myPanel.isModified();
+    }
 
-	@RequiredUIAccess
-	@Override
-	public void apply() throws ConfigurationException
-	{
-		if(myPanel != null)
-		{
-			myPanel.apply();
-		}
-	}
+    @RequiredUIAccess
+    @Override
+    public void apply() throws ConfigurationException {
+        if (myPanel != null) {
+            myPanel.apply();
+        }
+    }
 
-	@RequiredUIAccess
-	@Override
-	public void reset()
-	{
-		if(myPanel != null)
-		{
-			myPanel.reset();
-		}
-	}
+    @Override
+    @RequiredUIAccess
+    public void reset() {
+        if (myPanel != null) {
+            myPanel.reset();
+        }
+    }
 
-	@RequiredUIAccess
-	@Override
-	public void disposeUIResources()
-	{
-		if(myPanel!= null)
-		{
-			Disposer.dispose(myPanel);
-			myPanel = null;
-		}
-	}
+    @Override
+    @RequiredUIAccess
+    public void disposeUIResources() {
+        if (myPanel != null) {
+            Disposer.dispose(myPanel);
+            myPanel = null;
+        }
+    }
 }

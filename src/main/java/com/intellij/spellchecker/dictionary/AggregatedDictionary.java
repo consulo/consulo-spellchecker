@@ -15,118 +15,114 @@
  */
 package com.intellij.spellchecker.dictionary;
 
-import org.jetbrains.annotations.NonNls;
-
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
+
 import java.util.Collection;
 import java.util.Set;
 import java.util.function.Consumer;
 
 public class AggregatedDictionary implements EditableDictionary {
-  @NonNls private static final String DICTIONARY_NAME = "common";
-  private final EditableDictionary cachedDictionary;
-  private final ProjectDictionary projectDictionary;
+    private static final String DICTIONARY_NAME = "common";
+    private final EditableDictionary cachedDictionary;
+    private final ProjectDictionary projectDictionary;
 
-  @Nonnull
-  @Override
-  public String getName() {
-    return DICTIONARY_NAME;
-  }
-
-  public AggregatedDictionary(@Nonnull ProjectDictionary projectDictionary, @Nonnull EditableDictionary cachedDictionary) {
-    this.projectDictionary = projectDictionary;
-    this.cachedDictionary = cachedDictionary;
-    this.cachedDictionary.addToDictionary(projectDictionary.getWords());
-  }
-
-  @Override
-  public boolean isEmpty() {
-    return false;
-  }
-
-  @NonNls
-  @Override
-  public String toString() {
-    return "AggregatedDictionary{" +
-           "cachedDictionary=" + cachedDictionary +
-           ", projectDictionary=" + projectDictionary +
-           '}';
-  }
-
-  @Override
-  @Nullable
-  public Boolean contains(@Nonnull String word) {
-    return cachedDictionary.contains(word);
-  }
-
-  @Override
-  public void addToDictionary(String word) {
-    getProjectDictionary().addToDictionary(word);
-    getCachedDictionary().addToDictionary(word);
-  }
-
-  @Override
-  public void removeFromDictionary(String word) {
-    getProjectDictionary().removeFromDictionary(word);
-    getCachedDictionary().removeFromDictionary(word);
-  }
-
-
-  @Override
-  public void replaceAll(@Nullable Collection<String> words) {
-    Set<String> oldWords = getProjectDictionary().getWords();
-    getProjectDictionary().replaceAll(words);
-    if (oldWords != null) {
-      for (String word : oldWords) {
-        if (words == null || !words.contains(word)) {
-          getCachedDictionary().removeFromDictionary(word);
-        }
-      }
+    @Nonnull
+    @Override
+    public String getName() {
+        return DICTIONARY_NAME;
     }
-  }
 
-  @Override
-  public void clear() {
-    getProjectDictionary().clear();
-  }
+    public AggregatedDictionary(@Nonnull ProjectDictionary projectDictionary, @Nonnull EditableDictionary cachedDictionary) {
+        this.projectDictionary = projectDictionary;
+        this.cachedDictionary = cachedDictionary;
+        this.cachedDictionary.addToDictionary(projectDictionary.getWords());
+    }
 
-  @Override
-  public void traverse(@Nonnull final Consumer<String> consumer) {
-    cachedDictionary.traverse(consumer);
-  }
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
 
+    @Override
+    public String toString() {
+        return "AggregatedDictionary{" +
+            "cachedDictionary=" + cachedDictionary +
+            ", projectDictionary=" + projectDictionary +
+            '}';
+    }
 
-  @Override
-  public Set<String> getWords() {
-    return cachedDictionary.getWords();
-  }
+    @Override
+    @Nullable
+    public Boolean contains(@Nonnull String word) {
+        return cachedDictionary.contains(word);
+    }
 
-  @Override
-  public int size() {
-    return cachedDictionary.size();
-  }
+    @Override
+    public void addToDictionary(String word) {
+        getProjectDictionary().addToDictionary(word);
+        getCachedDictionary().addToDictionary(word);
+    }
 
-  @Override
-  @Nullable
-  public Set<String> getEditableWords() {
-    return getProjectDictionary().getEditableWords();
-  }
-
-
-  @Override
-  public void addToDictionary(@Nullable Collection<String> words) {
-    getProjectDictionary().addToDictionary(words);
-    getCachedDictionary().addToDictionary(words);
-  }
-
-  public EditableDictionary getCachedDictionary() {
-    return cachedDictionary;
-  }
-
-  public ProjectDictionary getProjectDictionary() {
-    return projectDictionary;
-  }
+    @Override
+    public void removeFromDictionary(String word) {
+        getProjectDictionary().removeFromDictionary(word);
+        getCachedDictionary().removeFromDictionary(word);
+    }
 
 
+    @Override
+    public void replaceAll(@Nullable Collection<String> words) {
+        Set<String> oldWords = getProjectDictionary().getWords();
+        getProjectDictionary().replaceAll(words);
+        if (oldWords != null) {
+            for (String word : oldWords) {
+                if (words == null || !words.contains(word)) {
+                    getCachedDictionary().removeFromDictionary(word);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void clear() {
+        getProjectDictionary().clear();
+    }
+
+    @Override
+    public void traverse(@Nonnull Consumer<String> consumer) {
+        cachedDictionary.traverse(consumer);
+    }
+
+
+    @Override
+    public Set<String> getWords() {
+        return cachedDictionary.getWords();
+    }
+
+    @Override
+    public int size() {
+        return cachedDictionary.size();
+    }
+
+    @Override
+    @Nullable
+    public Set<String> getEditableWords() {
+        return getProjectDictionary().getEditableWords();
+    }
+
+
+    @Override
+    public void addToDictionary(@Nullable Collection<String> words) {
+        getProjectDictionary().addToDictionary(words);
+        getCachedDictionary().addToDictionary(words);
+    }
+
+    public EditableDictionary getCachedDictionary() {
+        return cachedDictionary;
+    }
+
+    public ProjectDictionary getProjectDictionary() {
+        return projectDictionary;
+    }
 }
