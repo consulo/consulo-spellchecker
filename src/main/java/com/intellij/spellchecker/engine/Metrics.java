@@ -15,8 +15,6 @@
  */
 package com.intellij.spellchecker.engine;
 
-
 public interface Metrics {
-
-  int calculateMetrics(CharSequence str1, CharSequence str2);
+    int calculateMetrics(CharSequence str1, CharSequence str2);
 }

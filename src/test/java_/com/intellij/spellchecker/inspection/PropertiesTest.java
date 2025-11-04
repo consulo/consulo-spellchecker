@@ -22,12 +22,12 @@ import org.junit.Ignore;
  */
 @Ignore("until consulo test driver fixed")
 public class PropertiesTest extends SpellcheckerInspectionTestCase {
-  @Override
-  protected String getBasePath() {
-    return getSpellcheckerTestDataPath() + "/inspection/propertiesWithMistakes";
-  }
+    @Override
+    protected String getBasePath() {
+        return getSpellcheckerTestDataPath() + "/inspection/propertiesWithMistakes";
+    }
 
-  public void testProperties() {
-    doTest("test.properties");
-  }
+    public void testProperties() {
+        doTest("test.properties");
+    }
 }

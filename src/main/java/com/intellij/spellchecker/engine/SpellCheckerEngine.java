@@ -20,27 +20,22 @@ import jakarta.annotation.Nonnull;
 
 import java.util.List;
 
-
 public interface SpellCheckerEngine {
+    void loadDictionary(@Nonnull Loader loader);
 
+    Transformation getTransformation();
 
-  void loadDictionary(@Nonnull Loader loader);
+    boolean isCorrect(@Nonnull String word);
 
-  Transformation getTransformation();
+    @Nonnull
+    List<String> getSuggestions(@Nonnull String word, int threshold, int quality);
 
-  boolean isCorrect(@Nonnull String word);
+    @Nonnull
+    List<String> getVariants(@Nonnull String prefix);
 
+    void reset();
 
-  @Nonnull
-  List<String> getSuggestions(@Nonnull String word, int threshold, int quality);
+    boolean isDictionaryLoad(@Nonnull String name);
 
-  @Nonnull
-  List<String> getVariants(@Nonnull String prefix);
-
-
-  void reset();
-
-  boolean isDictionaryLoad(@Nonnull String name);
-
-  void removeDictionary(@Nonnull String name);
+    void removeDictionary(@Nonnull String name);
 }

@@ -20,21 +20,21 @@ import com.intellij.spellchecker.inspections.SpellCheckingInspection;
 import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCase;
 
 public abstract class SpellcheckerInspectionTestCase extends LightPlatformCodeInsightFixtureTestCase {
-  @Override
-  protected boolean isWriteActionRequired() {
-    return false;
-  }
+    @Override
+    protected boolean isWriteActionRequired() {
+        return false;
+    }
 
-  public static String getSpellcheckerTestDataPath() {
-    return "/spellchecker/testData/";
-  }
+    public static String getSpellcheckerTestDataPath() {
+        return "/spellchecker/testData/";
+    }
 
-  protected void doTest(String file) {
-    myFixture.enableInspections(getInspectionTools());
-    myFixture.testHighlighting(false, false, true, file);
-  }
+    protected void doTest(String file) {
+        myFixture.enableInspections(getInspectionTools());
+        myFixture.testHighlighting(false, false, true, file);
+    }
 
-  public static LocalInspectionTool[] getInspectionTools() {
-    return new LocalInspectionTool[]{new SpellCheckingInspection(mySpellCheckerManager)};
-  }
+    public static LocalInspectionTool[] getInspectionTools() {
+        return new LocalInspectionTool[]{new SpellCheckingInspection(mySpellCheckerManager)};
+    }
 }

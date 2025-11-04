@@ -15,8 +15,6 @@
  */
 package com.intellij.spellchecker.dictionary;
 
-
-public interface EditableDictionaryLoader extends Loader{
-
-  EditableDictionary getDictionary();
+public interface EditableDictionaryLoader extends Loader {
+    EditableDictionary getDictionary();
 }

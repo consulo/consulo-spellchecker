@@ -21,7 +21,7 @@ import consulo.component.extension.ExtensionPointName;
 
 @ExtensionAPI(ComponentScope.APPLICATION)
 public interface BundledDictionaryProvider {
-  ExtensionPointName<BundledDictionaryProvider> EP_NAME = ExtensionPointName.create(BundledDictionaryProvider.class);
-  
-  String[] getBundledDictionaries();
+    ExtensionPointName<BundledDictionaryProvider> EP_NAME = ExtensionPointName.create(BundledDictionaryProvider.class);
+
+    String[] getBundledDictionaries();
 }

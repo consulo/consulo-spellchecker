@@ -22,390 +22,330 @@ import com.intellij.spellchecker.util.SpellCheckerBundle;
 import com.intellij.spellchecker.util.Strings;
 import consulo.configurable.ConfigurationException;
 import consulo.disposer.Disposable;
+import consulo.localize.LocalizeValue;
 import consulo.project.Project;
+import consulo.spellchecker.localize.SpellCheckerLocalize;
+import consulo.ui.annotation.RequiredUIAccess;
 import consulo.ui.ex.awt.*;
 import consulo.util.io.FileUtil;
 import consulo.util.lang.Pair;
-
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
+
 import javax.swing.*;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 import java.awt.*;
 import java.util.List;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class SpellCheckerSettingsPane extends JPanel implements Disposable
-{
-	private OptionalChooserComponent<String> myOptionalChooserComponent;
-	private PathsChooserComponent myPathsChooserComponent;
-	private final List<Pair<String, Boolean>> myAllDictionaries = new ArrayList<Pair<String, Boolean>>();
-	private final List<String> myDictionariesFolders = new ArrayList<String>();
-	private final List<String> myRemovedDictionaries = new ArrayList<String>();
-	private final WordsPanel myWordsPanel;
-	private final SpellCheckerManager myManager;
-	private final SpellCheckerSettings mySpellCheckerSettings;
+public class SpellCheckerSettingsPane extends JPanel implements Disposable {
+    private OptionalChooserComponent<String> myOptionalChooserComponent;
+    private PathsChooserComponent myPathsChooserComponent;
+    private final List<Pair<String, Boolean>> myAllDictionaries = new ArrayList<>();
+    private final List<String> myDictionariesFolders = new ArrayList<>();
+    private final List<String> myRemovedDictionaries = new ArrayList<>();
+    private final WordsPanel myWordsPanel;
+    private final SpellCheckerManager myManager;
+    private final SpellCheckerSettings mySpellCheckerSettings;
 
-	public SpellCheckerSettingsPane(SpellCheckerSettings settings, final Project project)
-	{
-		super(new VerticalFlowLayout(VerticalFlowLayout.TOP, 0, 0, true, true));
+    public SpellCheckerSettingsPane(SpellCheckerSettings settings, final Project project) {
+        super(new VerticalFlowLayout(VerticalFlowLayout.TOP, 0, 0, true, true));
 
-		mySpellCheckerSettings = settings;
-		myManager = SpellCheckerManager.getInstance(project);
-		HyperlinkLabel link = new HyperlinkLabel(SpellCheckerBundle.message("link.to.inspection.settings"));
-		link.addHyperlinkListener(new HyperlinkListener()
-		{
-			@Override
-			public void hyperlinkUpdate(final HyperlinkEvent e)
-			{
-				// TODO
-//				if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED)
-//				{
-//					final Settings optionsEditor = DataManager.getInstance().getDataContext(SpellCheckerSettingsPane.this).getData(Settings.KEY);
-//					if(optionsEditor != null)
-//					{
-//						final ErrorsConfigurable errorsConfigurable = optionsEditor.findConfigurable(ErrorsConfigurable.class);
-//						if(errorsConfigurable != null)
-//						{
-//							optionsEditor.clearSearchAndSelect(errorsConfigurable).doWhenDone(new Runnable()
-//							{
-//								@Override
-//								public void run()
-//								{
-//									errorsConfigurable.selectInspectionTool(SpellCheckingInspection.SPELL_CHECKING_INSPECTION_TOOL_NAME);
-//								}
-//							});
-//						}
-//					}
-//				}
-			}
-		});
+        mySpellCheckerSettings = settings;
+        myManager = SpellCheckerManager.getInstance(project);
+        HyperlinkLabel link = new HyperlinkLabel(SpellCheckerLocalize.linkToInspectionSettings().get());
+        link.addHyperlinkListener(e -> {
+            // TODO
+            /*
+            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                Settings optionsEditor = DataManager.getInstance().getDataContext(SpellCheckerSettingsPane.this).getData(Settings.KEY);
+                if (optionsEditor != null) {
+                    ErrorsConfigurable errorsConfigurable = optionsEditor.findConfigurable(ErrorsConfigurable.class);
+                    if (errorsConfigurable != null) {
+                        optionsEditor.clearSearchAndSelect(errorsConfigurable).doWhenDone(
+                            (Runnable) () ->
+                                errorsConfigurable.selectInspectionTool(SpellCheckingInspection.SPELL_CHECKING_INSPECTION_TOOL_NAME)
+                        );
+                    }
+                }
+            }
+            */
+        });
 
-		JPanel linkContainer = new JPanel(new BorderLayout());
-		linkContainer.setPreferredSize(new Dimension(24, 38));
-		linkContainer.add(link, BorderLayout.CENTER);
-		add(linkContainer);
+        JPanel linkContainer = new JPanel(new BorderLayout());
+        linkContainer.setPreferredSize(new Dimension(24, 38));
+        linkContainer.add(link, BorderLayout.CENTER);
+        add(linkContainer);
 
-		// Fill in all the dictionaries folders (not implemented yet) and enabled dictionaries
-		fillAllDictionaries();
+        // Fill in all the dictionaries folders (not implemented yet) and enabled dictionaries
+        fillAllDictionaries();
 
+        myPathsChooserComponent = new PathsChooserComponent(myDictionariesFolders, new PathsChooserComponent.PathProcessor() {
+            @Override
+            @RequiredUIAccess
+            public boolean addPath(List<String> paths, String path) {
+                if (paths.contains(path)) {
+                    LocalizeValue title = SpellCheckerLocalize.addDirectoryTitle();
+                    LocalizeValue msg = SpellCheckerLocalize.directoryIsAlreadyIncluded();
+                    Messages.showErrorDialog(SpellCheckerSettingsPane.this, msg.get(), title.get());
+                    return false;
+                }
+                paths.add(path);
 
-		myPathsChooserComponent = new PathsChooserComponent(myDictionariesFolders, new PathsChooserComponent.PathProcessor()
-		{
-			@Override
-			public boolean addPath(List<String> paths, String path)
-			{
-				if(paths.contains(path))
-				{
-					final String title = SpellCheckerBundle.message("add.directory.title");
-					final String msg = SpellCheckerBundle.message("directory.is.already.included");
-					Messages.showErrorDialog(SpellCheckerSettingsPane.this, msg, title);
-					return false;
-				}
-				paths.add(path);
+                List<Pair<String, Boolean>> currentDictionaries = myOptionalChooserComponent.getCurrentModel();
+                SPFileUtil.processFilesRecursively(path, s -> currentDictionaries.add(Pair.create(s, true)));
+                myOptionalChooserComponent.refresh();
+                return true;
+            }
 
-				final ArrayList<Pair<String, Boolean>> currentDictionaries = myOptionalChooserComponent.getCurrentModel();
-				SPFileUtil.processFilesRecursively(path, new Consumer<String>()
-				{
-					@Override
-					public void accept(final String s)
-					{
-						currentDictionaries.add(Pair.create(s, true));
-					}
-				});
-				myOptionalChooserComponent.refresh();
-				return true;
-			}
+            @Override
+            public boolean removePath(List<String> paths, String path) {
+                if (paths.remove(path)) {
+                    List<Pair<String, Boolean>> result = new ArrayList<>();
+                    List<Pair<String, Boolean>> currentDictionaries = myOptionalChooserComponent.getCurrentModel();
+                    for (Pair<String, Boolean> pair : currentDictionaries) {
+                        if (!pair.first.startsWith(FileUtil.toSystemDependentName(path))) {
+                            result.add(pair);
+                        }
+                        else {
+                            myRemovedDictionaries.add(pair.first);
+                        }
+                    }
+                    currentDictionaries.clear();
+                    currentDictionaries.addAll(result);
+                    myOptionalChooserComponent.refresh();
+                    return true;
+                }
+                return false;
+            }
+        }, project);
 
-			@Override
-			public boolean removePath(List<String> paths, String path)
-			{
-				if(paths.remove(path))
-				{
-					final ArrayList<Pair<String, Boolean>> result = new ArrayList<Pair<String, Boolean>>();
-					final ArrayList<Pair<String, Boolean>> currentDictionaries = myOptionalChooserComponent.getCurrentModel();
-					for(Pair<String, Boolean> pair : currentDictionaries)
-					{
-						if(!pair.first.startsWith(FileUtil.toSystemDependentName(path)))
-						{
-							result.add(pair);
-						}
-						else
-						{
-							myRemovedDictionaries.add(pair.first);
-						}
-					}
-					currentDictionaries.clear();
-					currentDictionaries.addAll(result);
-					myOptionalChooserComponent.refresh();
-					return true;
-				}
-				return false;
-			}
-		}, project);
+        myPathsChooserComponent.getEmptyText().setText(SpellCheckerBundle.message("no.custom.folders"));
 
-		myPathsChooserComponent.getEmptyText().setText(SpellCheckerBundle.message("no.custom.folders"));
+        myOptionalChooserComponent = new OptionalChooserComponent<String>(myAllDictionaries) {
+            @Override
+            public JCheckBox createCheckBox(String path, boolean checked) {
+                if (isUserDictionary(path)) {
+                    path = FileUtil.toSystemIndependentName(path);
+                    final int i = path.lastIndexOf('/');
+                    if (i != -1) {
+                        final String name = path.substring(i + 1);
+                        return new JCheckBox("[user] " + name, checked);
+                    }
+                }
+                return new JCheckBox("[bundled] " + FileUtil.toSystemDependentName(path), checked);
+            }
+        };
 
-		myOptionalChooserComponent = new OptionalChooserComponent<String>(myAllDictionaries)
-		{
-			@Override
-			public JCheckBox createCheckBox(String path, boolean checked)
-			{
-				if(isUserDictionary(path))
-				{
-					path = FileUtil.toSystemIndependentName(path);
-					final int i = path.lastIndexOf('/');
-					if(i != -1)
-					{
-						final String name = path.substring(i + 1);
-						return new JCheckBox("[user] " + name, checked);
-					}
-				}
-				return new JCheckBox("[bundled] " + FileUtil.toSystemDependentName(path), checked);
-			}
-		};
+        myWordsPanel = new WordsPanel(myManager);
 
-		myWordsPanel = new WordsPanel(myManager);
+        TabbedPaneWrapper tabbedPaneWrapper = new TabbedPaneWrapper(this);
+        tabbedPaneWrapper.addTab("Accepted Words", myWordsPanel);
 
-		TabbedPaneWrapper tabbedPaneWrapper = new TabbedPaneWrapper(this);
-		tabbedPaneWrapper.addTab("Accepted Words", myWordsPanel);
+        JPanel secondPanel = new JPanel(new VerticalFlowLayout(VerticalFlowLayout.TOP, 0, 0, true, true));
 
-		JPanel secondPanel = new JPanel(new VerticalFlowLayout(VerticalFlowLayout.TOP, 0, 0, true, true));
+        JPanel customDictionariesPanel = new JPanel(new VerticalFlowLayout(VerticalFlowLayout.TOP, 0, 0, true, true));
+        customDictionariesPanel.setBorder(IdeBorderFactory.createTitledBorder(SpellCheckerBundle.message("add.directory.title"), false));
+        customDictionariesPanel.add(new JBLabel(SpellCheckerBundle.message("add.directory.description")));
+        customDictionariesPanel.add(myPathsChooserComponent.getContentPane());
+        secondPanel.add(customDictionariesPanel);
 
-		JPanel customDictionariesPanel = new JPanel(new VerticalFlowLayout(VerticalFlowLayout.TOP, 0, 0, true, true));
-		customDictionariesPanel.setBorder(IdeBorderFactory.createTitledBorder(SpellCheckerBundle.message("add.directory.title"), false));
-		customDictionariesPanel.add(new JBLabel(SpellCheckerBundle.message("add.directory.description")));
-		customDictionariesPanel.add(myPathsChooserComponent.getContentPane());
-		secondPanel.add(customDictionariesPanel);
+        myOptionalChooserComponent.getEmptyText().setText(SpellCheckerBundle.message("no.dictionaries"));
+        JPanel dictionariesPanel = new JPanel(new VerticalFlowLayout(VerticalFlowLayout.TOP, 0, 0, true, true));
+        dictionariesPanel.setBorder(IdeBorderFactory.createTitledBorder(SpellCheckerBundle.message("dictionaries.panel.title"), false));
+        dictionariesPanel.add(new JBLabel(SpellCheckerBundle.message("dictionaries.panel.description")));
+        dictionariesPanel.add(ScrollPaneFactory.createScrollPane(myOptionalChooserComponent.getContentPane()));
+        secondPanel.add(dictionariesPanel);
 
-		myOptionalChooserComponent.getEmptyText().setText(SpellCheckerBundle.message("no.dictionaries"));
-		JPanel dictionariesPanel = new JPanel(new VerticalFlowLayout(VerticalFlowLayout.TOP, 0, 0, true, true));
-		dictionariesPanel.setBorder(IdeBorderFactory.createTitledBorder(SpellCheckerBundle.message("dictionaries.panel.title"), false));
-		dictionariesPanel.add(new JBLabel(SpellCheckerBundle.message("dictionaries.panel.description")));
-		dictionariesPanel.add(ScrollPaneFactory.createScrollPane(myOptionalChooserComponent.getContentPane()));
-		secondPanel.add(dictionariesPanel);
+        tabbedPaneWrapper.addTab("Dictionaries", secondPanel);
 
-		tabbedPaneWrapper.addTab("Dictionaries", secondPanel);
+        add(tabbedPaneWrapper.getComponent());
+    }
 
-		add(tabbedPaneWrapper.getComponent());
-	}
+    public boolean isModified() {
+        return myWordsPanel.isModified() || myOptionalChooserComponent.isModified() || myPathsChooserComponent.isModified();
+    }
 
-	public boolean isModified()
-	{
-		return myWordsPanel.isModified() || myOptionalChooserComponent.isModified() || myPathsChooserComponent.isModified();
-	}
+    public void apply() throws ConfigurationException {
+        if (myWordsPanel.isModified()) {
+            myManager.updateUserDictionary(myWordsPanel.getWords());
+        }
+        if (!myOptionalChooserComponent.isModified() && !myPathsChooserComponent.isModified()) {
+            return;
+        }
 
-	public void apply() throws ConfigurationException
-	{
-		if(myWordsPanel.isModified())
-		{
-			myManager.updateUserDictionary(myWordsPanel.getWords());
-		}
-		if(!myOptionalChooserComponent.isModified() && !myPathsChooserComponent.isModified())
-		{
-			return;
-		}
+        myOptionalChooserComponent.apply();
+        myPathsChooserComponent.apply();
+        mySpellCheckerSettings.setDictionaryFoldersPaths(myPathsChooserComponent.getValues());
 
-		myOptionalChooserComponent.apply();
-		myPathsChooserComponent.apply();
-		mySpellCheckerSettings.setDictionaryFoldersPaths(myPathsChooserComponent.getValues());
+        Set<String> disabledDictionaries = new HashSet<>();
+        Set<String> bundledDisabledDictionaries = new HashSet<>();
+        for (Pair<String, Boolean> pair : myAllDictionaries) {
+            if (!pair.second) {
+                String scriptPath = pair.first;
+                if (isUserDictionary(scriptPath)) {
+                    disabledDictionaries.add(scriptPath);
+                }
+                else {
+                    bundledDisabledDictionaries.add(scriptPath);
+                }
+            }
 
-		final HashSet<String> disabledDictionaries = new HashSet<String>();
-		final HashSet<String> bundledDisabledDictionaries = new HashSet<String>();
-		for(Pair<String, Boolean> pair : myAllDictionaries)
-		{
-			if(!pair.second)
-			{
-				final String scriptPath = pair.first;
-				if(isUserDictionary(scriptPath))
-				{
-					disabledDictionaries.add(scriptPath);
-				}
-				else
-				{
-					bundledDisabledDictionaries.add(scriptPath);
-				}
-			}
+        }
+        mySpellCheckerSettings.setDisabledDictionariesPaths(disabledDictionaries);
+        mySpellCheckerSettings.setBundledDisabledDictionariesPaths(bundledDisabledDictionaries);
 
-		}
-		mySpellCheckerSettings.setDisabledDictionariesPaths(disabledDictionaries);
-		mySpellCheckerSettings.setBundledDisabledDictionariesPaths(bundledDisabledDictionaries);
+        myManager.updateBundledDictionaries(myRemovedDictionaries);
+    }
 
-		myManager.updateBundledDictionaries(myRemovedDictionaries);
-	}
+    private boolean isUserDictionary(final String dictionary) {
+        boolean isUserDictionary = false;
+        for (String dictionaryFolder : myPathsChooserComponent.getValues()) {
+            if (FileUtil.toSystemIndependentName(dictionary).startsWith(dictionaryFolder)) {
+                isUserDictionary = true;
+                break;
+            }
+        }
+        return isUserDictionary;
 
-	private boolean isUserDictionary(final String dictionary)
-	{
-		boolean isUserDictionary = false;
-		for(String dictionaryFolder : myPathsChooserComponent.getValues())
-		{
-			if(FileUtil.toSystemIndependentName(dictionary).startsWith(dictionaryFolder))
-			{
-				isUserDictionary = true;
-				break;
-			}
-		}
-		return isUserDictionary;
+    }
 
-	}
-
-	public void reset()
-	{
-		myPathsChooserComponent.reset();
-		fillAllDictionaries();
-		myOptionalChooserComponent.reset();
-		myRemovedDictionaries.clear();
-	}
+    public void reset() {
+        myPathsChooserComponent.reset();
+        fillAllDictionaries();
+        myOptionalChooserComponent.reset();
+        myRemovedDictionaries.clear();
+    }
 
 
-	private void fillAllDictionaries()
-	{
-		myDictionariesFolders.clear();
-		myDictionariesFolders.addAll(mySpellCheckerSettings.getDictionaryFoldersPaths());
-		myAllDictionaries.clear();
-		for(String dictionary : SpellCheckerManager.getBundledDictionaries())
-		{
-			myAllDictionaries.add(Pair.create(dictionary, !mySpellCheckerSettings.getBundledDisabledDictionariesPaths().contains(dictionary)));
-		}
+    private void fillAllDictionaries() {
+        myDictionariesFolders.clear();
+        myDictionariesFolders.addAll(mySpellCheckerSettings.getDictionaryFoldersPaths());
+        myAllDictionaries.clear();
+        for (String dictionary : SpellCheckerManager.getBundledDictionaries()) {
+            myAllDictionaries.add(Pair.create(
+                dictionary,
+                !mySpellCheckerSettings.getBundledDisabledDictionariesPaths().contains(dictionary)
+            ));
+        }
 
-		// user
-		//todo [shkate]: refactoring  - SpellCheckerManager contains the same code withing reloadConfiguration()
-		final Set<String> disabledDictionaries = mySpellCheckerSettings.getDisabledDictionariesPaths();
-		for(String folder : myDictionariesFolders)
-		{
-			SPFileUtil.processFilesRecursively(folder, new Consumer<String>()
-			{
-				@Override
-				public void accept(final String s)
-				{
-					myAllDictionaries.add(Pair.create(s, !disabledDictionaries.contains(s)));
-				}
-			});
-		}
-	}
+        // user
+        //todo [shkate]: refactoring  - SpellCheckerManager contains the same code withing reloadConfiguration()
+        final Set<String> disabledDictionaries = mySpellCheckerSettings.getDisabledDictionariesPaths();
+        for (String folder : myDictionariesFolders) {
+            SPFileUtil.processFilesRecursively(folder, new Consumer<String>() {
+                @Override
+                public void accept(final String s) {
+                    myAllDictionaries.add(Pair.create(s, !disabledDictionaries.contains(s)));
+                }
+            });
+        }
+    }
 
 
-	@Override
-	public void dispose()
-	{
-		if(myWordsPanel != null)
-		{
-			myWordsPanel.dispose();
-		}
-	}
+    @Override
+    public void dispose() {
+        if (myWordsPanel != null) {
+            myWordsPanel.dispose();
+        }
+    }
 
-	public static final class WordDescriber
-	{
-		private final EditableDictionary dictionary;
+    public static final class WordDescriber {
+        private final EditableDictionary dictionary;
 
-		public WordDescriber(EditableDictionary dictionary)
-		{
-			this.dictionary = dictionary;
-		}
+        public WordDescriber(EditableDictionary dictionary) {
+            this.dictionary = dictionary;
+        }
 
-		@Nonnull
-		public List<String> process()
-		{
-			if(this.dictionary == null)
-			{
-				return new ArrayList<String>();
-			}
-			Set<String> words = this.dictionary.getEditableWords();
-			if(words == null)
-			{
-				return new ArrayList<String>();
-			}
-			List<String> result = new ArrayList<String>();
-			for(String word : words)
-			{
-				result.add(word);
-			}
-			Collections.sort(result);
-			return result;
-		}
-	}
+        @Nonnull
+        public List<String> process() {
+            if (this.dictionary == null) {
+                return new ArrayList<>();
+            }
+            Set<String> words = this.dictionary.getEditableWords();
+            if (words == null) {
+                return new ArrayList<>();
+            }
+            List<String> result = new ArrayList<>();
+            for (String word : words) {
+                result.add(word);
+            }
+            Collections.sort(result);
+            return result;
+        }
+    }
 
-	private static final class WordsPanel extends AddDeleteListPanel<String> implements Disposable
-	{
-		private final SpellCheckerManager manager;
+    private static final class WordsPanel extends AddDeleteListPanel<String> implements Disposable {
+        private final SpellCheckerManager manager;
 
-		private WordsPanel(SpellCheckerManager manager)
-		{
-			super(null, new WordDescriber(manager.getUserDictionary()).process());
-			this.manager = manager;
-			getEmptyText().setText(SpellCheckerBundle.message("no.words"));
-		}
+        private WordsPanel(SpellCheckerManager manager) {
+            super(null, new WordDescriber(manager.getUserDictionary()).process());
+            this.manager = manager;
+            getEmptyText().setText(SpellCheckerLocalize.noWords());
+        }
 
 
-		@Override
-		protected String findItemToAdd()
-		{
-			String word = Messages.showInputDialog(SpellCheckerBundle.message("enter.simple.word"), SpellCheckerBundle.message("add.new.word"),
-					null);
-			if(word == null)
-			{
-				return null;
-			}
-			else
-			{
-				word = word.trim();
-			}
+        @Override
+        @RequiredUIAccess
+        protected String findItemToAdd() {
+            String word = Messages.showInputDialog(
+                SpellCheckerLocalize.enterSimpleWord().get(),
+                SpellCheckerLocalize.addNewWord().get(),
+                null
+            );
+            if (word == null) {
+                return null;
+            }
+            else {
+                word = word.trim();
+            }
 
-			if(Strings.isMixedCase(word))
-			{
-				Messages.showWarningDialog(SpellCheckerBundle.message("entered.word.0.is.mixed.cased.you.must.enter.simple.word", word),
-						SpellCheckerBundle.message("add.new.word"));
-				return null;
-			}
-			if(!manager.hasProblem(word))
-			{
-				Messages.showWarningDialog(SpellCheckerBundle.message("entered.word.0.is.correct.you.no.need.to.add.this.in.list", word),
-						SpellCheckerBundle.message("add.new.word"));
-				return null;
-			}
-			return word;
-		}
-
-
-		@Override
-		public void dispose()
-		{
-			myListModel.removeAllElements();
-		}
-
-		@Nullable
-		public List<String> getWords()
-		{
-			Object[] pairs = getListItems();
-			if(pairs == null)
-			{
-				return null;
-			}
-			List<String> words = new ArrayList<String>();
-			for(Object pair : pairs)
-			{
-				words.add(pair.toString());
-			}
-			return words;
-		}
-
-		public boolean isModified()
-		{
-			List<String> newWords = getWords();
-			Set<String> words = manager.getUserDictionary().getEditableWords();
-			if(words == null && newWords == null)
-			{
-				return false;
-			}
-			if(words == null || newWords == null || newWords.size() != words.size())
-			{
-				return true;
-			}
-			return !(words.containsAll(newWords) && newWords.containsAll(words));
-		}
-	}
+            if (Strings.isMixedCase(word)) {
+                Messages.showWarningDialog(
+                    SpellCheckerLocalize.enteredWord0IsMixedCasedYouMustEnterSimpleWord(word).get(),
+                    SpellCheckerLocalize.addNewWord().get()
+                );
+                return null;
+            }
+            if (!manager.hasProblem(word)) {
+                Messages.showWarningDialog(
+                    SpellCheckerLocalize.enteredWord0IsCorrectYouNoNeedToAddThisInList(word).get(),
+                    SpellCheckerLocalize.addNewWord().get()
+                );
+                return null;
+            }
+            return word;
+        }
 
 
+        @Override
+        public void dispose() {
+            myListModel.removeAllElements();
+        }
+
+        @Nullable
+        public List<String> getWords() {
+            Object[] pairs = getListItems();
+            if (pairs == null) {
+                return null;
+            }
+            List<String> words = new ArrayList<>();
+            for (Object pair : pairs) {
+                words.add(pair.toString());
+            }
+            return words;
+        }
+
+        public boolean isModified() {
+            List<String> newWords = getWords();
+            Set<String> words = manager.getUserDictionary().getEditableWords();
+            if (words == null && newWords == null) {
+                return false;
+            }
+            if (words == null || newWords == null || newWords.size() != words.size()) {
+                return true;
+            }
+            return !(words.containsAll(newWords) && newWords.containsAll(words));
+        }
+    }
 }

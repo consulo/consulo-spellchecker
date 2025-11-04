@@ -17,7 +17,6 @@ package com.intellij.spellchecker.inspections;
 
 import com.intellij.spellchecker.SimpleSpellcheckerEngine;
 import com.intellij.spellchecker.SpellCheckerManager;
-import com.intellij.spellchecker.quickfixes.SpellCheckerQuickFix;
 import consulo.annotation.access.RequiredReadAction;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.document.util.TextRange;
@@ -148,9 +147,10 @@ public class SpellCheckingInspection extends SpellcheckerInspection {
         @Nonnull TextRange textRange,
         @Nonnull ProblemsHolder holder
     ) {
-        SpellCheckerQuickFix[] fixes = SpellcheckerQuickFixes.getDefaultBatchFixes();
-        ProblemDescriptor problemDescriptor = createProblemDescriptor(element, textRange, fixes, false);
-        holder.registerProblem(problemDescriptor);
+        holder.newProblem(SpellCheckerLocalize.typoInWordRef())
+            .range(element, textRange)
+            .withFixes(SpellcheckerQuickFixes.getDefaultBatchFixes())
+            .create();
     }
 
     @RequiredReadAction
@@ -167,27 +167,11 @@ public class SpellCheckingInspection extends SpellcheckerInspection {
             ? SpellcheckerQuickFixes.getRegularFixes(element, textRange, useRename, wordWithTypo)
             : SpellcheckerQuickFixes.getDefaultRegularFixes(useRename, wordWithTypo, element, textRange);
 
-        ProblemDescriptor problemDescriptor = createProblemDescriptor(element, textRange, fixes, true);
-        holder.registerProblem(problemDescriptor);
-    }
-
-    private static ProblemDescriptor createProblemDescriptor(
-        PsiElement element, TextRange textRange,
-        LocalQuickFix[] fixes,
-        boolean onTheFly
-    ) {
-        LocalizeValue description = SpellCheckerLocalize.typoInWordRef();
-        return new ProblemDescriptorBase(
-            element,
-            element,
-            description.get(),
-            fixes,
-            ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
-            false,
-            textRange,
-            onTheFly,
-            onTheFly
-        );
+        holder.newProblem(SpellCheckerLocalize.typoInWordRef())
+            .range(element, textRange)
+            .withFixes(fixes)
+            .onTheFly()
+            .create();
     }
 
     private static class MyTokenConsumer extends TokenConsumer implements Consumer<TextRange> {
@@ -251,7 +235,10 @@ public class SpellCheckingInspection extends SpellcheckerInspection {
                 }
                 else {
                     myAlreadyChecked.add(word);
-                    addBatchDescriptor(myElement, range, myHolder);
+                    myHolder.newProblem(SpellCheckerLocalize.typoInWordRef())
+                        .range(myElement, range)
+                        .withFixes(SpellcheckerQuickFixes.getDefaultBatchFixes())
+                        .create();
                 }
             }
         }

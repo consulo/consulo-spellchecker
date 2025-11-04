@@ -18,17 +18,13 @@ package com.intellij.spellchecker.compress;
 import junit.framework.TestCase;
 
 public class UnitBitSetTest extends TestCase {
-
-  public void testUnitValue() {
-    int bitsPerUnit = 256;
-    for (int i = 0; i < bitsPerUnit - 1; i++) {
-      UnitBitSet bs = new UnitBitSet(new byte[2], new Alphabet());
-      bs.setUnitValue(0, i);
-      assertEquals(i, bs.getUnitValue(0));
-      assertEquals(0, bs.getUnitValue(1));
+    public void testUnitValue() {
+        int bitsPerUnit = 256;
+        for (int i = 0; i < bitsPerUnit - 1; i++) {
+            UnitBitSet bs = new UnitBitSet(new byte[2], new Alphabet());
+            bs.setUnitValue(0, i);
+            assertEquals(i, bs.getUnitValue(0));
+            assertEquals(0, bs.getUnitValue(1));
+        }
     }
-  }
-
-
-
 }

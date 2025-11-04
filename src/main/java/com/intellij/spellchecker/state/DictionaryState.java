@@ -24,75 +24,74 @@ import consulo.util.xml.serializer.annotation.Tag;
 import consulo.util.xml.serializer.annotation.Transient;
 
 import jakarta.annotation.Nonnull;
+
 import java.util.HashSet;
 import java.util.Set;
 
 @Tag("dictionary")
-public class DictionaryState implements PersistentStateComponent<DictionaryState>
-{
+public class DictionaryState implements PersistentStateComponent<DictionaryState> {
+    public static final String NAME_ATTRIBUTE = "name";
 
-  public static final String NAME_ATTRIBUTE = "name";
+    @Tag("words")
+    @AbstractCollection(surroundWithTag = false, elementTag = "w", elementValueAttribute = "")
+    public Set<String> words = new HashSet<>();
 
-  @Tag("words") @AbstractCollection(surroundWithTag = false, elementTag = "w", elementValueAttribute = "")
-  public Set<String> words = new HashSet<String>();
+    @Attribute(NAME_ATTRIBUTE)
+    public String name;
 
-  @Attribute(NAME_ATTRIBUTE)
-  public String name;
+    @Transient
+    private EditableDictionary dictionary;
 
-  @Transient
-  private EditableDictionary dictionary;
-
-  public DictionaryState() {
-  }
-
-  public DictionaryState(@Nonnull EditableDictionary dictionary) {
-    setDictionary(dictionary);
-  }
-
-  @Transient
-  public void setDictionary(@Nonnull EditableDictionary dictionary) {
-    this.dictionary = dictionary;
-    this.name = dictionary.getName();
-    synchronizeWords();
-  }
-
-  @Transient
-  public EditableDictionary getDictionary() {
-    return dictionary;
-  }
-
-  public DictionaryState getState() {
-    synchronizeWords();
-    return this;
-  }
-
-  private void synchronizeWords() {
-    if (dictionary != null) {
-      Set<String> words = new HashSet<String>();
-      words.addAll(dictionary.getWords());
-      this.words = words;
+    public DictionaryState() {
     }
-  }
 
-  public void loadState(DictionaryState state) {
-    if (state != null && state.name != null) {
-      name = state.name;
-      words = state.words;
+    public DictionaryState(@Nonnull EditableDictionary dictionary) {
+        setDictionary(dictionary);
     }
-    retrieveDictionary();
-  }
 
-  private void retrieveDictionary() {
-    assert name != null;
-    dictionary = new UserDictionary(name);
-    dictionary.addToDictionary(words);
-  }
+    @Transient
+    public void setDictionary(@Nonnull EditableDictionary dictionary) {
+        this.dictionary = dictionary;
+        this.name = dictionary.getName();
+        synchronizeWords();
+    }
 
+    @Transient
+    public EditableDictionary getDictionary() {
+        return dictionary;
+    }
 
-  @Override
-  public String toString() {
-    return "DictionaryState{" + "dictionary=" + dictionary + '}';
-  }
+    @Override
+    public DictionaryState getState() {
+        synchronizeWords();
+        return this;
+    }
 
+    private void synchronizeWords() {
+        if (dictionary != null) {
+            Set<String> words = new HashSet<>();
+            words.addAll(dictionary.getWords());
+            this.words = words;
+        }
+    }
 
+    @Override
+    public void loadState(DictionaryState state) {
+        if (state != null && state.name != null) {
+            name = state.name;
+            words = state.words;
+        }
+        retrieveDictionary();
+    }
+
+    private void retrieveDictionary() {
+        assert name != null;
+        dictionary = new UserDictionary(name);
+        dictionary.addToDictionary(words);
+    }
+
+    @Override
+    public String toString() {
+        return "DictionaryState{" + "dictionary=" + dictionary + '}';
+    }
 }

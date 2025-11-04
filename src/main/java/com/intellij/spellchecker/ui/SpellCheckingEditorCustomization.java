@@ -30,6 +30,7 @@ import consulo.project.Project;
 import consulo.util.collection.Maps;
 
 import jakarta.annotation.Nonnull;
+
 import java.util.Map;
 import java.util.function.Function;
 
@@ -39,105 +40,88 @@ import java.util.function.Function;
  * Thread-safe.
  *
  * @author Denis Zhdanov
- * @since Aug 20, 2010 3:54:42 PM
+ * @since 2010-08-20
  */
-public class SpellCheckingEditorCustomization extends SimpleEditorCustomization
-{
-	public static final SpellCheckingEditorCustomization ENABLED = new SpellCheckingEditorCustomization(true);
-	public static final SpellCheckingEditorCustomization DISABLED = new SpellCheckingEditorCustomization(false);
+public class SpellCheckingEditorCustomization extends SimpleEditorCustomization {
+    public static final SpellCheckingEditorCustomization ENABLED = new SpellCheckingEditorCustomization(true);
+    public static final SpellCheckingEditorCustomization DISABLED = new SpellCheckingEditorCustomization(false);
 
-	@Nonnull
-	public static SpellCheckingEditorCustomization getInstance(boolean enabled)
-	{
-		return enabled ? ENABLED : DISABLED;
-	}
+    @Nonnull
+    public static SpellCheckingEditorCustomization getInstance(boolean enabled) {
+        return enabled ? ENABLED : DISABLED;
+    }
 
-	private SpellCheckingEditorCustomization(boolean enabled)
-	{
-		super(enabled);
-	}
+    private SpellCheckingEditorCustomization(boolean enabled) {
+        super(enabled);
+    }
 
-	@Override
-	public void customize(@Nonnull EditorEx editor)
-	{
-		boolean apply = isEnabled();
+    @Override
+    public void customize(@Nonnull EditorEx editor) {
+        boolean apply = isEnabled();
 
-		Project project = editor.getProject();
-		if(project == null)
-		{
-			return;
-		}
+        Project project = editor.getProject();
+        if (project == null) {
+            return;
+        }
 
-		PsiFile file = PsiDocumentManager.getInstance(project).getPsiFile(editor.getDocument());
-		if(file == null)
-		{
-			return;
-		}
+        PsiFile file = PsiDocumentManager.getInstance(project).getPsiFile(editor.getDocument());
+        if (file == null) {
+            return;
+        }
 
-		Function<InspectionProfile, InspectionProfileWrapper> strategy = file.getUserData(InspectionProfileWrapper.CUSTOMIZATION_KEY);
-		if(strategy == null)
-		{
-			file.putUserData(InspectionProfileWrapper.CUSTOMIZATION_KEY, strategy = new MyInspectionProfileStrategy());
-		}
+        Function<InspectionProfile, InspectionProfileWrapper> strategy = file.getUserData(InspectionProfileWrapper.CUSTOMIZATION_KEY);
+        if (strategy == null) {
+            file.putUserData(InspectionProfileWrapper.CUSTOMIZATION_KEY, strategy = new MyInspectionProfileStrategy());
+        }
 
-		if(!(strategy instanceof MyInspectionProfileStrategy))
-		{
-			return;
-		}
+        if (!(strategy instanceof MyInspectionProfileStrategy inspectionProfileStrategy)) {
+            return;
+        }
 
-		((MyInspectionProfileStrategy) strategy).setUseSpellCheck(apply);
+        inspectionProfileStrategy.setUseSpellCheck(apply);
 
-		if(apply)
-		{
-			editor.putUserData(IntentionManager.SHOW_INTENTION_OPTIONS_KEY, false);
-		}
+        if (apply) {
+            editor.putUserData(IntentionManager.SHOW_INTENTION_OPTIONS_KEY, false);
+        }
 
-		// Update representation.
-		DaemonCodeAnalyzer analyzer = DaemonCodeAnalyzer.getInstance(project);
-		analyzer.restart(file);
-	}
+        // Update representation.
+        DaemonCodeAnalyzer analyzer = DaemonCodeAnalyzer.getInstance(project);
+        analyzer.restart(file);
+    }
 
-	private static class MyInspectionProfileStrategy implements Function<InspectionProfile, InspectionProfileWrapper>
-	{
-		private final Map<InspectionProfile, MyInspectionProfileWrapper> myWrappers = Maps.newWeakHashMap();
-		private boolean myUseSpellCheck;
+    private static class MyInspectionProfileStrategy implements Function<InspectionProfile, InspectionProfileWrapper> {
+        private final Map<InspectionProfile, MyInspectionProfileWrapper> myWrappers = Maps.newWeakHashMap();
+        private boolean myUseSpellCheck;
 
-		@Override
-		public InspectionProfileWrapper apply(InspectionProfile delegate)
-		{
-			MyInspectionProfileWrapper wrapper = myWrappers.get(delegate);
-			if(wrapper == null)
-			{
-				myWrappers.put(delegate, wrapper = new MyInspectionProfileWrapper(delegate));
-			}
-			wrapper.setUseSpellCheck(myUseSpellCheck);
-			return wrapper;
-		}
+        @Override
+        public InspectionProfileWrapper apply(InspectionProfile delegate) {
+            MyInspectionProfileWrapper wrapper = myWrappers.get(delegate);
+            if (wrapper == null) {
+                myWrappers.put(delegate, wrapper = new MyInspectionProfileWrapper(delegate));
+            }
+            wrapper.setUseSpellCheck(myUseSpellCheck);
+            return wrapper;
+        }
 
-		public void setUseSpellCheck(boolean useSpellCheck)
-		{
-			myUseSpellCheck = useSpellCheck;
-		}
-	}
+        public void setUseSpellCheck(boolean useSpellCheck) {
+            myUseSpellCheck = useSpellCheck;
+        }
+    }
 
-	private static class MyInspectionProfileWrapper extends InspectionProfileWrapper
-	{
-		private boolean myUseSpellCheck;
+    private static class MyInspectionProfileWrapper extends InspectionProfileWrapper {
+        private boolean myUseSpellCheck;
 
-		MyInspectionProfileWrapper(InspectionProfile delegate)
-		{
-			super(delegate);
-		}
+        MyInspectionProfileWrapper(InspectionProfile delegate) {
+            super(delegate);
+        }
 
-		@Override
-		public boolean isToolEnabled(HighlightDisplayKey key, PsiElement element)
-		{
-			return SpellCheckingInspection.SPELL_CHECKING_INSPECTION_TOOL_NAME.equals(key.toString()) && myUseSpellCheck;
-		}
+        @Override
+        public boolean isToolEnabled(HighlightDisplayKey key, PsiElement element) {
+            return SpellCheckingInspection.SPELL_CHECKING_INSPECTION_TOOL_NAME.equals(key.toString()) && myUseSpellCheck;
+        }
 
-		public void setUseSpellCheck(boolean useSpellCheck)
-		{
-			myUseSpellCheck = useSpellCheck;
-		}
-	}
+        public void setUseSpellCheck(boolean useSpellCheck) {
+            myUseSpellCheck = useSpellCheck;
+        }
+    }
 }

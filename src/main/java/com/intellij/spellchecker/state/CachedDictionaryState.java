@@ -28,23 +28,19 @@ import jakarta.inject.Singleton;
 @State(name = "CachedDictionaryState", storages = @Storage("cachedDictionary.xml"))
 @ServiceAPI(ComponentScope.APPLICATION)
 @ServiceImpl
-public class CachedDictionaryState extends DictionaryState implements PersistentStateComponent<DictionaryState>
-{
-	public static final String DEFAULT_NAME = "cached";
+public class CachedDictionaryState extends DictionaryState implements PersistentStateComponent<DictionaryState> {
+    public static final String DEFAULT_NAME = "cached";
 
-	@Inject
-	public CachedDictionaryState()
-	{
-		name = DEFAULT_NAME;
-	}
+    @Inject
+    public CachedDictionaryState() {
+        name = DEFAULT_NAME;
+    }
 
-	@Override
-	public void loadState(DictionaryState state)
-	{
-		if(state.name == null)
-		{
-			state.name = DEFAULT_NAME;
-		}
-		super.loadState(state);
-	}
+    @Override
+    public void loadState(DictionaryState state) {
+        if (state.name == null) {
+            state.name = DEFAULT_NAME;
+        }
+        super.loadState(state);
+    }
 }

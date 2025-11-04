@@ -21,16 +21,16 @@ import java.util.Collection;
 import java.util.Set;
 
 public interface EditableDictionary extends Dictionary {
-  void addToDictionary(@Nullable String word);
+    void addToDictionary(@Nullable String word);
 
-  void removeFromDictionary(@Nullable String word);
+    void removeFromDictionary(@Nullable String word);
 
-  void addToDictionary(@Nullable Collection<String> words);
+    void addToDictionary(@Nullable Collection<String> words);
 
-  void replaceAll(@Nullable Collection<String> words);
+    void replaceAll(@Nullable Collection<String> words);
 
-  void clear();
+    void clear();
 
-  @Nullable
-  Set<String> getEditableWords();
+    @Nullable
+    Set<String> getEditableWords();
 }

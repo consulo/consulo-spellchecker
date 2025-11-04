@@ -22,50 +22,55 @@ import consulo.logging.Logger;
 import jakarta.annotation.Nullable;
 
 public final class Encoder {
+    private final Alphabet alphabet;
+    private static final int offset = 0;
+    static final UnitBitSet WORD_OF_ENTIRELY_UNKNOWN_LETTERS = new UnitBitSet(new byte[1], new Alphabet());
+    private static final Logger LOG = Logger.getInstance("#com.intellij.spellchecker.compress");
 
-  private final Alphabet alphabet;
-  private static final int offset = 0;
-  static final UnitBitSet WORD_OF_ENTIRELY_UNKNOWN_LETTERS = new UnitBitSet(new byte[1],new Alphabet());
-  private static final Logger LOG = Logger.getInstance("#com.intellij.spellchecker.compress");
-
-  public Encoder() {
-    alphabet = new Alphabet();
-  }
-
-  public Encoder(Alphabet alphabet) {
-    this.alphabet = alphabet;
-  }
-
-  public Alphabet getAlphabet() {
-    return alphabet;
-  }
-
-  @Nullable
-  public UnitBitSet encode(@Nonnull CharSequence letters, boolean force) {
-    if (UnitBitSet.MAX_CHARS_IN_WORD <= letters.length() + offset) return null;
-    int unknownLetters = 0;
-    byte[] indices = new byte[letters.length()];
-    for (int i = 0; i < letters.length(); i++) {
-      char letter = letters.charAt(i);
-      int index = alphabet.getIndex(letter, force);
-      if (index < 0) {
-        unknownLetters++;
-      }
-      else {
-        indices[i] = (byte)index;
-      }
+    public Encoder() {
+        alphabet = new Alphabet();
     }
-    if (unknownLetters == letters.length()) return WORD_OF_ENTIRELY_UNKNOWN_LETTERS;
-    if (unknownLetters>0) return null;
-    return new UnitBitSet(indices, alphabet);
-  }
 
-  @Nonnull
-  public String decode(@Nonnull byte[] compressed) {
-    return UnitBitSet.decode(compressed, alphabet);
-  }
+    public Encoder(Alphabet alphabet) {
+        this.alphabet = alphabet;
+    }
 
-  public int getFirstLetterIndex(byte firstPackedByte) {
-    return UnitBitSet.getFirstLetterIndex(firstPackedByte, alphabet);
-  }
+    public Alphabet getAlphabet() {
+        return alphabet;
+    }
+
+    @Nullable
+    public UnitBitSet encode(@Nonnull CharSequence letters, boolean force) {
+        if (UnitBitSet.MAX_CHARS_IN_WORD <= letters.length() + offset) {
+            return null;
+        }
+        int unknownLetters = 0;
+        byte[] indices = new byte[letters.length()];
+        for (int i = 0; i < letters.length(); i++) {
+            char letter = letters.charAt(i);
+            int index = alphabet.getIndex(letter, force);
+            if (index < 0) {
+                unknownLetters++;
+            }
+            else {
+                indices[i] = (byte) index;
+            }
+        }
+        if (unknownLetters == letters.length()) {
+            return WORD_OF_ENTIRELY_UNKNOWN_LETTERS;
+        }
+        if (unknownLetters > 0) {
+            return null;
+        }
+        return new UnitBitSet(indices, alphabet);
+    }
+
+    @Nonnull
+    public String decode(@Nonnull byte[] compressed) {
+        return UnitBitSet.decode(compressed, alphabet);
+    }
+
+    public int getFirstLetterIndex(byte firstPackedByte) {
+        return UnitBitSet.getFirstLetterIndex(firstPackedByte, alphabet);
+    }
 }

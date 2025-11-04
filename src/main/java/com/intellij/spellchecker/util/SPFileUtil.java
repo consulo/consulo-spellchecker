@@ -15,7 +15,6 @@
  */
 package com.intellij.spellchecker.util;
 
-import consulo.application.util.function.Processor;
 import consulo.util.io.FileUtil;
 
 import java.io.File;
@@ -23,21 +22,21 @@ import java.util.function.Consumer;
 
 @SuppressWarnings({"UtilityClassWithoutPrivateConstructor"})
 public class SPFileUtil {
-
-  public static void processFilesRecursively(final String rootPath, final Consumer<String> consumer){
-    final File rootFile = new File(rootPath);
-    if (rootFile.exists() && rootFile.isDirectory()){
-      FileUtil.processFilesRecursively(rootFile, new Processor<File>() {
-        public boolean process(final File file) {
-          if (!file.isDirectory()){
-            final String path = file.getPath();
-            if (path.endsWith(".dic")){
-              consumer.accept(path);
-            }
-          }
-          return true;
+    public static void processFilesRecursively(String rootPath, Consumer<String> consumer) {
+        File rootFile = new File(rootPath);
+        if (rootFile.exists() && rootFile.isDirectory()) {
+            FileUtil.processFilesRecursively(
+                rootFile,
+                file -> {
+                    if (!file.isDirectory()) {
+                        String path = file.getPath();
+                        if (path.endsWith(".dic")) {
+                            consumer.accept(path);
+                        }
+                    }
+                    return true;
+                }
+            );
         }
-      });
     }
-  }
 }

@@ -20,43 +20,44 @@ import com.intellij.spellchecker.dictionary.EditableDictionaryLoader;
 import consulo.project.Project;
 
 import jakarta.annotation.Nonnull;
+
 import java.util.Set;
 import java.util.function.Consumer;
 
 public class StateLoader implements EditableDictionaryLoader {
+    private final Project myProject;
+    private EditableDictionary myDictionary;
 
-  private final Project project;
-  private EditableDictionary dictionary;
-
-  public StateLoader(Project project) {
-    this.project = project;
-  }
-
-
-  public void load(@Nonnull Consumer<String> consumer) {
-    AggregatedDictionaryState state = project.getInstance(AggregatedDictionaryState.class);
-    state.setProject(project);
-    state.loadState();
-    dictionary = state.getDictionary();
-    if (dictionary == null) {
-      return;
-    }
-    final Set<String> storedWords = dictionary.getWords();
-    if (storedWords != null) {
-      for (String word : storedWords) {
-        consumer.accept(word);
-      }
+    public StateLoader(Project project) {
+        this.myProject = project;
     }
 
-  }
+    @Override
+    public void load(@Nonnull Consumer<String> consumer) {
+        AggregatedDictionaryState state = myProject.getInstance(AggregatedDictionaryState.class);
+        state.setProject(myProject);
+        state.loadState();
+        myDictionary = state.getDictionary();
+        if (myDictionary == null) {
+            return;
+        }
+        Set<String> storedWords = myDictionary.getWords();
+        if (storedWords != null) {
+            for (String word : storedWords) {
+                consumer.accept(word);
+            }
+        }
+    }
 
-  public EditableDictionary getDictionary() {
-    return dictionary;
-  }
+    @Override
+    public EditableDictionary getDictionary() {
+        return myDictionary;
+    }
 
-  public String getName() {
-    return (dictionary != null ? dictionary.getName() : "");
-  }
+    @Override
+    public String getName() {
+        return (myDictionary != null ? myDictionary.getName() : "");
+    }
 }
 
 

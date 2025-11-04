@@ -23,32 +23,30 @@ import com.intellij.testFramework.fixtures.CodeInsightFixtureTestCase;
 
 @Ignore("until consulo test driver fixed")
 public class SuggestionTest extends CodeInsightFixtureTestCase {
+    private SpellCheckerManager spManager;
 
-  private SpellCheckerManager spManager;
-  private SpellCheckerManager getManager(){
-    if (spManager==null){
-      spManager = SpellCheckerManager.getInstance(myFixture.getProject());
+    private SpellCheckerManager getManager() {
+        if (spManager == null) {
+            spManager = SpellCheckerManager.getInstance(myFixture.getProject());
+        }
+        assert spManager != null;
+        return spManager;
     }
-    assert spManager!=null;
-    return spManager;
-  }
 
-  public void testSuggestions(){
-    List<String> result = getManager().getSuggestions("upgade");
-    assertEquals("upgrade",result.get(0));
-  }
+    public void testSuggestions() {
+        List<String> result = getManager().getSuggestions("upgade");
+        assertEquals("upgrade", result.get(0));
+    }
 
+    public void testFirstLetterUppercaseSuggestions() {
+        List<String> result = getManager().getSuggestions("Upgade");
+        assertEquals("Upgrade", result.get(0));
+    }
 
-  public void testFirstLetterUppercaseSuggestions(){
-    List<String> result = getManager().getSuggestions("Upgade");
-    assertEquals("Upgrade",result.get(0));
-  }
-
-  public void testCamelCaseSuggestions(){
-    SpellCheckerManager manager = SpellCheckerManager.getInstance(myFixture.getProject());
-    assert manager!=null;
-    List<String> result = manager.getSuggestions("TestUpgade");
-    assertEquals("TestUpgrade",result.get(0));
-  }
-
+    public void testCamelCaseSuggestions() {
+        SpellCheckerManager manager = SpellCheckerManager.getInstance(myFixture.getProject());
+        assert manager != null;
+        List<String> result = manager.getSuggestions("TestUpgade");
+        assertEquals("TestUpgrade", result.get(0));
+    }
 }

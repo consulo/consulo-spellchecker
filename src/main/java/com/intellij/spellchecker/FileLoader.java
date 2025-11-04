@@ -19,48 +19,47 @@ import com.intellij.spellchecker.dictionary.Loader;
 import consulo.logging.Logger;
 
 import jakarta.annotation.Nonnull;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.function.Consumer;
 
-
 @SuppressWarnings({"IOResourceOpenedButNotSafelyClosed"})
 public class FileLoader implements Loader {
+    private static final Logger LOG = Logger.getInstance(FileLoader.class);
 
-  private static final Logger LOG = Logger.getInstance(FileLoader.class);
+    private final String url;
+    private final String name;
 
-  private final String url;
-  private final String name;
-
-  public FileLoader(String url, String name) {
-    this.url = url;
-    this.name = name;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void load(@Nonnull Consumer<String> consumer) {
-    File file = new File(url);
-    FileInputStream stream = null;
-    try {
-      stream = new FileInputStream(file);
-      StreamLoader loader = new StreamLoader(stream, file.getName());
-      loader.load(consumer);
+    public FileLoader(String url, String name) {
+        this.url = url;
+        this.name = name;
     }
-    catch (Exception e) {
-      LOG.error(e);
-    }
-    finally {
-      try {
-        stream.close();
-      }
-      catch (IOException ignored) {
-      }
-    }
-  }
 
+    @Override
+    public String getName() {
+        return name;
+    }
 
+    @Override
+    public void load(@Nonnull Consumer<String> consumer) {
+        File file = new File(url);
+        FileInputStream stream = null;
+        try {
+            stream = new FileInputStream(file);
+            StreamLoader loader = new StreamLoader(stream, file.getName());
+            loader.load(consumer);
+        }
+        catch (Exception e) {
+            LOG.error(e);
+        }
+        finally {
+            try {
+                stream.close();
+            }
+            catch (IOException ignored) {
+            }
+        }
+    }
 }

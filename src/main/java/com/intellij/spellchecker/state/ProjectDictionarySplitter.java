@@ -20,16 +20,15 @@ import consulo.util.lang.Pair;
 import org.jdom.Element;
 
 import jakarta.annotation.Nonnull;
+
 import java.util.List;
 
 /**
  * @author shkate@jetbrains.com
  */
-public class ProjectDictionarySplitter extends StateSplitterEx
-{
-	@Override
-	public List<Pair<Element, String>> splitState(@Nonnull Element state)
-	{
-		return splitState(state, DictionaryState.NAME_ATTRIBUTE);
-	}
+public class ProjectDictionarySplitter extends StateSplitterEx {
+    @Override
+    public List<Pair<Element, String>> splitState(@Nonnull Element state) {
+        return splitState(state, DictionaryState.NAME_ATTRIBUTE);
+    }
 }

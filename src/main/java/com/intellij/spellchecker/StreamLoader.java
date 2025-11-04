@@ -19,51 +19,51 @@ import com.intellij.spellchecker.dictionary.Loader;
 import consulo.logging.Logger;
 
 import jakarta.annotation.Nonnull;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.function.Consumer;
 
 public class StreamLoader implements Loader {
+    private static final Logger LOG = Logger.getInstance(StreamLoader.class);
 
-  private static final Logger LOG = Logger.getInstance(StreamLoader.class);
+    private final InputStream stream;
+    private final String name;
 
-  private final InputStream stream;
-  private final String name;
-
-  public StreamLoader(InputStream stream, String name) {
-    this.stream = stream;
-    this.name=name;
-  }
-
-  @Override
-  public String getName() {
-    return name;
-  }
-
-  @Override
-  public void load(@Nonnull Consumer<String> consumer) {
-    DataInputStream in = new DataInputStream(stream);
-    BufferedReader br = null;
-
-    try {
-      br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
-      String strLine;
-      while ((strLine = br.readLine()) != null) {
-        consumer.accept(strLine);
-      }
+    public StreamLoader(InputStream stream, String name) {
+        this.stream = stream;
+        this.name = name;
     }
-    catch (Exception e) {
-      LOG.error(e);
-    }
-    finally {
-      try {
-        br.close();
-      }
-      catch (IOException ignored) {
 
-      }
+    @Override
+    public String getName() {
+        return name;
     }
-  }
 
+    @Override
+    public void load(@Nonnull Consumer<String> consumer) {
+        DataInputStream in = new DataInputStream(stream);
+        BufferedReader br = null;
+
+        try {
+            br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+            String strLine;
+            while ((strLine = br.readLine()) != null) {
+                consumer.accept(strLine);
+            }
+        }
+        catch (Exception e) {
+            LOG.error(e);
+        }
+        finally {
+            if (br != null) {
+                try {
+                    br.close();
+                }
+                catch (IOException ignored) {
+                }
+            }
+        }
+    }
 }
 

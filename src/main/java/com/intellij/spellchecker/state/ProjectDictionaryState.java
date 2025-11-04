@@ -35,99 +35,84 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Singleton
-@State(name = "ProjectDictionaryState", storages = @Storage(file = StoragePathMacros.PROJECT_CONFIG_DIR + "/dictionaries/", stateSplitter = ProjectDictionarySplitter.class))
 @ServiceAPI(ComponentScope.PROJECT)
 @ServiceImpl
-public class ProjectDictionaryState implements PersistentStateComponent<ProjectDictionaryState>
-{
-	@Property(surroundWithTag = false)
-	@AbstractCollection(surroundWithTag = false, elementTypes = DictionaryState.class)
-	public List<DictionaryState> dictionaryStates = new ArrayList<DictionaryState>();
+@Singleton
+@State(
+    name = "ProjectDictionaryState",
+    storages = @Storage(file = StoragePathMacros.PROJECT_CONFIG_DIR + "/dictionaries/", stateSplitter = ProjectDictionarySplitter.class)
+)
+public class ProjectDictionaryState implements PersistentStateComponent<ProjectDictionaryState> {
+    @Property(surroundWithTag = false)
+    @AbstractCollection(surroundWithTag = false, elementTypes = DictionaryState.class)
+    public List<DictionaryState> dictionaryStates = new ArrayList<>();
 
-	private ProjectDictionary projectDictionary;
-	private String currentUser;
-	private Project project;
+    private ProjectDictionary myProjectDictionary;
+    private String myCurrentUser;
+    private Project myProject;
 
-	public ProjectDictionaryState()
-	{
-	}
+    public ProjectDictionaryState() {
+    }
 
-	public void setProject(Project project)
-	{
-		this.project = project;
-	}
+    public void setProject(Project project) {
+        this.myProject = project;
+    }
 
-	public void setCurrentUser(String currentUser)
-	{
-		this.currentUser = currentUser;
-	}
+    public void setCurrentUser(String currentUser) {
+        this.myCurrentUser = currentUser;
+    }
 
+    @Transient
+    public void setProjectDictionary(ProjectDictionary projectDictionary) {
+        myCurrentUser = projectDictionary.getActiveName();
+        dictionaryStates.clear();
+        Set<EditableDictionary> projectDictionaries = projectDictionary.getDictionaries();
+        if (projectDictionaries != null) {
+            for (EditableDictionary dic : projectDictionary.getDictionaries()) {
+                dictionaryStates.add(new DictionaryState(dic));
+            }
+        }
+    }
 
-	@Transient
-	public void setProjectDictionary(ProjectDictionary projectDictionary)
-	{
-		currentUser = projectDictionary.getActiveName();
-		dictionaryStates.clear();
-		Set<EditableDictionary> projectDictionaries = projectDictionary.getDictionaries();
-		if(projectDictionaries != null)
-		{
-			for(EditableDictionary dic : projectDictionary.getDictionaries())
-			{
-				dictionaryStates.add(new DictionaryState(dic));
-			}
-		}
-	}
+    @Transient
+    public ProjectDictionary getProjectDictionary() {
+        if (myProjectDictionary == null) {
+            myProjectDictionary = new ProjectDictionary();
+        }
+        return myProjectDictionary;
+    }
 
-	@Transient
-	public ProjectDictionary getProjectDictionary()
-	{
-		if(projectDictionary == null)
-		{
-			projectDictionary = new ProjectDictionary();
-		}
-		return projectDictionary;
-	}
-
-	@Override
-	public ProjectDictionaryState getState()
-	{
-		if(projectDictionary != null)
-		{
-			//ensure all dictionaries within project dictionary will be stored
-			setProjectDictionary(projectDictionary);
-		}
-		return this;
-	}
+    @Override
+    public ProjectDictionaryState getState() {
+        if (myProjectDictionary != null) {
+            //ensure all dictionaries within project dictionary will be stored
+            setProjectDictionary(myProjectDictionary);
+        }
+        return this;
+    }
 
 
-	@Override
-	public void loadState(ProjectDictionaryState state)
-	{
-		if(state != null)
-		{
-			this.dictionaryStates = state.dictionaryStates;
-		}
-		retrieveProjectDictionaries();
-	}
+    @Override
+    public void loadState(ProjectDictionaryState state) {
+        if (state != null) {
+            this.dictionaryStates = state.dictionaryStates;
+        }
+        retrieveProjectDictionaries();
+    }
 
-	private void retrieveProjectDictionaries()
-	{
-		Set<EditableDictionary> dictionaries = new HashSet<>();
-		if(dictionaryStates != null)
-		{
-			for(DictionaryState dictionaryState : dictionaryStates)
-			{
-				dictionaryState.loadState(dictionaryState);
-				dictionaries.add(dictionaryState.getDictionary());
-			}
-		}
-		projectDictionary = new ProjectDictionary(dictionaries);
-	}
+    private void retrieveProjectDictionaries() {
+        Set<EditableDictionary> dictionaries = new HashSet<>();
+        if (dictionaryStates != null) {
+            for (DictionaryState dictionaryState : dictionaryStates) {
+                dictionaryState.loadState(dictionaryState);
+                dictionaries.add(dictionaryState.getDictionary());
+            }
+        }
+        myProjectDictionary = new ProjectDictionary(dictionaries);
+    }
 
-	@Override
-	public String toString()
-	{
-		return "ProjectDictionaryState{" + "projectDictionary=" + projectDictionary + '}';
-	}
+    @Override
+    public String toString() {
+        return "ProjectDictionaryState{projectDictionary=" + myProjectDictionary + '}';
+    }
 }
