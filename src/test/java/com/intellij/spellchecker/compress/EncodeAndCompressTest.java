@@ -1,8 +1,11 @@
 package com.intellij.spellchecker.compress;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class EncodeAndCompressTest extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class EncodeAndCompressTest {
+    @Test
     public void testEncodeAndCompress() {
         Encoder encoder = new Encoder();
         String word = "example";

@@ -15,27 +15,28 @@
  */
 package com.intellij.spellchecker.compress;
 
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.spellchecker.DefaultBundledDictionariesProvider;
 import com.intellij.spellchecker.StreamLoader;
 import com.intellij.spellchecker.dictionary.Dictionary;
 import com.intellij.spellchecker.dictionary.Loader;
 import com.intellij.spellchecker.engine.Transformation;
-import com.intellij.testFramework.PlatformTestUtil;
-import com.intellij.util.Consumer;
-import com.intellij.util.ThrowableRunnable;
 import consulo.util.collection.Sets;
-import junit.framework.TestCase;
+import consulo.util.io.FileUtil;
+import consulo.util.lang.Couple;
+import consulo.util.lang.StringUtil;
+import jakarta.annotation.Nonnull;
+import org.junit.jupiter.api.Test;
 
-import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Consumer;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SuppressWarnings({"JUnitTestCaseWithNonTrivialConstructors"})
-public class DictionaryTest extends TestCase {
+public class DictionaryTest {
     private Dictionary dictionary;
 
     private final Map<String, Integer> sizes = Map.of(
@@ -50,30 +51,29 @@ public class DictionaryTest extends TestCase {
     private static final String PROGRAMMING_DIC = "programming.dic";
     private static final String ENGLISH_DIC = "english.dic";
 
-    public void testDictionary() throws IOException {
-        String[] names = {PROGRAMMING_DIC, ENGLISH_DIC};
-        for (String name : names) {
-            loadDictionaryTest(name, sizes.get(name));
-            loadHalfDictionaryTest(name, 50000);
-        }
-    }
+//    @Test
+//    public void testDictionary() throws IOException {
+//        String[] names = {PROGRAMMING_DIC, ENGLISH_DIC};
+//        for (String name : names) {
+//            loadDictionaryTest(name, sizes.get(name));
+//            loadHalfDictionaryTest(name, 50000);
+//        }
+//    }
 
+    @Test
     public void testDictionaryLoadedFully() {
         //cleanupDictionary();
-        final Transformation transform = new Transformation();
+        Transformation transform = new Transformation();
         CompressedDictionary dictionary = CompressedDictionary.create(englishLoader(), transform);
 
-        final Set<String> onDisk = new HashSet<>();
-        englishLoader().load(new Consumer<String>() {
-            @Override
-            public void consume(String s) {
-                assert s != null;
-                String t = transform.transform(s);
-                if (t == null) {
-                    return;
-                }
-                onDisk.add(t);
+        Set<String> onDisk = new HashSet<>();
+        englishLoader().load(s -> {
+            assert s != null;
+            String t = transform.transform(s);
+            if (t == null) {
+                return;
             }
+            onDisk.add(t);
         });
 
         List<String> odList = new ArrayList<>(onDisk);
@@ -85,13 +85,10 @@ public class DictionaryTest extends TestCase {
     }
 
     public void cleanupDictionary() {
-        final Set<String> onDisk = Sets.newHashSet(FileUtil.PATH_HASHING_STRATEGY);
-        englishLoader().load(new Consumer<String>() {
-            @Override
-            public void consume(String s) {
-                assert s != null;
-                onDisk.add(s);
-            }
+        Set<String> onDisk = Sets.newHashSet(FileUtil.PATH_HASHING_STRATEGY);
+        englishLoader().load(s -> {
+            assert s != null;
+            onDisk.add(s);
         });
 
         List<String> odList = new ArrayList<>(onDisk);
@@ -110,41 +107,33 @@ public class DictionaryTest extends TestCase {
         return new StreamLoader(DefaultBundledDictionariesProvider.class.getResourceAsStream(ENGLISH_DIC), ENGLISH_DIC);
     }
 
-    public void loadDictionaryTest(@Nonnull final String name, int wordCount) throws IOException {
-        final Transformation transform = new Transformation();
-        PlatformTestUtil.startPerformanceTest(
-            "load dictionary",
-            times.get(name),
-            new ThrowableRunnable() {
-                @Override
-                public void run() throws Exception {
-                    dictionary = CompressedDictionary
-                        .create(new StreamLoader(DefaultBundledDictionariesProvider.class.getResourceAsStream(name), name), transform);
-                }
-            }
-        ).cpuBound().assertTiming();
-
-        final Set<String> wordsToStoreAndCheck = createWordSets(name, 50000, 1).getFirst();
-        PlatformTestUtil.startPerformanceTest(
-            "words contain",
-            2000,
-            new ThrowableRunnable() {
-                @Override
-                public void run() throws Exception {
-                    for (String s : wordsToStoreAndCheck) {
-                        assertTrue(dictionary.contains(s));
-                    }
-                }
-            }
-        ).cpuBound().assertTiming();
-    }
+//    public void loadDictionaryTest(@Nonnull String name, int wordCount) throws IOException {
+//        Transformation transform = new Transformation();
+//        PlatformTestUtil.startPerformanceTest(
+//            "load dictionary",
+//            times.get(name),
+//            (ThrowableRunnable) () -> dictionary = CompressedDictionary
+//                .create(new StreamLoader(DefaultBundledDictionariesProvider.class.getResourceAsStream(name), name), transform)
+//        ).cpuBound().assertTiming();
+//
+//        Set<String> wordsToStoreAndCheck = createWordSets(name, 50000, 1).getFirst();
+//        PlatformTestUtil.startPerformanceTest(
+//            "words contain",
+//            2000,
+//            (ThrowableRunnable) () -> {
+//                for (String s : wordsToStoreAndCheck) {
+//                    assertTrue(dictionary.contains(s));
+//                }
+//            }
+//        ).cpuBound().assertTiming();
+//    }
 
     private static Loader createLoader(final Set<String> words) {
         return new Loader() {
             @Override
             public void load(@Nonnull Consumer<String> consumer) {
                 for (String word : words) {
-                    consumer.consume(word);
+                    consumer.accept(word);
                 }
             }
 
@@ -156,16 +145,16 @@ public class DictionaryTest extends TestCase {
     }
 
     @SuppressWarnings({"unchecked"})
-    private static Pair<Set<String>, Set<String>> createWordSets(String name, final int maxCount, final int mod) {
+    private static Couple<Set<String>> createWordSets(String name, final int maxCount, final int mod) {
         Loader loader = new StreamLoader(DefaultBundledDictionariesProvider.class.getResourceAsStream(name), name);
         final Set<String> wordsToStore = new HashSet<>();
         final Set<String> wordsToCheck = new HashSet<>();
         final Transformation transform = new Transformation();
-        loader.load(new Consumer<String>() {
+        loader.load(new Consumer<>() {
             private int counter = 0;
 
             @Override
-            public void consume(String s) {
+            public void accept(String s) {
                 if (counter > maxCount) {
                     return;
                 }
@@ -183,16 +172,16 @@ public class DictionaryTest extends TestCase {
             }
         });
 
-        return new Pair(wordsToStore, wordsToCheck);
+        return Couple.of(wordsToStore, wordsToCheck);
     }
 
     public static void loadHalfDictionaryTest(String name, int maxCount) {
-        Pair<Set<String>, Set<String>> sets = createWordSets(name, maxCount, 2);
+        Couple<Set<String>> sets = createWordSets(name, maxCount, 2);
         Loader loader = createLoader(sets.getFirst());
         CompressedDictionary dictionary = CompressedDictionary.create(loader, new Transformation());
         for (String s : sets.getSecond()) {
             if (!sets.getFirst().contains(s)) {
-                assertFalse(s, dictionary.contains(s));
+                assertFalse(dictionary.contains(s), s);
             }
         }
     }

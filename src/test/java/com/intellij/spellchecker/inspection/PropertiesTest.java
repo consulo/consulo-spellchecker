@@ -15,19 +15,17 @@
  */
 package com.intellij.spellchecker.inspection;
 
-import org.junit.Ignore;
-
 /**
- * @author Ekaterina Shliakhovetskaja
+ * @author Konstantin Bulenkov
  */
-@Ignore("until consulo test driver fixed")
-public class XmlWithMistakesInspectionTest extends SpellcheckerInspectionTestCase {
-    @Override
+//@Ignore("until consulo test driver fixed")
+public class PropertiesTest extends SpellcheckerInspectionTestCase {
+//    @Override
     protected String getBasePath() {
-        return SpellcheckerInspectionTestCase.getSpellcheckerTestDataPath() + "inspection/xmlWithMistakes";
+        return getSpellcheckerTestDataPath() + "/inspection/propertiesWithMistakes";
     }
 
-    public void testXml() {
-        doTest("test.xml");
+    public void testProperties() {
+        doTest("test.properties");
     }
 }
