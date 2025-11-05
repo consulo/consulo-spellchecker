@@ -45,10 +45,11 @@ public class SuggestionTest /*extends CodeInsightFixtureTestCase*/ {
         assertEquals("Upgrade", result.get(0));
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     public void testCamelCaseSuggestions() {
 //        SpellCheckerManager manager = SpellCheckerManager.getInstance(myFixture.getProject());
 //        assert manager != null;
-//        List<String> result = manager.getSuggestions("TestUpgrade");
+//        List<String> result = manager.getSuggestions("TestUpgade");
 //        assertEquals("TestUpgrade", result.get(0));
     }
 }
