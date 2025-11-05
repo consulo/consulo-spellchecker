@@ -15,9 +15,13 @@
  */
 package com.intellij.spellchecker.compress;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class EncoderTest extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+public class EncoderTest {
+    @Test
     public void testSimple() {
         Encoder encoder = new Encoder();
         String wordToTest = "abc";
@@ -37,6 +41,7 @@ public class EncoderTest extends TestCase {
         }
     }
 
+    @Test
     public void testDouble() {
         Encoder encoder = new Encoder();
         String wordToTest = "aaa";
@@ -48,6 +53,7 @@ public class EncoderTest extends TestCase {
         assertEquals(wordToTest, encoder.decode(bitSet.pack()));
     }
 
+    @Test
     public void testLetterRepetition() {
         Encoder encoder = new Encoder();
         String wordToTest = "aba";
@@ -59,6 +65,7 @@ public class EncoderTest extends TestCase {
         assertEquals(wordToTest, encoder.decode(bitSet.pack()));
     }
 
+    @Test
     public void testReverse() {
         Encoder encoder = new Encoder();
         String wordToTest1 = "abc";
@@ -82,6 +89,8 @@ public class EncoderTest extends TestCase {
         assertEquals(wordToTest2, encoder.decode(pack2));
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
+    @Test
     public void testWithPredefinedAlphabet() {
         Encoder encoder = new Encoder(new Alphabet("abcdefghijklmnopqrst"));
         String wordToTest1 = "asia";
@@ -94,6 +103,7 @@ public class EncoderTest extends TestCase {
         assertEquals(wordToTest1, encoder.decode(bitSet.pack()));
     }
 
+    @Test
     public void testUnknown() {
         Encoder encoder = new Encoder(new Alphabet("abc"));
         String wordToTest1 = "def";

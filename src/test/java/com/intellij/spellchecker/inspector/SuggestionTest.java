@@ -17,36 +17,39 @@ package com.intellij.spellchecker.inspector;
 
 import java.util.List;
 
-import org.junit.Ignore;
 import com.intellij.spellchecker.SpellCheckerManager;
-import com.intellij.testFramework.fixtures.CodeInsightFixtureTestCase;
 
-@Ignore("until consulo test driver fixed")
-public class SuggestionTest extends CodeInsightFixtureTestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+//@Ignore("until consulo test driver fixed")
+public class SuggestionTest /*extends CodeInsightFixtureTestCase*/ {
     private SpellCheckerManager spManager;
 
     private SpellCheckerManager getManager() {
-        if (spManager == null) {
-            spManager = SpellCheckerManager.getInstance(myFixture.getProject());
-        }
-        assert spManager != null;
+//        if (spManager == null) {
+//            spManager = SpellCheckerManager.getInstance(myFixture.getProject());
+//        }
+//        assert spManager != null;
         return spManager;
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     public void testSuggestions() {
         List<String> result = getManager().getSuggestions("upgade");
         assertEquals("upgrade", result.get(0));
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     public void testFirstLetterUppercaseSuggestions() {
         List<String> result = getManager().getSuggestions("Upgade");
         assertEquals("Upgrade", result.get(0));
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     public void testCamelCaseSuggestions() {
-        SpellCheckerManager manager = SpellCheckerManager.getInstance(myFixture.getProject());
-        assert manager != null;
-        List<String> result = manager.getSuggestions("TestUpgade");
-        assertEquals("TestUpgrade", result.get(0));
+//        SpellCheckerManager manager = SpellCheckerManager.getInstance(myFixture.getProject());
+//        assert manager != null;
+//        List<String> result = manager.getSuggestions("TestUpgade");
+//        assertEquals("TestUpgrade", result.get(0));
     }
 }

@@ -15,14 +15,12 @@
  */
 package com.intellij.spellchecker.inspection;
 
-import org.junit.Ignore;
-
 /**
  * @author Ekaterina Shliakhovetskaja
  */
-@Ignore("until consulo test driver fixed")
+//@Ignore("until consulo test driver fixed")
 public class CommentsWithMistakesInspectionTest extends SpellcheckerInspectionTestCase {
-    @Override
+//    @Override
     protected String getBasePath() {
         return getSpellcheckerTestDataPath() + "/inspection/commentsWithMistakes";
     }

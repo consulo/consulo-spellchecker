@@ -15,9 +15,12 @@
  */
 package com.intellij.spellchecker.compress;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class UnitBitSetTest extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class UnitBitSetTest {
+    @Test
     public void testUnitValue() {
         int bitsPerUnit = 256;
         for (int i = 0; i < bitsPerUnit - 1; i++) {

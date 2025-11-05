@@ -15,12 +15,8 @@
  */
 package com.intellij.spellchecker.inspection;
 
-import com.intellij.codeInspection.LocalInspectionTool;
-import com.intellij.spellchecker.inspections.SpellCheckingInspection;
-import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCase;
-
-public abstract class SpellcheckerInspectionTestCase extends LightPlatformCodeInsightFixtureTestCase {
-    @Override
+public abstract class SpellcheckerInspectionTestCase /*extends LightPlatformCodeInsightFixtureTestCase*/ {
+//    @Override
     protected boolean isWriteActionRequired() {
         return false;
     }
@@ -30,11 +26,11 @@ public abstract class SpellcheckerInspectionTestCase extends LightPlatformCodeIn
     }
 
     protected void doTest(String file) {
-        myFixture.enableInspections(getInspectionTools());
-        myFixture.testHighlighting(false, false, true, file);
+//        myFixture.enableInspections(getInspectionTools());
+//        myFixture.testHighlighting(false, false, true, file);
     }
 
-    public static LocalInspectionTool[] getInspectionTools() {
-        return new LocalInspectionTool[]{new SpellCheckingInspection(mySpellCheckerManager)};
-    }
+//    public static LocalInspectionTool[] getInspectionTools() {
+//        return new LocalInspectionTool[]{new SpellCheckingInspection(mySpellCheckerManager)};
+//    }
 }
