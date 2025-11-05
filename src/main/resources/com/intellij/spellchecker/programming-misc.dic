@@ -1,3 +1,5 @@
+abcdefghijklmnopqrstuvwxyz
+aeiouy
 addr
 addrs
 ajax
@@ -27,6 +29,7 @@ basedir
 basename
 basicfile
 batis
+bcdfghjklmnpqrstvwxz
 bfile
 bfiles
 bgcolor
@@ -67,6 +70,7 @@ codestyle
 colspan
 combobox
 commandline
+compat
 concat
 conf
 confs
@@ -169,6 +173,7 @@ freelist
 freelists
 freepools
 ftlvariable
+fullwidth
 func
 funcs
 fxml
@@ -188,6 +193,7 @@ gstring
 guice
 gzip
 gzipped
+halfwidth
 hamcrest
 hardlink
 hardlinks
