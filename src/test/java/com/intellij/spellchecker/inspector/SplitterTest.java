@@ -155,7 +155,6 @@ public class SplitterTest {
         correctListToCheck(PlainTextTokenSplitter.getInstance(), text, "customer's");
     }
 
-
     @Test
     public void testWordWithApostrophe4() {
         String text = "we'll";
@@ -172,14 +171,12 @@ public class SplitterTest {
     public void testConstantName() {
         String text = "TEST_CONSTANT";
         correctListToCheck(IdentifierTokenSplitter.getInstance(), text, "TEST", "CONSTANT");
-
     }
 
     @Test
     public void testLongConstantName() {
         String text = "TEST_VERY_VERY_LONG_AND_COMPLEX_CONSTANT";
         correctListToCheck(IdentifierTokenSplitter.getInstance(), text, "TEST", "VERY", "VERY", "LONG", "COMPLEX", "CONSTANT");
-
     }
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -249,35 +246,30 @@ public class SplitterTest {
     public void testSpecial() {
         String text = "test &nbsp; test";
         correctListToCheck(PlainTextTokenSplitter.getInstance(), text, "test", "test");
-
     }
 
     @Test
     public void testColorUC() {
         String text = "#AABBFF";
         correctListToCheck(WordTokenSplitter.getInstance(), text);
-
     }
 
     @Test
     public void testColorUCSC() {
         String text = "#AABBFF;";
         correctListToCheck(WordTokenSplitter.getInstance(), text);
-
     }
 
     @Test
     public void testColorUCSurrounded() {
         String text = "\"#AABBFF\"";
         correctListToCheck(WordTokenSplitter.getInstance(), text);
-
     }
 
     @Test
     public void testColorLC() {
         String text = "#fff";
         correctListToCheck(TextTokenSplitter.getInstance(), text);
-
     }
 
     @Test
@@ -291,28 +283,24 @@ public class SplitterTest {
     public void testPhpVariableCorrectSimple() {
         String text = "$this";
         correctListToCheck(IdentifierTokenSplitter.getInstance(), text, "this");
-
     }
 
     @Test
     public void testPhpVariableCorrect() {
         String text = "$this_this$this";
         correctListToCheck(IdentifierTokenSplitter.getInstance(), text, "this", "this", "this");
-
     }
 
     @Test
     public void testEmail() {
         String text = "some text with email (shkate.test@gmail.com) inside";
         correctListToCheck(PlainTextTokenSplitter.getInstance(), text, "some", "text", "with", "email", "inside");
-
     }
 
     @Test
     public void testEmailOnly() {
         String text = "shkate123-\u00DC.test@gmail.com";
         correctListToCheck(PlainTextTokenSplitter.getInstance(), text);
-
     }
 
     @Test
@@ -347,7 +335,6 @@ public class SplitterTest {
     public void testWordInCapsBeforeDelimiter() {
         String text = "BADD,";
         correctListToCheck(PlainTextTokenSplitter.getInstance(), text, "BADD");
-
     }
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -355,7 +342,6 @@ public class SplitterTest {
     public void testWordInCapsAfterDelimiter() {
         String text = ",BADD";
         correctListToCheck(PlainTextTokenSplitter.getInstance(), text, "BADD");
-
     }
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -363,7 +349,6 @@ public class SplitterTest {
     public void testWordInCapsAfterDelimiter2() {
         String text = "BADD;";
         correctListToCheck(PlainTextTokenSplitter.getInstance(), text, "BADD");
-
     }
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -391,14 +376,12 @@ public class SplitterTest {
     public void testCommaSeparatedList() {
         String text = "properties,test,properties";
         correctListToCheck(PlainTextTokenSplitter.getInstance(), text, "properties", "test", "properties");
-
     }
 
     @Test
     public void testSemicolonSeparatedList() {
         String text = "properties;test;properties";
         correctListToCheck(PlainTextTokenSplitter.getInstance(), text, "properties", "test", "properties");
-
     }
 
     @Test
@@ -419,7 +402,6 @@ public class SplitterTest {
         String text = "\u00DCNDIG";
         correctListToCheck(PlainTextTokenSplitter.getInstance(), text, text);
     }
-
 
     @Test
     public void testTCData() {
