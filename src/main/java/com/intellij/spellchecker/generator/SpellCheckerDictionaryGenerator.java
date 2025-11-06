@@ -194,27 +194,30 @@ public abstract class SpellCheckerDictionaryGenerator {
     @RequiredReadAction
     protected void processLeafsNames(@Nonnull PsiElement leafElement, @Nonnull final Set<String> seenNames) {
         final Language language = leafElement.getLanguage();
-        SpellCheckingInspection.tokenize(leafElement, language, new TokenConsumer() {
-            @Override
-            @RequiredReadAction
-            public void consumeToken(
-                PsiElement element,
-                String text,
-                boolean useRename,
-                int offset,
-                TextRange rangeToCheck,
-                TokenSplitter splitter
-            ) {
-                splitter.split(
-                    text,
-                    rangeToCheck,
-                    textRange -> {
-                        String word = textRange.substring(text);
-                        addSeenWord(seenNames, word, language);
-                    }
-                );
+        SpellCheckingInspection.tokenize(
+            leafElement,
+            new TokenConsumer() {
+                @Override
+                @RequiredReadAction
+                public void consumeToken(
+                    PsiElement element,
+                    String text,
+                    boolean useRename,
+                    int offset,
+                    TextRange rangeToCheck,
+                    TokenSplitter splitter
+                ) {
+                    splitter.split(
+                        text,
+                        rangeToCheck,
+                        textRange -> {
+                            String word = textRange.substring(text);
+                            addSeenWord(seenNames, word, language);
+                        }
+                    );
+                }
             }
-        });
+        );
     }
 
     protected void addSeenWord(Set<String> seenNames, String word, Language language) {

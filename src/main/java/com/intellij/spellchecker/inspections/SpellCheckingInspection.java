@@ -118,7 +118,7 @@ public class SpellCheckingInspection extends SpellcheckerInspection {
                     }
                 }
 
-                tokenize(element, language, new MyTokenConsumer(manager, holder, NamesValidator.forLanguage(language)));
+                tokenize(element, new MyTokenConsumer(manager, holder, NamesValidator.forLanguage(language)));
             }
         };
     }
@@ -131,8 +131,8 @@ public class SpellCheckingInspection extends SpellcheckerInspection {
      * @param consumer the consumer of tokens
      */
     @RequiredReadAction
-    public static void tokenize(@Nonnull PsiElement element, @Nonnull Language language, TokenConsumer consumer) {
-        SpellcheckingStrategy factoryByLanguage = getSpellcheckingStrategy(element, language);
+    public static void tokenize(@Nonnull PsiElement element, TokenConsumer consumer) {
+        SpellcheckingStrategy factoryByLanguage = getSpellcheckingStrategy(element);
         if (factoryByLanguage == null) {
             return;
         }
@@ -142,11 +142,7 @@ public class SpellCheckingInspection extends SpellcheckerInspection {
     }
 
     @RequiredReadAction
-    private static void addBatchDescriptor(
-        PsiElement element,
-        @Nonnull TextRange textRange,
-        @Nonnull ProblemsHolder holder
-    ) {
+    private static void addBatchDescriptor(PsiElement element, @Nonnull TextRange textRange, @Nonnull ProblemsHolder holder) {
         holder.newProblem(SpellCheckerLocalize.typoInWordRef())
             .range(element, textRange)
             .withFixes(SpellcheckerQuickFixes.getDefaultBatchFixes())
@@ -161,7 +157,7 @@ public class SpellCheckingInspection extends SpellcheckerInspection {
         boolean useRename,
         String wordWithTypo
     ) {
-        SpellcheckingStrategy strategy = getSpellcheckingStrategy(element, element.getLanguage());
+        SpellcheckingStrategy strategy = getSpellcheckingStrategy(element);
 
         LocalQuickFix[] fixes = strategy != null
             ? SpellcheckerQuickFixes.getRegularFixes(element, textRange, useRename, wordWithTypo)
@@ -222,7 +218,7 @@ public class SpellCheckingInspection extends SpellcheckerInspection {
 
             if (myManager.hasProblem(word)) {
                 //Use tokenizer to generate accurate range in element (e.g. in case of escape sequences in element)
-                SpellcheckingStrategy strategy = getSpellcheckingStrategy(myElement, myElement.getLanguage());
+                SpellcheckingStrategy strategy = getSpellcheckingStrategy(myElement);
 
                 Tokenizer tokenizer = strategy != null ? strategy.getTokenizer(myElement) : null;
                 if (tokenizer != null) {

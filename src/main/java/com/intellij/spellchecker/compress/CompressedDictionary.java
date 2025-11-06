@@ -216,7 +216,6 @@ public final class CompressedDictionary implements Dictionary {
         return 0;
     }
 
-
     public static boolean contains(@Nonnull byte[] goal, @Nonnull byte[] data) {
         return binarySearchNew(goal, 0, data.length / goal.length, data) >= 0;
     }
@@ -238,6 +237,6 @@ public final class CompressedDictionary implements Dictionary {
                 return mid;
             }
         }
-        return -(low + 1);  // key not found.
+        return -(low + 1); // key not found.
     }
 }
