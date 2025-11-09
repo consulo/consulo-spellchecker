@@ -1,4 +1,5 @@
 abcdefghijklmnopqrstuvwxyz
+acos
 aeiouy
 addr
 addrs
@@ -11,8 +12,10 @@ archivelog
 args
 arraycopy
 asensitive
+asin
 aspectj
 async
+atan
 atob
 attr
 attrs
@@ -60,6 +63,7 @@ checkstyle
 chmod
 classloader
 clazz
+clinit
 clob
 cmake
 cmdline
@@ -72,6 +76,8 @@ combobox
 commandline
 compat
 concat
+cond
+conds
 conf
 confs
 conn
@@ -214,6 +220,8 @@ htmls
 http
 httpd
 https
+iface
+ifaces
 iframe
 iframes
 impl
@@ -225,6 +233,8 @@ init
 inits
 initrans
 inout
+insn
+insns
 instanceof
 insteadof
 intra
@@ -402,6 +412,8 @@ onchange
 onclick
 onerror
 onload
+opcode
+opcodes
 openapitools
 openid
 openssl
@@ -466,6 +478,7 @@ sdks
 seagreen
 securefile
 semver
+sinh
 sizeof
 skyblue
 slateblue
@@ -521,6 +534,7 @@ tablespace
 tablespaces
 taglib
 taglibs
+tanh
 tbody
 temptable
 textarea
@@ -540,6 +554,7 @@ typedef
 typedefs
 typeof
 uint
+unbox
 undef
 undofile
 urlencoded

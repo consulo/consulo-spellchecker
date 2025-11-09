@@ -41,6 +41,7 @@ bicubic
 bijective
 bilinear
 birthdate
+braceless
 breakpoint
 breakpoints
 buffered
@@ -128,6 +129,7 @@ deferrable
 deque
 deques
 dereference
+dereferenced
 dereferences
 deserializable
 deserialization
@@ -158,6 +160,8 @@ fallbacks
 falsy
 finalizer
 finalizers
+foldable
+foldables
 focusable
 focuser
 formatter
@@ -167,6 +171,8 @@ frontends
 fullname
 fullscreen
 fulltext
+functor
+functors
 generify
 geocode
 geocodes
@@ -198,6 +204,7 @@ inline
 inlined
 inliner
 inliners
+inlines
 inlining
 instantiable
 interner
@@ -205,7 +212,10 @@ interners
 intranet
 intranets
 intrinsics
+introducer
+introducers
 introspector
+introspectors
 invocator
 invocators
 iterable
@@ -267,6 +277,7 @@ navigations
 negatable
 noninfingement
 nullable
+nullables
 nullabilities
 nullability
 nullish
@@ -310,6 +321,8 @@ postprocess
 postprocessing
 postprocessor
 postprocessors
+precalculated
+precalculation
 precompile
 precompiled
 precompiling
@@ -399,10 +412,14 @@ retryable's
 retryables
 retryer
 retryers
+return's
 revalidate
 revalidated
 revalidation
 revalidations
+rewrap
+rewrapped
+rewrapper
 rewriter
 rewriters
 rollup
@@ -450,6 +467,8 @@ subcommand
 subcommands
 subcontext
 subdomain
+sublist
+sublists
 submenu
 submenus
 submodule
@@ -493,6 +512,9 @@ touchbar
 touchbars
 touchpad
 touchpads
+trackable
+trackable's
+trackables
 transpilation
 transpile
 transpiled
@@ -546,6 +568,9 @@ unsplit
 unsplitted
 unversioned
 unwatch
+unwrap
+unwrapped
+unwrapper
 uploader
 uppercased
 uptime
