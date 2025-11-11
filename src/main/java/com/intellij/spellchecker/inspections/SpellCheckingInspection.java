@@ -23,7 +23,10 @@ import consulo.document.util.TextRange;
 import consulo.language.Language;
 import consulo.language.ast.ASTNode;
 import consulo.language.ast.IElementType;
-import consulo.language.editor.inspection.*;
+import consulo.language.editor.inspection.InspectionToolState;
+import consulo.language.editor.inspection.LocalInspectionToolSession;
+import consulo.language.editor.inspection.LocalQuickFix;
+import consulo.language.editor.inspection.ProblemsHolder;
 import consulo.language.editor.refactoring.NamesValidator;
 import consulo.language.parser.ParserDefinition;
 import consulo.language.psi.PsiElement;
@@ -33,6 +36,7 @@ import consulo.language.spellchecker.editor.inspection.SpellcheckerInspection;
 import consulo.language.spellcheker.SpellcheckingStrategy;
 import consulo.language.spellcheker.tokenizer.TokenConsumer;
 import consulo.language.spellcheker.tokenizer.Tokenizer;
+import consulo.language.spellcheker.tokenizer.splitter.SplitContext;
 import consulo.language.spellcheker.tokenizer.splitter.TokenSplitter;
 import consulo.localize.LocalizeValue;
 import consulo.spellchecker.localize.SpellCheckerLocalize;
@@ -99,7 +103,7 @@ public class SpellCheckingInspection extends SpellcheckerInspection {
                 // Extract parser definition from element
                 Language language = element.getLanguage();
                 IElementType elementType = node.getElementType();
-                ParserDefinition parserDefinition = ParserDefinition.forLanguage(language);
+                ParserDefinition parserDefinition = ParserDefinition.forLanguage(element.getApplication(), language);
 
                 // Handle selected options
                 if (parserDefinition != null) {
@@ -127,7 +131,6 @@ public class SpellCheckingInspection extends SpellcheckerInspection {
      * Splits element text in tokens according to spell checker strategy of given language
      *
      * @param element  Psi element
-     * @param language Usually element.getLanguage()
      * @param consumer the consumer of tokens
      */
     @RequiredReadAction
@@ -200,7 +203,7 @@ public class SpellCheckingInspection extends SpellcheckerInspection {
             myText = text;
             myUseRename = useRename;
             myOffset = offset;
-            splitter.split(text, rangeToCheck, this);
+            splitter.split(SplitContext.of(text, this), rangeToCheck);
         }
 
         @Override
