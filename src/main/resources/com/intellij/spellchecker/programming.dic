@@ -42,6 +42,8 @@ bijective
 bilinear
 birthdate
 braceless
+brancher
+branchers
 breakpoint
 breakpoints
 buffered
@@ -363,6 +365,7 @@ rearranger
 rearrangers
 rebase
 rebased
+rebaser
 rebasing
 recomputation
 redistributions
@@ -472,6 +475,7 @@ sublists
 submenu
 submenus
 submodule
+submodules
 subname
 subpackage
 subpackages
@@ -546,6 +550,9 @@ ungroup
 unhandled
 unindent
 uninstall
+unmerge
+unmerged
+unmerging
 unmute
 unmuted
 unparse
@@ -566,6 +573,10 @@ unshifted
 unshifting
 unsplit
 unsplitted
+unstaged
+unstash
+unsynchronized
+untracked
 unversioned
 unwatch
 unwrap
