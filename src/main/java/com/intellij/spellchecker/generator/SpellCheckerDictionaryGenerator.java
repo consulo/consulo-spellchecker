@@ -29,6 +29,7 @@ import consulo.language.psi.PsiFile;
 import consulo.language.psi.PsiManager;
 import consulo.language.psi.util.PsiTreeUtil;
 import consulo.language.spellcheker.tokenizer.TokenConsumer;
+import consulo.language.spellcheker.tokenizer.splitter.SplitContext;
 import consulo.language.spellcheker.tokenizer.splitter.TokenSplitter;
 import consulo.logging.Logger;
 import consulo.project.Project;
@@ -208,12 +209,14 @@ public abstract class SpellCheckerDictionaryGenerator {
                     TokenSplitter splitter
                 ) {
                     splitter.split(
-                        text,
-                        rangeToCheck,
-                        textRange -> {
-                            String word = textRange.substring(text);
-                            addSeenWord(seenNames, word, language);
-                        }
+                        SplitContext.of(
+                            text,
+                            textRange -> {
+                                String word = textRange.substring(text);
+                                addSeenWord(seenNames, word, language);
+                            }
+                        ),
+                        rangeToCheck
                     );
                 }
             }
