@@ -13,6 +13,7 @@ args
 arraycopy
 asensitive
 asin
+askpass
 aspectj
 async
 atan
@@ -22,6 +23,7 @@ attrs
 attlist
 auth
 authid
+autocrlf
 autoextend
 autoincrement
 autorelease
@@ -133,6 +135,8 @@ dimgray
 dimgrey
 dirname
 dirs
+distr
+distrs
 django
 doctype
 docx
@@ -192,7 +196,9 @@ gbytes
 gdata
 geometrycollection
 ghostwhite
+gitconfig
 gitflow
+gitmodules
 giud
 greenyellow
 groovyc
@@ -362,6 +368,7 @@ mlslabel
 mmmm
 mockito
 msguid
+msys
 multi
 multilinestring
 multipolygon
@@ -452,6 +459,7 @@ processlist
 projectlombok
 progressbar
 proto
+pubkey
 punycode
 rbrace
 readme
@@ -592,6 +600,7 @@ wiki
 wikis
 wordwrap
 worktree
+worktree's
 worktrees
 wsdl
 xcode
