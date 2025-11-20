@@ -12368,6 +12368,8 @@ cancellers
 cancelling
 cancels
 cancerous
+candela
+candelas
 candelabra
 candelabras
 candelabrum
@@ -12500,6 +12502,7 @@ canoeists
 canoes
 canola
 canonical
+canonicalized
 canonically
 canonicals
 canonisation
@@ -16275,6 +16278,9 @@ cluck's
 clucked
 clucking
 clucks
+cludge
+cludge's
+cludges
 clue
 clue's
 clued
@@ -29554,6 +29560,8 @@ electronically
 electronics
 electronics's
 electrons
+electronvolt
+electronvolts
 electrophoresis
 electrophoresis's
 electroplate
@@ -35742,6 +35750,8 @@ foobar
 foobars
 food
 food's
+foodcalorie
+foodcalories
 foodie
 foodies
 foods
@@ -38526,6 +38536,8 @@ gifts
 gig
 gig's
 giga
+gigabit
+gigabits
 gigabyte
 gigabytes
 gigahertz
@@ -38533,6 +38545,9 @@ gigahertz's
 gigantic
 gigantically
 gigavolt
+gigavolts
+gigawatt
+gigawatts
 gigged
 gigging
 giggle
@@ -39704,6 +39719,10 @@ grapevines
 graph
 graph's
 graphed
+grapheme
+grapheme's
+graphemes
+graphene
 graphic
 graphical
 graphically
@@ -42193,7 +42212,11 @@ hectogramme
 hectogramme's
 hectogrammes
 hectograms
+hectoliter
+hectoliter's
 hectoliters
+hectolitre
+hectolitre's
 hectolitres
 hectometer
 hectometer's
@@ -42201,6 +42224,9 @@ hectometers
 hectometre
 hectometre's
 hectometres
+hectopascal
+hectopascal's
+hectopascals
 hectored
 hectoring
 hectors
@@ -50138,9 +50164,15 @@ kilning
 kilns
 kilo
 kilo's
+kilobit
+kilobit's
 kilobits
 kilobyte
+kilobyte's
 kilobytes
+kilocalorie
+kilocalorie's
+kilocalories
 kilocycle
 kilocycle's
 kilocycles
@@ -50152,6 +50184,8 @@ kilogrammes
 kilograms
 kilohertz
 kilohertz's
+kilojoule
+kilojoule's
 kilojoules
 kiloliter
 kiloliter's
@@ -50165,6 +50199,9 @@ kilometers
 kilometre
 kilometre's
 kilometres
+kilopascal
+kilopascal's
+kilopascals
 kilos
 kiloton
 kiloton's
@@ -53825,6 +53862,9 @@ macrons
 macrophage
 macrophage's
 macrophages
+macroregion
+macroregion's
+macroregions
 macros
 macroscopic
 macroscopically
@@ -55501,6 +55541,9 @@ megadeaths
 megahertz
 megahertz's
 megajoules
+megaliter
+megaliter's
+megaliters
 megalith
 megalith's
 megalithic
@@ -55514,11 +55557,18 @@ megalopolis
 megalopolis's
 megalopolises
 megaparsec
+megaparsec's
+megaparsecs
+megapascal
+megapascal's
+megapascals
 megaphone
 megaphone's
 megaphoned
 megaphones
 megaphoning
+megapixel
+megapixels
 megastar
 megastars
 megaton
@@ -56215,6 +56265,8 @@ microfilming
 microfilms
 microfloppies
 microfloppieses
+microgram
+microgram's
 micrograms
 micrograph
 micrograph's
@@ -56509,6 +56561,9 @@ millenniums
 millepede's
 millers
 milli
+milliampere
+milliampere's
+milliamperes
 milliard
 milliard's
 milliards
@@ -56533,6 +56588,9 @@ millimeters
 millimetre
 millimetre's
 millimetres
+millimole
+millimole's
+millimoles
 milliner
 milliner's
 milliners
@@ -56557,6 +56615,9 @@ millipedes
 millisecond
 millisecond's
 milliseconds
+milliwatt
+milliwatt's
+milliwatts
 millpond
 millpond's
 millponds
@@ -61006,6 +61067,9 @@ notebook
 notebook's
 notebooks
 noted
+notehead
+notehead's
+noteheads
 notelet
 notelet's
 notelets
@@ -61227,6 +61291,7 @@ numeracy
 numeral
 numeral's
 numerals
+numerary
 numerate
 numerated
 numerates
@@ -66333,6 +66398,7 @@ permeates
 permeating
 permeation
 permed
+permille
 perming
 permissibility
 permissibility's
@@ -66623,6 +66689,12 @@ pestling
 pesto
 pests
 peta
+petabit
+petabit's
+petabits
+petabyte
+petabyte's
+petabytes
 petal
 petal's
 petaled
@@ -67241,6 +67313,9 @@ picnickers
 picnicking
 picnics
 pico
+picometer
+picometer's
+picometers
 picoseconds
 picot
 picot's
@@ -71069,6 +71144,7 @@ prolapses
 prolapsing
 prole
 prole's
+proleptic
 proles
 proletarian
 proletarians
@@ -75682,6 +75758,7 @@ reimbursement
 reimbursements
 reimburses
 reimbursing
+reimplement
 reimplementation
 reimplemented
 reimplementing
@@ -88029,6 +88106,8 @@ stepson
 stepson's
 stepsons
 stepwise
+steradian
+steradian's
 steradians
 stereo
 stereographic
@@ -89395,6 +89474,9 @@ subprofessional
 subprofessionals
 subprogram
 subprograms
+subrange
+subrange's
+subranges
 subroutine
 subroutine's
 subroutines
@@ -92534,7 +92616,11 @@ tequila
 tequila's
 tequilas
 tera
+terabit
+terabit's
+terabits
 terabyte
+terabyte's
 terabytes
 terbium
 terbium's
