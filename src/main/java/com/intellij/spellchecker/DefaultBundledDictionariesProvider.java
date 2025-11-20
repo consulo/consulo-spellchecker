@@ -22,12 +22,11 @@ public class DefaultBundledDictionariesProvider implements BundledDictionaryProv
     @Override
     public String[] getBundledDictionaries() {
         return new String[]{
-            "english.dic",
-            "programming.dic",
-            "programming-misc.dic",
-            "must-be.dic",
-            "names.dic",
-            "names-misc.dic"
+            "english.dic",         // Common English words to be suggested by spellchecker
+            "names.dic",           // Some English names to be suggested by Spellchecker
+            "names-misc.dic",      // Acronyms not to be suggested
+            "programming.dic",     // Programming-related English words to be suggested by spellchecker
+            "programming-misc.dic" // Programming-related English acronyms and abbreviations not to be suggested
         };
     }
 }
