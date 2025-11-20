@@ -46,6 +46,7 @@ bigints
 binlog
 bitmask
 blanchedalmond
+blockquote
 blueviolet
 bool
 bools
@@ -88,6 +89,7 @@ const
 controlfile
 coord
 coords
+corba
 cornflowerblue
 cornsilk
 crlf
@@ -138,6 +140,9 @@ dirs
 distr
 distrs
 django
+doclet
+doclet's
+doclets
 doctype
 docx
 dojo
@@ -452,6 +457,8 @@ pptx
 pragma
 pragmas
 prebuilt
+pref
+prefs
 printf
 println
 proc
@@ -543,7 +550,11 @@ syslog
 systimestamp
 tablespace
 tablespaces
+taglet
+taglet's
+taglets
 taglib
+taglib's
 taglibs
 tanh
 tbody
@@ -559,6 +570,8 @@ toolchain
 toolchains
 toolwindow
 toolwindows
+translit
+trie
 trunc
 truststore
 typedef
