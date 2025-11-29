@@ -145,6 +145,9 @@ deduplication
 deferrable
 deque
 deques
+dequeue
+dequeued
+dequeues
 dereference
 dereferenced
 dereferences
@@ -204,6 +207,7 @@ geolocation
 globals
 hardcode
 hardcoded
+hardcodes
 hashcode
 hasher
 hashers
@@ -296,6 +300,7 @@ multicast
 multicasted
 multicaster
 multicasting
+multicharacter
 multihead
 multiline
 multimap
@@ -336,6 +341,7 @@ passphrase
 passphrases
 patcher
 patchers
+peekable
 performant
 phishing
 pinnable
@@ -402,6 +408,7 @@ promisification
 promisified
 proven
 proxied
+pseudocode
 punctuator
 punctuators
 quickfix
@@ -531,6 +538,7 @@ subcommand
 subcommands
 subcontext
 subdomain
+subinterface
 sublist
 sublists
 submenu
@@ -542,7 +550,10 @@ subpackage
 subpackages
 subpartition
 subpartitions
+subpattern
 subpixel
+subsequence
+subsequences
 substring
 substrings
 subtable
