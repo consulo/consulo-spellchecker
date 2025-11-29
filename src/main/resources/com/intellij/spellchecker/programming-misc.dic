@@ -250,6 +250,7 @@ inout
 insn
 insns
 instanceof
+instanceofs
 insteadof
 intra
 ints
@@ -544,6 +545,7 @@ superview
 superviews
 synch
 synched
+synth
 symlink
 symlinks
 sysdate
