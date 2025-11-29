@@ -41,6 +41,7 @@ bicubic
 bijective
 bilinear
 birthdate
+bitness
 braceless
 brancher
 branchers
@@ -120,6 +121,9 @@ cyclomatic
 datafile
 datafiles
 dataflow
+datagram
+datagram's
+datagrams
 dataset
 dataset's
 datasets
@@ -143,6 +147,7 @@ deduplicate
 deduplicated
 deduplication
 deferrable
+deflater
 deque
 deques
 dequeue
@@ -225,8 +230,10 @@ inboxes
 incrementality
 incrementer
 incrementers
+indenter
 indexable
 indextype
+inflater
 initializer
 initializers
 injectable
@@ -237,6 +244,7 @@ inliners
 inlines
 inlining
 instantiable
+instrumenter
 interner
 interners
 intranet
@@ -292,6 +300,8 @@ minifier
 minifiers
 minify
 minimizable
+misorder
+misordered
 mixin
 mixins
 monospace
@@ -448,6 +458,7 @@ reimported
 reindent
 reindented
 reindex
+reinit
 renamer
 renamers
 renderer
@@ -568,6 +579,7 @@ subtasks
 subtree
 subtree's
 subtrees
+subtyping
 subview
 subviews
 superclass
@@ -623,6 +635,7 @@ unboxing
 unbuffered
 uncomment
 uncommented
+unconstructable
 undeploy
 undeploying
 underwave
@@ -646,6 +659,7 @@ uniset's
 unisets
 unlocalize
 unlocalized
+unmappable
 unmerge
 unmerged
 unmerging
@@ -708,6 +722,9 @@ unwatch
 unwrap
 unwrapped
 unwrapper
+upcast
+upcasted
+upcasting
 uploader
 uppercased
 uppercasing
@@ -717,10 +734,14 @@ upserts
 validator
 validators
 variadic
+watchpoint
+watchpoint's
+watchpoints
 vcses
 versa
 versioning
 viewport
+viewport's
 viewports
 virtualized
 webservice
