@@ -6,6 +6,7 @@ addrs
 ajax
 aliceblue
 alloc
+anno
 antiquewhite
 anyschema
 archivelog
@@ -387,6 +388,7 @@ nclob
 ndbcluster
 noarchivelog
 noaudit
+nobr
 nocache
 nocompress
 nocopy
