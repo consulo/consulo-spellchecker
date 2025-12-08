@@ -20,6 +20,8 @@ autoboxing
 autocommit
 autocomplete
 autocompletion
+autocreation
+autocreating
 autodetect
 autodetected
 autofocus
@@ -170,6 +172,7 @@ distributive's
 distributives
 dockable
 dodgerblue
+dollared
 downcase
 downcased
 downcasing
@@ -552,9 +555,14 @@ subdomain
 subinterface
 sublist
 sublists
+submember
+submember's
+submembers
 submenu
+submenu's
 submenus
 submodule
+submodule's
 submodules
 subname
 subpackage
@@ -725,6 +733,7 @@ unwrap
 unwrapped
 unwrapper
 upcast
+upcasts
 upcasted
 upcasting
 uploader
