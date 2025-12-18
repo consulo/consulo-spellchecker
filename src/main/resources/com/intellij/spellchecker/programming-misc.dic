@@ -87,10 +87,12 @@ confs
 conn
 conns
 const
+consts
 controlfile
 coord
 coords
 corba
+corge
 cornflowerblue
 cornsilk
 crlf
@@ -122,6 +124,7 @@ datetime
 dealloc
 decl
 dedent
+dedup
 dedupe
 deduping
 deeppink
@@ -184,6 +187,8 @@ filetypes
 flexbox
 floralwhite
 fmts
+foobar
+foobars
 foreach
 forestgreen
 fprintf
@@ -196,6 +201,7 @@ func
 funcs
 fxml
 gainsboro
+garply
 gbit
 gbps
 gbyte
@@ -207,6 +213,7 @@ gitconfig
 gitflow
 gitmodules
 giud
+grault
 greenyellow
 groovyc
 groovydoc
@@ -454,6 +461,7 @@ peachpuff
 perf
 permalink
 plist
+plugh
 pointcut
 pointcuts
 powderblue
@@ -472,6 +480,7 @@ progressbar
 proto
 pubkey
 punycode
+quux
 rbrace
 readme
 readonly
@@ -632,6 +641,7 @@ xmltype
 xpath
 xslt
 xslx
+xyzzy
 yellowgreen
 yyyy
 yyinitial
