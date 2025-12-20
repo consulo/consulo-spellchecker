@@ -1,8 +1,10 @@
+abortable
 accessor
 accessors
 additivity
 addon
 addons
+aggregative
 aggregator
 aggregators
 anchorizer
@@ -58,6 +60,7 @@ bundler
 bundlers
 bytecode
 bytecodes
+cacheable
 cacher
 cachers
 callee
@@ -149,6 +152,7 @@ decompiling
 deduplicate
 deduplicated
 deduplication
+deferrability
 deferrable
 deflater
 deque
@@ -185,6 +189,7 @@ endian
 endianness
 enumerable
 enumerables
+escapable
 escaper
 escapers
 etalon
@@ -200,6 +205,7 @@ foldable
 foldables
 focusable
 focuser
+formattable
 formatter
 formatters
 frontend
@@ -430,6 +436,7 @@ quickfixes
 randomizer
 randomizers
 rasterization
+reachability
 rearranger
 rearrangers
 rebase
@@ -472,7 +479,7 @@ reparse
 reparsed
 replacer
 replacers
-resetlogs
+resetter
 resizable
 resizables
 resize
@@ -536,6 +543,7 @@ significand
 significands
 signoff
 signum
+sqls
 stacktrace
 stacktraces
 startup
@@ -572,6 +580,7 @@ subpartition
 subpartitions
 subpattern
 subpixel
+subquery
 subsequence
 subsequences
 substring
@@ -634,6 +643,7 @@ transpiled
 transpiler
 transpilers
 transpiling
+trimmable
 truthy
 typecheck
 typechecking
@@ -656,6 +666,8 @@ unescaped
 unescaper
 unescaping
 unformatted
+unhide
+unhiding
 ungroup
 unhandled
 unindent
@@ -694,6 +706,7 @@ unroller
 unrollers
 unscoped
 unselect
+unselectable
 unselected
 unselecting
 unserialize
@@ -750,6 +763,10 @@ watchpoint
 watchpoint's
 watchpoints
 vcses
+vectorize
+vectorizer
+vectorizes
+vectorizing
 versa
 versioning
 viewport
