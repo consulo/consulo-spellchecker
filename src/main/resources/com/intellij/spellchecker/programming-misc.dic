@@ -75,6 +75,7 @@ codegen
 codeinsight
 codesign
 codestyle
+colgroup
 colspan
 combobox
 commandline
@@ -174,6 +175,7 @@ fallthrough
 favicon
 favicons
 fasterxml
+fieldset
 filename
 filenames
 filepath
@@ -335,6 +337,8 @@ lodash
 logfile
 longblob
 longtext
+longvarchar
+longvarbinary
 lookahead
 lparen
 lval
@@ -509,6 +513,7 @@ sdks
 seagreen
 securefile
 semver
+shtml
 sinh
 sizeof
 skyblue
