@@ -121,6 +121,7 @@ connectable
 contravariant
 covariant
 coverable
+croppable
 customizer
 customizers
 cyclomatic
@@ -226,6 +227,7 @@ hardcodes
 hashcode
 hasher
 hashers
+headerless
 highlightable
 holdability
 hotfix
@@ -469,6 +471,9 @@ reimported
 reindent
 reindented
 reindex
+reindexed
+reindexer
+reindexing
 reinit
 renamer
 renamers
