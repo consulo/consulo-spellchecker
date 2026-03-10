@@ -231,6 +231,7 @@ hardlinks
 hashtable
 haxe
 hgap
+hidpi
 hikari
 hostname
 hostnames
@@ -298,6 +299,7 @@ keychains
 keymap
 keymaps
 keystore
+klass
 lavenderblush
 lawngreen
 lbrace
@@ -341,6 +343,7 @@ longtext
 longvarchar
 longvarbinary
 lookahead
+lookbehind
 lparen
 lval
 lvalue
@@ -374,6 +377,7 @@ mediumtext
 mediumturquoise
 mediumvioletred
 memcmp
+memcpy
 menubar
 middleint
 middleware
@@ -548,7 +552,9 @@ stdout
 stdsys
 stmt
 stmts
+strcat
 strcmp
+strcpy
 stricmp
 strictfp
 strlen
@@ -601,6 +607,7 @@ uint
 unbox
 undef
 undofile
+unsync
 urlencoded
 urowid
 username
