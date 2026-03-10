@@ -45,6 +45,7 @@ barcode
 bicubic
 bijective
 bilinear
+bindable
 birthdate
 bitness
 braceless
@@ -109,8 +110,10 @@ codepoints
 committer
 committer's
 committers
+compactable
 composable
 composited
+concatenatable
 config
 configs
 configurables
@@ -156,6 +159,9 @@ deduplication
 deferrability
 deferrable
 deflater
+deinstall
+deinstalled
+deinstaller
 deque
 deques
 dequeue
@@ -172,7 +178,9 @@ deserializers
 deserializing
 destructured
 dialup
+disabler
 discardable
+disconnectable
 distinctrow
 distributive's
 distributives
@@ -186,6 +194,7 @@ downsample
 downsampled
 downsampler
 draggable
+dumpable
 endian
 endianness
 enumerable
@@ -206,6 +215,7 @@ foldable
 foldables
 focusable
 focuser
+forceable
 formattable
 formatter
 formatters
@@ -235,6 +245,7 @@ hotfixes
 hotkey
 hotkeys
 iconable
+ide's
 ignorable's
 ignorables
 inbox
@@ -259,6 +270,7 @@ instantiable
 instrumenter
 interner
 interners
+interruptible
 intranet
 intranets
 intrinsics
@@ -306,6 +318,7 @@ memoize
 memoized
 memoizes
 memoizing
+mergeable
 metadata
 minified
 minifier
@@ -323,6 +336,9 @@ multicasted
 multicaster
 multicasting
 multicharacter
+multigraph
+multigraph's
+multigraphs
 multihead
 multiline
 multimap
@@ -373,6 +389,7 @@ pixelate
 pixelated
 plaintext
 playlist
+pluggable
 plugin
 plugin's
 plugins
@@ -390,6 +407,7 @@ popup's
 popups
 posix
 postfix
+postponable
 postprocess
 postprocessing
 postprocessor
@@ -453,6 +471,7 @@ redetecting
 redundance
 redistributions
 reentrance
+reentrancy
 reentrant
 refactor
 refactored
@@ -475,9 +494,13 @@ reindexed
 reindexer
 reindexing
 reinit
+reloader
+remapper
+renamable
 renamer
 renamers
 renderer
+renderer's
 renderers
 reparsable
 reparse
@@ -544,6 +567,7 @@ shader
 shaders
 shortener
 shorteners
+shutdownable
 significand
 significands
 signoff
@@ -615,6 +639,7 @@ suppressions
 surrounder
 surrounders
 teardown
+templating
 testcase
 testcase's
 testcases
@@ -661,6 +686,9 @@ unboxing
 unbuffered
 uncomment
 uncommented
+uncomputable
+uncomputable's
+uncomputables
 unconstructable
 undeploy
 undeploying
@@ -700,6 +728,9 @@ unnormalizing
 unparse
 unparsed
 unpivot
+unpluralize
+unpluralized
+unpluralizing
 unprocessable
 unprotect
 unpush
@@ -761,6 +792,7 @@ uppercasing
 uptime
 upsert
 upserts
+validatable
 validator
 validators
 variadic
