@@ -63,6 +63,7 @@ ccflags
 cdata
 cellpadding
 cellspacing
+char's
 checkstyle
 chmod
 classloader
@@ -151,6 +152,7 @@ doclets
 doctype
 docx
 dojo
+double's
 dtrace
 dumpfile
 dvcs
@@ -188,6 +190,7 @@ filesystems
 filetype
 filetypes
 flexbox
+float's
 floralwhite
 fmts
 foobar
@@ -265,6 +268,7 @@ instanceof
 instanceofs
 insteadof
 intra
+int's
 ints
 iostream
 isnull
@@ -542,6 +546,7 @@ sqlerror
 sqlexception
 sqlstate
 sqlwarning
+sqrt
 statusbar
 steelblue
 stdarg
