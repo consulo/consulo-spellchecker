@@ -17,6 +17,7 @@ appendables
 appender
 appenders
 arity
+artifactory
 assignability
 assistive
 autoboxing
@@ -118,7 +119,11 @@ config
 configs
 configurables
 configurator
+configurator's
 configurators
+configurer
+configurer's
+configurers
 conformant
 connectable
 contravariant
@@ -195,6 +200,9 @@ downsampled
 downsampler
 draggable
 dumpable
+embedder
+embedder's
+embedders
 endian
 endianness
 enumerable
@@ -270,6 +278,9 @@ instantiable
 instrumenter
 interner
 interners
+interpolator
+interpolator's
+interpolators
 interruptible
 intranet
 intranets
@@ -706,6 +717,9 @@ unhide
 unhiding
 ungroup
 unhandled
+unignore
+unignored
+unignores
 unindent
 unindex
 unindexed
@@ -719,6 +733,9 @@ unisets
 unlocalize
 unlocalized
 unmappable
+unmarshal
+unmarshalled
+unmarshalling
 unmerge
 unmerged
 unmerging
@@ -734,6 +751,7 @@ unpivot
 unpluralize
 unpluralized
 unpluralizing
+unprefixed
 unprocessable
 unprotect
 unpush

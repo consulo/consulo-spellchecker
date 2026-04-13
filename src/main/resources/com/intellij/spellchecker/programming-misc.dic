@@ -19,6 +19,7 @@ aspectj
 async
 atan
 atob
+atoi
 attr
 attrs
 attlist
