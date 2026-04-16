@@ -6,7 +6,14 @@ open module com.intellij.spellchecker {
     // TODO remove this dependency in future
     requires java.desktop;
 
-    requires consulo.ide.api;
+    requires transitive consulo.language.spellchecker.api;
+    requires consulo.language.spellchecker.editor.api;
+    requires consulo.language.editor.api;
+    requires consulo.configurable.api;
+    requires consulo.file.editor.api;
+    requires consulo.ui.ex.api;
+    requires consulo.ui.ex.awt.api;
+    requires consulo.language.editor.refactoring.api;
 
     exports com.intellij.spellchecker;
     exports com.intellij.spellchecker.compress;
