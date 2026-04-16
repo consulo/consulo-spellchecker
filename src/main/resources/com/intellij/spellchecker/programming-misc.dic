@@ -272,6 +272,7 @@ intra
 int's
 ints
 iostream
+ipsum
 isnull
 iter
 jacksonized
@@ -349,6 +350,7 @@ longvarchar
 longvarbinary
 lookahead
 lookbehind
+lorem
 lparen
 lval
 lvalue
@@ -466,6 +468,7 @@ palevioletred
 papayawhip
 param
 params
+parens
 pctfree
 pctincrease
 pctthreshold
