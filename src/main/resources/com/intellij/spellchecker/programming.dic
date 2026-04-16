@@ -92,6 +92,8 @@ clickable
 clojure
 clonable
 clonables
+cloneable
+cloneables
 cloner
 cloners
 closable
@@ -200,6 +202,8 @@ downsampled
 downsampler
 draggable
 dumpable
+duplicatable
+duplicatables
 embedder
 embedder's
 embedders
@@ -234,6 +238,10 @@ fullscreen
 fulltext
 functor
 functors
+generified
+generifier
+generifier's
+generifiers
 generify
 geocode
 geocodes
@@ -351,6 +359,7 @@ multigraph
 multigraph's
 multigraphs
 multihead
+multilanguage
 multiline
 multimap
 multimap's
@@ -386,6 +395,7 @@ padder
 paintable
 paintables
 parsable
+parseable
 passphrase
 passphrases
 patcher
@@ -483,6 +493,7 @@ redetect
 redetected
 redetecting
 redundance
+rediff
 redistributions
 reentrance
 reentrancy
@@ -492,6 +503,7 @@ refactored
 refactoring
 refactorings
 reflow
+rehighlight
 reifiable
 reification
 reifications
@@ -511,14 +523,20 @@ reinit
 reloader
 remapper
 renamable
+renameable
 renamer
 renamers
 renderer
 renderer's
 renderers
 reparsable
+reparseable
 reparse
 reparsed
+reparser
+reparser's
+reparsers
+reparsing
 replacer
 replacers
 resetter
@@ -544,6 +562,9 @@ revalidate
 revalidated
 revalidation
 revalidations
+reverter
+reverter's
+reverters
 rewrap
 rewrapped
 rewrapper
@@ -623,6 +644,8 @@ subpartition
 subpartitions
 subpattern
 subpixel
+subprocess
+subprocesses
 subquery
 subsequence
 subsequences
@@ -654,6 +677,7 @@ surrounder
 surrounders
 teardown
 templating
+terminal's
 testcase
 testcase's
 testcases
@@ -687,6 +711,8 @@ transpiled
 transpiler
 transpilers
 transpiling
+treefied
+treefy
 trimmable
 truthy
 typecheck
@@ -794,6 +820,8 @@ unstashes
 unstashing
 unsynchronized
 untracked
+untreefied
+untreefy
 unversion
 unversioned
 unversioner
