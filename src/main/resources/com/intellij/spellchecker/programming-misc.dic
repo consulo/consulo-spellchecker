@@ -137,6 +137,7 @@ deepskyblue
 defs
 delim
 delims
+delombok
 deps
 desc
 descr
@@ -410,6 +411,10 @@ mistyrose
 mlslabel
 mmmm
 mockito
+mouseout
+mouseover
+mouseup
+mousewheel
 msguid
 msie
 msys
