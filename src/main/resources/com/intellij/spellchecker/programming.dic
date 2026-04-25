@@ -28,6 +28,7 @@ autocreation
 autocreating
 autodetect
 autodetected
+autodetection
 autofocus
 autofocused
 autogenerate
@@ -43,6 +44,7 @@ backtrace
 balancer
 balancers
 barcode
+batchable
 bicubic
 bijective
 bilinear
@@ -155,6 +157,7 @@ debouncer
 debouncers
 declarator
 declarators
+decompilation
 decompile
 decompiled
 decompiler
@@ -187,6 +190,7 @@ deserializing
 destructured
 dialup
 disabler
+disassembly
 discardable
 disconnectable
 distinctrow
@@ -255,12 +259,16 @@ hashcode
 hasher
 hashers
 headerless
+heisenbug
+heisenbugs
 highlightable
 holdability
 hotfix
 hotfixes
 hotkey
 hotkeys
+hyperlinker
+hyperlinkers
 iconable
 ide's
 ignorable's
@@ -324,6 +332,7 @@ loopback
 loopbacks
 lossy
 lowercased
+lowercases
 lowercasing
 lucene
 macish
@@ -490,6 +499,7 @@ rebaser
 rebases
 rebasing
 recomputation
+reconstructor
 redetect
 redetected
 redetecting
@@ -580,6 +590,9 @@ runtime
 runtimes
 savepoint
 savepoints
+scaler
+scaler's
+scalers
 schemas
 screenshot
 screenshots
@@ -667,6 +680,8 @@ subtrees
 subtyping
 subview
 subviews
+summator
+summators
 superclass
 superclasses
 superinterface
@@ -721,12 +736,17 @@ typechecking
 typechecks
 typesafe
 typings
+uglify
 unary
 unboxed
 unboxing
 unbuffered
 uncomment
 uncommented
+uncommenting
+uncompress
+uncompresses
+uncompressing
 uncomputable
 uncomputable's
 uncomputables
@@ -738,10 +758,12 @@ undoable
 unescape
 unescaped
 unescaper
+unescapes
 unescaping
 unformatted
 unhide
 unhiding
+unhighlighted
 ungroup
 unhandled
 unignore
@@ -791,6 +813,7 @@ unpushing
 unroller
 unrollers
 unscoped
+unsecure
 unselect
 unselectable
 unselected
@@ -838,6 +861,7 @@ upcast
 upcasts
 upcasted
 upcasting
+updatable
 uploader
 uppercased
 uppercasing
@@ -848,9 +872,6 @@ validatable
 validator
 validators
 variadic
-watchpoint
-watchpoint's
-watchpoints
 vcses
 vectorize
 vectorizer
@@ -862,6 +883,10 @@ viewport
 viewport's
 viewports
 virtualized
+voicemail
+watchpoint
+watchpoint's
+watchpoints
 webservice
 webservices
 whitespace
