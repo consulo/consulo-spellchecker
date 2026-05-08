@@ -102,6 +102,8 @@ cornflowerblue
 cornsilk
 crlf
 cron
+ctor
+ctors
 ctrl
 darkblue
 darkcyan
@@ -408,6 +410,7 @@ mintcream
 minvalue
 miny
 mistyrose
+mkdirs
 mlslabel
 mmmm
 mockito
@@ -539,6 +542,12 @@ rbrace
 readme
 readonly
 readwrite
+recompress
+recompressed
+recompresser
+recompresses
+recompression
+recompressing
 rect
 rects
 refcursor
@@ -608,6 +617,7 @@ strlen
 struct
 subdir
 subdirs
+subpath
 subst
 substr
 sudo

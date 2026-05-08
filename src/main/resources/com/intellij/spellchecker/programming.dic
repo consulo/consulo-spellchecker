@@ -16,6 +16,9 @@ antialiasing
 appendables
 appender
 appenders
+archiver
+archiver's
+archivers
 arity
 artifactory
 assignability
@@ -173,6 +176,7 @@ deflater
 deinstall
 deinstalled
 deinstaller
+deployable
 deque
 deques
 dequeue
@@ -359,6 +363,7 @@ misorder
 misordered
 mixin
 mixins
+mock's
 monospace
 monospaced
 multicast
@@ -375,6 +380,7 @@ multiline
 multimap
 multimap's
 multimaps
+multimodule
 multipart
 multipoint
 multiset
@@ -738,6 +744,8 @@ typechecks
 typesafe
 typings
 uglify
+unarchiver
+unarchivers
 unary
 unboxed
 unboxing
@@ -751,6 +759,10 @@ uncompressing
 uncomputable
 uncomputable's
 uncomputables
+unconfigure
+unconfigured
+unconfigures
+unconfiguring
 unconstructable
 undeploy
 undeploying
