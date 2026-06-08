@@ -317,6 +317,7 @@ iterables
 killable
 labeler
 labelers
+layouter
 lexer
 lexers
 lexing
@@ -342,6 +343,7 @@ lowercasing
 lucene
 macish
 makefile
+maskable
 matchings
 maximizable
 memoise
@@ -417,6 +419,9 @@ passphrase
 passphrases
 patcher
 patchers
+pathname
+pathname's
+pathnames
 peekable
 performant
 phishing
@@ -668,6 +673,9 @@ subpixel
 subprocess
 subprocesses
 subquery
+subroot
+subroot's
+subroots
 subsequence
 subsequences
 substring
@@ -798,6 +806,11 @@ unmappable
 unmarshal
 unmarshalled
 unmarshalling
+unmatch
+unmatched
+unmatcher
+unmatches
+unmatching
 unmerge
 unmerged
 unmerging
