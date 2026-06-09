@@ -57,6 +57,7 @@ btoa
 btree
 builtin
 bzip
+cacerts
 cadetblue
 calc
 calloc
@@ -229,6 +230,7 @@ gitflow
 gitignore
 gitmodules
 giud
+goto
 grault
 greenyellow
 groovyc
@@ -309,6 +311,7 @@ kbit
 kbps
 kbyte
 kbytes
+kdbx
 keepduplicates
 keychain
 keychains
