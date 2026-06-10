@@ -48,6 +48,8 @@ balancer
 balancers
 barcode
 batchable
+biconnected
+biconnectivity
 bicubic
 bijective
 bilinear
@@ -172,6 +174,7 @@ decompiling
 deduplicate
 deduplicated
 deduplication
+defragmentation
 deferrability
 deferrable
 deflater
@@ -198,6 +201,7 @@ deserializers
 deserializing
 destructured
 dialup
+directedness
 disabler
 disassembly
 discardable
@@ -218,6 +222,7 @@ draggable
 dumpable
 duplicatable
 duplicatables
+editables
 embedder
 embedder's
 embedders
@@ -247,6 +252,7 @@ focuser
 forceable
 formattable
 formatter
+formatter's
 formatters
 frameless
 frontend
@@ -291,10 +297,13 @@ inboxes
 incrementality
 incrementer
 incrementers
+indegree
 indenter
 indexable
 indextype
 inflater
+inflater's
+inflaters
 initializer
 initializers
 injectable
@@ -411,6 +420,8 @@ negatable
 noninfingement
 nonnegative
 nonnegatives
+nonpositive
+nonpositives
 nullable
 nullables
 nullabilities
@@ -419,6 +430,7 @@ nullish
 omittable
 online
 orderable
+outdegree
 outputter
 outputters
 overrider
@@ -526,6 +538,10 @@ rebased
 rebaser
 rebases
 rebasing
+rebin
+rebinning
+rebinnings
+recompilable
 recomputation
 reconstructor
 recurses
@@ -548,6 +564,7 @@ refiltering
 refilters
 reflow
 reflowing
+reformats
 rehighlight
 reifiable
 reification
@@ -586,6 +603,8 @@ reparsers
 reparsing
 replacer
 replacers
+requeue
+requeued
 resetter
 resizable
 resizables
@@ -607,6 +626,7 @@ retryers
 return's
 revalidate
 revalidated
+revalidates
 revalidation
 revalidations
 reverter
@@ -669,9 +689,13 @@ stacktraces
 startable
 startup
 stateful
+stemmer
+stringification
 stringify
 stringifying
 stringified
+stylable
+styleable
 stylesheet
 stylesheets
 subarray
@@ -751,6 +775,9 @@ subtyping
 subview
 subview's
 subviews
+subword
+subword's
+subwords
 summator
 summator's
 summators
@@ -768,6 +795,7 @@ surrounders
 teardown
 templating
 terminal's
+test's
 testcase
 testcase's
 testcases
@@ -802,8 +830,8 @@ transpiled
 transpiler
 transpilers
 transpiling
-treefied
-treefy
+treeified
+treeify
 trimmable
 tristate
 tristate's
@@ -821,6 +849,7 @@ unary
 unboxed
 unboxing
 unbuffered
+uncaptured
 uncomment
 uncommented
 uncommenter
@@ -842,8 +871,11 @@ undeploy
 undeploying
 undeployment
 underwave
+undirect
 undisplayable
 undoable
+undock
+undocked
 unescape
 unescaped
 unescaper
@@ -865,6 +897,8 @@ unindexed
 unindexer
 unindexes
 unindexing
+uninject
+uninjected
 uninstall
 uniset
 uniset's
@@ -908,7 +942,10 @@ unpusher
 unpushes
 unpushing
 unroller
+unroller's
 unrollers
+unrotate
+unrotated
 unscale
 unscaler
 unscales
@@ -947,8 +984,8 @@ unstashes
 unstashing
 unsynchronized
 untracked
-untreefied
-untreefy
+untreeified
+untreeify
 unversion
 unversioned
 unversioner

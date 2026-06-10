@@ -101,6 +101,7 @@ corba
 corge
 cornflowerblue
 cornsilk
+CPUs
 crlf
 cron
 ctor
@@ -145,6 +146,7 @@ deps
 desc
 descr
 dest
+desync
 ddos
 dimgray
 dimgrey
@@ -167,6 +169,8 @@ dvcs
 dword
 dylib
 editbox
+elem
+elems
 elif
 elseif
 elsif
@@ -318,6 +322,7 @@ keychains
 keydown
 keygen
 keymap
+keymap's
 keymaps
 keypress
 keystore
@@ -545,6 +550,7 @@ rbrace
 readme
 readonly
 readwrite
+recalc
 recompress
 recompressed
 recompresser
@@ -572,6 +578,7 @@ rvalue
 rvalues
 saddlebrown
 sandybrown
+sdk's
 sdks
 seagreen
 securefile
@@ -630,6 +637,7 @@ synch
 synched
 synth
 symlink
+symlinked
 symlinks
 sysdate
 syslog
@@ -646,6 +654,7 @@ tanh
 tbody
 temptable
 textarea
+tfoot
 thead
 tinyblob
 tinyint
@@ -679,6 +688,7 @@ utils
 uuid
 uuids
 valign
+vals
 vararg
 varargs
 varbinary
