@@ -234,6 +234,7 @@ gitflow
 gitignore
 gitmodules
 giud
+glassfish
 goto
 grault
 greenyellow
@@ -502,8 +503,10 @@ onreadystatechange
 opcode
 opcodes
 openapitools
+openfeign
 openid
 openssl
+opentelemetry
 orangered
 outfile
 palegoldenrod
@@ -593,6 +596,7 @@ slategrey
 smallfile
 smallint
 smth
+snakeyaml
 soname
 sourcecode
 sourcepath

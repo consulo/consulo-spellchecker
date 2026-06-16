@@ -43,6 +43,9 @@ backends
 backgroundable
 backport
 backports
+backreference
+backreference's
+backreferences
 backtrace
 balancer
 balancers
@@ -1031,7 +1034,11 @@ watchpoint
 watchpoint's
 watchpoints
 webservice
+webservice's
 webservices
+websocket
+websocket's
+websockets
 whitespace
 whitespaces
 wildcard
