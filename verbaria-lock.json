@@ -3,20 +3,11 @@
   "server" : "https://i.verbaria.org/",
   "project" : "consulo-spellchecker",
   "projectVersion" : "master",
-  "generatedAt" : "2026-06-03T08:05:03.393280103Z",
+  "generatedAt" : "2026-06-25T16:33:07.377363108Z",
   "documents" : {
     "consulo.spellchecker.SpellCheckerLocalize" : {
       "source" : {
-        "revision" : 1,
-        "sig" : "9161bc69eff07d34ba1eaa2b809de6dc"
-      },
-      "translations" : {
-        "en-US" : {
-          "sig" : "454713cffbedaee7df52980ed0881fb0",
-          "state" : "Approved",
-          "total" : 39,
-          "translators" : [ "Valery Semenchuk <vistall.valeriy@gmail.com>" ]
-        }
+        "revision" : 1
       }
     }
   }
