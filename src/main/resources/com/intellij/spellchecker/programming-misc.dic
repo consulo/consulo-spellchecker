@@ -147,6 +147,7 @@ desc
 descr
 dest
 desync
+devs
 ddos
 dimgray
 dimgrey
@@ -251,6 +252,7 @@ hardlinks
 hashtable
 haxe
 hgap
+hgignore
 hidpi
 hikari
 hostname
@@ -275,6 +277,7 @@ impls
 indianred
 infile
 infos
+inet
 init
 inits
 initrans
@@ -372,6 +375,8 @@ longblob
 longtext
 longvarchar
 longvarbinary
+longword
+longwords
 lookahead
 lookbehind
 lorem
@@ -477,6 +482,7 @@ novalidate
 nowait
 nowrap
 nullif
+nums
 nvarchar
 oauth
 objc
