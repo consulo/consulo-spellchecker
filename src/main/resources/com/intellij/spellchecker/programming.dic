@@ -59,6 +59,8 @@ bilinear
 bindable
 birthdate
 bitness
+blit
+blitter
 braceless
 bracketless
 brancher
@@ -161,6 +163,7 @@ datasets
 datatype
 datatype's
 datatypes
+deadzone
 deallocate
 debounce
 debounced
