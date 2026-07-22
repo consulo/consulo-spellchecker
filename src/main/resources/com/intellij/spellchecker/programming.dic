@@ -278,11 +278,6 @@ generify
 geocode
 geocodes
 geolocation
-gist
-gist's
-gists
-git
-git's
 globals
 hardcode
 hardcoded
@@ -488,6 +483,9 @@ popup
 popup's
 popups
 posix
+postcondition
+postcondition's
+postconditions
 postfix
 postponable
 postprocess
@@ -701,7 +699,6 @@ significand
 significands
 signoff
 signum
-sqls
 stacktrace
 stacktraces
 startable
@@ -839,6 +836,9 @@ touchpads
 trackable
 trackable's
 trackables
+trackpad
+trackpad's
+trackpads
 transliterator
 transliterator's
 transliterators
@@ -955,6 +955,7 @@ unpluralize
 unpluralized
 unpluralizing
 unprefixed
+unprocess
 unprocessable
 unprotect
 unpush
@@ -1038,6 +1039,7 @@ vectorize
 vectorizer
 vectorizes
 vectorizing
+vendoring
 versa
 versionable
 versioning
