@@ -859,6 +859,7 @@ trimmable
 tristate
 tristate's
 tristates
+truncator
 truthy
 typecheck
 typechecking
@@ -873,6 +874,7 @@ unboxed
 unboxing
 unbuffered
 uncaptured
+unclicked
 uncomment
 uncommented
 uncommenter
