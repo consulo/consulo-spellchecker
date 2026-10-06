@@ -76,6 +76,7 @@ codegen
 codeinsight
 codesign
 codestyle
+coeff
 colgroup
 colspan
 combobox
@@ -208,6 +209,7 @@ foobars
 foreach
 forestgreen
 fprintf
+frac
 freelist
 freelists
 freepools
@@ -255,6 +257,7 @@ hotswap
 hprof
 href
 hsize
+hsla
 hspace
 httpd
 iface
