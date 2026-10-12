@@ -22,7 +22,9 @@ import consulo.disposer.Disposer;
 import consulo.localize.LocalizeValue;
 import consulo.project.Project;
 import consulo.spellchecker.localize.SpellCheckerLocalize;
+import consulo.ui.Component;
 import consulo.ui.annotation.RequiredUIAccess;
+import consulo.ui.ex.awtUnsafe.TargetAWT;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import jakarta.inject.Inject;
@@ -66,11 +68,11 @@ public class SpellCheckerConfigurable implements SearchableConfigurable, Configu
 
     @Override
     @RequiredUIAccess
-    public JComponent createComponent(@Nonnull Disposable uiDisposable) {
+    public Component createUIComponent(@Nonnull Disposable uiDisposable) {
         if (myPanel == null) {
             myPanel = new SpellCheckerSettingsPane(mySpellCheckerSettings, myProject);
         }
-        return myPanel;
+        return TargetAWT.wrap(myPanel);
     }
 
     @Override
