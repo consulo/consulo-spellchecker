@@ -3,7 +3,6 @@ acos
 aeiouy
 addr
 addrs
-ajax
 aliceblue
 alloc
 anno
@@ -16,7 +15,6 @@ arraycopy
 asensitive
 asin
 askpass
-aspectj
 async
 atan
 atob
@@ -56,7 +54,6 @@ bools
 btoa
 btree
 builtin
-bzip
 cacerts
 cadetblue
 calc
@@ -67,7 +64,6 @@ cdata
 cellpadding
 cellspacing
 char's
-checkstyle
 chmod
 classloader
 clazz
@@ -80,6 +76,7 @@ codegen
 codeinsight
 codesign
 codestyle
+coeff
 colgroup
 colspan
 combobox
@@ -147,6 +144,7 @@ desc
 descr
 dest
 desync
+devs
 ddos
 dimgray
 dimgrey
@@ -154,7 +152,6 @@ dirname
 dirs
 distr
 distrs
-django
 doclet
 doclet's
 doclets
@@ -189,8 +186,8 @@ exprs
 fallthrough
 fatals
 favicon
+favicon's
 favicons
-fasterxml
 fieldset
 filename
 filenames
@@ -212,6 +209,7 @@ foobars
 foreach
 forestgreen
 fprintf
+frac
 freelist
 freelists
 freepools
@@ -229,6 +227,9 @@ gbytes
 gdata
 geometrycollection
 ghostwhite
+gist
+gist's
+gists
 gitconfig
 gitflow
 gitignore
@@ -241,18 +242,14 @@ greenyellow
 groovyc
 groovydoc
 gstring
-guice
-gzip
 gzipped
 halfwidth
-hamcrest
 hardlink
 hardlinks
 hashtable
-haxe
 hgap
+hgignore
 hidpi
-hikari
 hostname
 hostnames
 hotpink
@@ -260,12 +257,9 @@ hotswap
 hprof
 href
 hsize
+hsla
 hspace
-html
-htmls
-http
 httpd
-https
 iface
 ifaces
 iframe
@@ -275,6 +269,7 @@ impls
 indianred
 infile
 infos
+inet
 init
 inits
 initrans
@@ -297,21 +292,12 @@ javabean
 javabeans
 javadoc
 javadocs
-javaee
-javafx
 javax
-jdbc
-jikes
-jndi
 jnilib
-jpeg
-jpegs
 jpdl
 jquery
 jscript
 jsessionid
-json
-jsons
 jspx
 kbit
 kbps
@@ -333,7 +319,6 @@ klass
 lavenderblush
 lawngreen
 lbrace
-ldap
 lemonchiffon
 lexstate
 libxml
@@ -360,7 +345,6 @@ linkplain
 linter
 listbox
 lldb
-llvm
 localhost
 localtime
 localtimestamp
@@ -372,6 +356,8 @@ longblob
 longtext
 longvarchar
 longvarbinary
+longword
+longwords
 lookahead
 lookbehind
 lorem
@@ -423,7 +409,6 @@ mistyrose
 mkdirs
 mlslabel
 mmmm
-mockito
 mouseout
 mouseover
 mouseup
@@ -437,7 +422,6 @@ multi
 multilinestring
 multipolygon
 mxml
-mybatis
 nanos
 navbar
 nchar
@@ -477,10 +461,9 @@ novalidate
 nowait
 nowrap
 nullif
+nums
 nvarchar
-oauth
 objc
-odbc
 oidindex
 oldlace
 olivedrab
@@ -549,6 +532,7 @@ processlist
 projectlombok
 progressbar
 proto
+ptrs
 pubkey
 punycode
 quux
@@ -579,6 +563,7 @@ rowdependencies
 rowspan
 royalblue
 rtree
+rtype
 rval
 rvalue
 rvalues
@@ -599,7 +584,6 @@ slategrey
 smallfile
 smallint
 smth
-snakeyaml
 soname
 sourcecode
 sourcepath
@@ -659,6 +643,8 @@ taglib's
 taglibs
 tanh
 tbody
+telnetted
+telnetting
 temptable
 textarea
 tfoot
@@ -689,7 +675,6 @@ urlencoded
 urowid
 username
 usernames
-utf
 util
 utils
 uuid
@@ -713,14 +698,12 @@ watchlist
 watchlists
 whatsnew
 whitesmoke
-wifi
 wiki
 wikis
 wordwrap
 worktree
 worktree's
 worktrees
-wsdl
 xcode
 xcodeproj
 xdebugger
