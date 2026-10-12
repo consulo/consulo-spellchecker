@@ -129,6 +129,7 @@ datasources
 datetime
 dealloc
 decl
+decls
 dedent
 dedup
 dedupe
@@ -165,6 +166,7 @@ dumpfile
 dvcs
 dword
 dylib
+ecma
 editbox
 elem
 elems
@@ -316,6 +318,7 @@ keypress
 keystore
 keyup
 klass
+kwargs
 lavenderblush
 lawngreen
 lbrace
@@ -413,10 +416,11 @@ mouseout
 mouseover
 mouseup
 mousewheel
-msguid
 msec
 msecs
+msguid
 msie
+msil
 msys
 multi
 multilinestring
@@ -616,6 +620,7 @@ stricmp
 strictfp
 strlen
 struct
+structs
 subdir
 subdirs
 subpath
@@ -696,6 +701,7 @@ vspace
 vtlvariable
 watchlist
 watchlists
+webp
 whatsnew
 whitesmoke
 wiki
