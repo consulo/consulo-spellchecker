@@ -45,6 +45,7 @@ autowirer
 autowires
 autowiring
 backend
+backend's
 backends
 backgroundable
 backport
@@ -184,6 +185,10 @@ decompiler
 decompilers
 decompiles
 decompiling
+deconstruct
+deconstructor
+deconstructor's
+deconstructors
 deduplicate
 deduplicated
 deduplication
@@ -270,6 +275,7 @@ formatter's
 formatters
 frameless
 frontend
+frontend's
 frontends
 fullname
 fullscreen

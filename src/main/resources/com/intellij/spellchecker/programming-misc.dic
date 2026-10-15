@@ -507,6 +507,7 @@ papayawhip
 param
 params
 parens
+parenth
 pctfree
 pctincrease
 pctthreshold
@@ -573,6 +574,7 @@ rvalue
 rvalues
 saddlebrown
 sandybrown
+sbyte
 sdk's
 sdks
 seagreen
@@ -671,6 +673,8 @@ typedef
 typedefs
 typeof
 uint
+uinteger
+ulong
 unbox
 undef
 undofile
@@ -680,6 +684,7 @@ urlencoded
 urowid
 username
 usernames
+ushort
 util
 utils
 uuid
