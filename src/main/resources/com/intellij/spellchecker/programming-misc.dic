@@ -147,6 +147,7 @@ dest
 desync
 devs
 ddos
+diag
 dimgray
 dimgrey
 dirname
@@ -497,6 +498,7 @@ openfeign
 openid
 openssl
 opentelemetry
+oper
 orangered
 outfile
 palegoldenrod
