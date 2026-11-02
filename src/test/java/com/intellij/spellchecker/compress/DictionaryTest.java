@@ -15,7 +15,7 @@
  */
 package com.intellij.spellchecker.compress;
 
-import com.intellij.spellchecker.DefaultBundledDictionariesProvider;
+import com.intellij.spellchecker.DefaultSimpleDictionaryProvider;
 import com.intellij.spellchecker.StreamLoader;
 import com.intellij.spellchecker.dictionary.Dictionary;
 import com.intellij.spellchecker.dictionary.Loader;
@@ -104,7 +104,7 @@ public class DictionaryTest {
     }
 
     private static StreamLoader englishLoader() {
-        return new StreamLoader(DefaultBundledDictionariesProvider.class.getResourceAsStream(ENGLISH_DIC), ENGLISH_DIC);
+        return new StreamLoader(DefaultSimpleDictionaryProvider.class.getResourceAsStream(ENGLISH_DIC), ENGLISH_DIC);
     }
 
 //    public void loadDictionaryTest(@Nonnull String name, int wordCount) throws IOException {
@@ -113,7 +113,7 @@ public class DictionaryTest {
 //            "load dictionary",
 //            times.get(name),
 //            (ThrowableRunnable) () -> dictionary = CompressedDictionary
-//                .create(new StreamLoader(DefaultBundledDictionariesProvider.class.getResourceAsStream(name), name), transform)
+//                .create(new StreamLoader(DefaultSimpleDictionaryProvider.class.getResourceAsStream(name), name), transform)
 //        ).cpuBound().assertTiming();
 //
 //        Set<String> wordsToStoreAndCheck = createWordSets(name, 50000, 1).getFirst();
@@ -146,7 +146,7 @@ public class DictionaryTest {
 
     @SuppressWarnings({"unchecked"})
     private static Couple<Set<String>> createWordSets(String name, final int maxCount, final int mod) {
-        Loader loader = new StreamLoader(DefaultBundledDictionariesProvider.class.getResourceAsStream(name), name);
+        Loader loader = new StreamLoader(DefaultSimpleDictionaryProvider.class.getResourceAsStream(name), name);
         final Set<String> wordsToStore = new HashSet<>();
         final Set<String> wordsToCheck = new HashSet<>();
         final Transformation transform = new Transformation();

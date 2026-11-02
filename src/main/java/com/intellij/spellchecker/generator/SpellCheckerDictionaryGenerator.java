@@ -16,8 +16,8 @@
 package com.intellij.spellchecker.generator;
 
 
-import com.intellij.spellchecker.SpellCheckerManager;
-import com.intellij.spellchecker.inspections.SpellCheckingInspection;
+import consulo.language.spellchecker.editor.SpellCheckerManager;
+import consulo.language.spellchecker.editor.SpellcheckingUtil;
 import consulo.annotation.access.RequiredReadAction;
 import consulo.application.progress.ProgressIndicator;
 import consulo.application.progress.ProgressManager;
@@ -195,7 +195,7 @@ public abstract class SpellCheckerDictionaryGenerator {
     @RequiredReadAction
     protected void processLeafsNames(@Nonnull PsiElement leafElement, @Nonnull final Set<String> seenNames) {
         final Language language = leafElement.getLanguage();
-        SpellCheckingInspection.tokenize(
+        SpellcheckingUtil.tokenize(
             leafElement,
             new TokenConsumer() {
                 @Override

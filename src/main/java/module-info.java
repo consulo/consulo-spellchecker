@@ -2,17 +2,10 @@
  * @author VISTALL
  * @since 2022-04-02
  */
-open module com.intellij.spellchecker {
-    // TODO remove this dependency in future
-    requires java.desktop;
-
+module com.intellij.spellchecker {
     requires transitive consulo.language.spellchecker.api;
     requires consulo.language.spellchecker.editor.api;
     requires consulo.language.editor.api;
-    requires consulo.configurable.api;
-    requires consulo.file.editor.api;
-    requires consulo.ui.ex.api;
-    requires consulo.ui.ex.awt.api;
     requires consulo.language.editor.refactoring.api;
 
     exports com.intellij.spellchecker;
@@ -20,12 +13,5 @@ open module com.intellij.spellchecker {
     exports com.intellij.spellchecker.dictionary;
     exports com.intellij.spellchecker.engine;
     exports com.intellij.spellchecker.generator;
-    exports com.intellij.spellchecker.inspections;
-    exports com.intellij.spellchecker.quickfixes;
-    exports com.intellij.spellchecker.settings;
-    exports com.intellij.spellchecker.state;
-    exports com.intellij.spellchecker.ui;
-    exports com.intellij.spellchecker.util;
-    exports consulo.spellchecker.icon;
     exports consulo.spellchecker.localize;
 }

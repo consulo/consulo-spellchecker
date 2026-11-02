@@ -4,12 +4,16 @@ import consulo.annotation.component.ExtensionImpl;
 import consulo.language.spellchecker.editor.SpellcheckerEngine;
 import consulo.localize.LocalizeValue;
 import consulo.project.Project;
-
+import consulo.spellchecker.localize.SpellCheckerLocalize;
 import jakarta.annotation.Nonnull;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 /**
+ * English spellchecker engine backed by bundled word lists ({@link SimpleDictionaryProvider}).
+ *
  * @author VISTALL
  * @since 2023-03-26
  */
@@ -26,27 +30,22 @@ public class SimpleSpellcheckerEngine implements SpellcheckerEngine {
     @Nonnull
     @Override
     public LocalizeValue getDisplayName() {
-        return LocalizeValue.localizeTODO("Simple Spellchecker");
+        return SpellCheckerLocalize.simpleSpellcheckerEngineName();
+    }
+
+    @Override
+    public Set<Locale> getLocales() {
+        return Set.of(Locale.ENGLISH);
+    }
+
+    @Override
+    public boolean hasProblem(@Nonnull Project project, @Nonnull String word) {
+        return SimpleSpellcheckerManager.getInstance(project).hasProblem(word);
     }
 
     @Nonnull
     @Override
-    public List<String> getSuggestions(@Nonnull Project project, @Nonnull String text) {
-        return SpellCheckerManager.getInstance(project).getSuggestions(text);
-    }
-
-    @Override
-    public boolean hasProblem(@Nonnull Project project, @Nonnull String text) {
-        return SpellCheckerManager.getInstance(project).hasProblem(text);
-    }
-
-    @Override
-    public boolean canSaveUserWords(@Nonnull Project project) {
-        return true;
-    }
-
-    @Override
-    public void acceptWordAsCorrect(@Nonnull Project project, @Nonnull String word) {
-        SpellCheckerManager.getInstance(project).acceptWordAsCorrect(word, project);
+    public List<String> getSuggestions(@Nonnull Project project, @Nonnull String word) {
+        return SimpleSpellcheckerManager.getInstance(project).getSuggestions(word);
     }
 }

@@ -17,8 +17,6 @@ package com.intellij.spellchecker.engine;
 
 import com.intellij.spellchecker.compress.CompressedDictionary;
 import com.intellij.spellchecker.dictionary.Dictionary;
-import com.intellij.spellchecker.dictionary.EditableDictionary;
-import com.intellij.spellchecker.dictionary.EditableDictionaryLoader;
 import com.intellij.spellchecker.dictionary.Loader;
 import consulo.application.Application;
 import consulo.application.progress.PerformInBackgroundOption;
@@ -30,7 +28,6 @@ import consulo.logging.Logger;
 import consulo.project.Project;
 import consulo.project.ProjectManager;
 import consulo.project.startup.StartupManager;
-import consulo.ui.ex.awt.UIUtil;
 import consulo.util.collection.Lists;
 import consulo.util.lang.Pair;
 import consulo.util.lang.StringUtil;
@@ -46,7 +43,6 @@ public class BaseSpellChecker implements SpellCheckerEngine {
 
     private final Transformation transform = new Transformation();
 
-    private final Set<EditableDictionary> dictionaries = new HashSet<>();
     private final List<Dictionary> bundledDictionaries = Lists.newLockFreeCopyOnWriteList();
     private final Metrics metrics = new LevenshteinDistance();
 
@@ -61,15 +57,7 @@ public class BaseSpellChecker implements SpellCheckerEngine {
 
     @Override
     public void loadDictionary(@Nonnull Loader loader) {
-        if (loader instanceof EditableDictionaryLoader editableDictionaryLoader) {
-            EditableDictionary dictionary = editableDictionaryLoader.getDictionary();
-            if (dictionary != null) {
-                addModifiableDictionary(dictionary);
-            }
-        }
-        else {
-            loadCompressedDictionary(loader);
-        }
+        loadCompressedDictionary(loader);
     }
 
     private void loadCompressedDictionary(@Nonnull Loader loader) {
@@ -133,7 +121,7 @@ public class BaseSpellChecker implements SpellCheckerEngine {
                         Project[] openProjects = ProjectManager.getInstance().getOpenProjects();
                         for (Project project : openProjects) {
                             if (project.isInitialized() && project.isOpen() && !project.isDefault()) {
-                                UIUtil.invokeLaterIfNeeded(() -> {
+                                project.getApplication().invokeLater(() -> {
                                     if (project.isDisposed()) {
                                         return;
                                     }
@@ -146,20 +134,16 @@ public class BaseSpellChecker implements SpellCheckerEngine {
         };
 
         if (!myProject.isInitialized()) {
-            StartupManager.getInstance(myProject).runWhenProjectIsInitialized(() -> UIUtil.invokeLaterIfNeeded(runnable));
+            StartupManager.getInstance(myProject).runWhenProjectIsInitialized(() -> myProject.getApplication().invokeLater(runnable));
         }
         else {
-            UIUtil.invokeLaterIfNeeded(runnable);
+            myProject.getApplication().invokeLater(runnable);
         }
     }
 
     private void queueDictionaryLoad(Loader loader, Consumer<Dictionary> consumer) {
         LOG.debug("Queuing load for: " + loader.getName());
         myDictionariesToLoad.add(Pair.create(loader, consumer));
-    }
-
-    private void addModifiableDictionary(@Nonnull EditableDictionary dictionary) {
-        dictionaries.add(dictionary);
     }
 
     private void addCompressedFixedDictionary(@Nonnull Dictionary dictionary) {
@@ -241,10 +225,8 @@ public class BaseSpellChecker implements SpellCheckerEngine {
             return true;
         }
         int bundled = isCorrect(transformed, bundledDictionaries);
-        int user = isCorrect(transformed, dictionaries);
         //System.out.println("bundled = " + bundled);
-        //System.out.println("user = " + user);
-        return bundled == 0 || user == 0 || bundled > 0 && user > 0;
+        return bundled >= 0;
     }
 
     @Nonnull
@@ -256,7 +238,6 @@ public class BaseSpellChecker implements SpellCheckerEngine {
         }
         List<Suggestion> suggestions = new ArrayList<>();
         List<String> rawSuggestions = restore(transformed.charAt(0), 0, Integer.MAX_VALUE, bundledDictionaries);
-        rawSuggestions.addAll(restore(word.charAt(0), 0, Integer.MAX_VALUE, dictionaries));
         for (String rawSuggestion : rawSuggestions) {
             int distance = metrics.calculateMetrics(transformed, rawSuggestion);
             suggestions.add(new Suggestion(rawSuggestion, distance));
@@ -290,7 +271,6 @@ public class BaseSpellChecker implements SpellCheckerEngine {
     @Override
     public void reset() {
         bundledDictionaries.clear();
-        dictionaries.clear();
     }
 
     @Override

@@ -17,7 +17,7 @@ package com.intellij.spellchecker.inspector;
 
 import java.util.List;
 
-import com.intellij.spellchecker.SpellCheckerManager;
+import consulo.language.spellchecker.editor.SpellCheckerManager;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
